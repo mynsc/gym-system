@@ -24,7 +24,7 @@ public class Reservation {
         this.validates = validates;
     }
     public void updateStatus(ReservationStatus newStatus){
-        
+        this.status = newStatus;
     }
 
     public User getBookedBy() { return bookedBy; }
@@ -32,5 +32,9 @@ public class Reservation {
 
     public AttendanceRecord getValidates() { return validates; }
     public void setValidates(AttendanceRecord validates) { this.validates = validates; }
+
+    public int getId() { return id; }
+    public LocalDate getScheduleDate() { return ScheduleDate; }
+    public ReservationStatus getStatus() { return status; }
     
 }

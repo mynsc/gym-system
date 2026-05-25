@@ -15,6 +15,6 @@ public class AccessibleUser extends User {
 
     @Override
     public boolean canAccess() {
-        return true;
+        return !hasActivePenalty;
     }
 }

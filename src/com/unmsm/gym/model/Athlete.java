@@ -23,6 +23,6 @@ public class Athlete extends User {
 
     @Override
     public boolean canAccess() {
-        return true;
+        return !hasActivePenalty;
     }
 }

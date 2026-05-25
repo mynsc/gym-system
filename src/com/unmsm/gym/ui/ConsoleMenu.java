@@ -1,19 +1,25 @@
 package src.com.unmsm.gym.ui;
 
+import java.util.Map;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 import src.com.unmsm.gym.auth.AuthManager;
 import src.com.unmsm.gym.model.Administrator;
 import src.com.unmsm.gym.model.Athlete;
 import src.com.unmsm.gym.model.RegularStudent;
+import src.com.unmsm.gym.model.ScheduleBlock;
 import src.com.unmsm.gym.model.User;
+import src.com.unmsm.gym.service.ReservationManager;
 
 public class ConsoleMenu {
 	private final AuthManager authManager;
+	private final ReservationManager reservationManager;
 	private final Scanner scanner;
 
-	public ConsoleMenu(AuthManager authManager) {
+	public ConsoleMenu(AuthManager authManager, ReservationManager reservationManager) {
 		this.authManager = authManager;
+		this.reservationManager = reservationManager;
 		this.scanner = new Scanner(System.in);
 	}
 
@@ -101,16 +107,16 @@ public class ConsoleMenu {
 
 			switch (option) {
 				case 1:
-					System.out.println("Mostrando horarios disponibles...");
+					handleReservation(user);
 					break;
 				case 2:
-					System.out.println("Cancelando reserva activa...");
+					handleCancelReservation(user);
 					break;
 				case 3:
 					System.out.println("Mostrando rutina...");
 					break;
 				case 4:
-					System.out.println("Check-In simulado.");
+					handleCheckIn(user);
 					break;
 				case 5:
 					System.out.println("Mostrando logros desbloqueados...");
@@ -141,16 +147,16 @@ public class ConsoleMenu {
 
 			switch (option) {
 				case 1:
-					System.out.println("Mostrando horarios disponibles...");
+					handleReservation(user);
 					break;
 				case 2:
-					System.out.println("Cancelando reserva activa...");
+					handleCancelReservation(user);
 					break;
 				case 3:
 					System.out.println("Mostrando rutina...");
 					break;
 				case 4:
-					System.out.println("Check-In simulado.");
+					handleCheckIn(user);
 					break;
 				case 5:
 					System.out.println("Mostrando logros desbloqueados...");
@@ -166,6 +172,47 @@ public class ConsoleMenu {
 					break;
 			}
 		} while (option != 6);
+	}
+
+	private void handleReservation(User user) {
+		showSchedule();
+		String time = readNonEmpty("Hora de inicio (ej. 08:00): ");
+		reservationManager.createReservation(user, time);
+	}
+
+	private void handleCancelReservation(User user) {
+		showSchedule();
+		String time = readNonEmpty("Hora de inicio a cancelar: ");
+		reservationManager.cancelReservation(user, time);
+	}
+
+	private void handleCheckIn(User user) {
+		reservationManager.processCheckIn(user);
+	}
+
+	private void showSchedule() {
+		if (reservationManager == null || reservationManager.getGym() == null) {
+			System.out.println("No hay turnos cargados.");
+			return;
+		}
+
+		Map<String, ScheduleBlock> blocks = reservationManager.getGym().getScheduleBlocks();
+		if (blocks.isEmpty()) {
+			System.out.println("No hay turnos disponibles.");
+			return;
+		}
+
+		System.out.println("=== HORARIOS DISPONIBLES ===");
+		for (Map.Entry<String, ScheduleBlock> entry : new TreeMap<>(blocks).entrySet()) {
+			ScheduleBlock block = entry.getValue();
+			int maxCapacity = block.getMaxCapacity();
+			String capacityLabel = maxCapacity > 0 ? String.valueOf(maxCapacity) : "-";
+			System.out.println(
+				entry.getKey() + " -> " + block.getStartTime() + " - " + block.getEndTime()
+					+ " | Ocupacion: " + block.getConfirmedCount() + "/" + capacityLabel
+					+ " | Espera: " + block.getWaitListSize()
+			);
+		}
 	}
 
 	private void adminMenu(Administrator user) {
