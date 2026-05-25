@@ -1,10 +1,14 @@
 package src.com.unmsm.gym.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GymProfile {
     private String faculty;
     private String major;
     private String currentCycle;
     private boolean isActiveSemester;
+    private List<Routine> follows = new ArrayList<>();
 
     public void updateAcademicData() {
 
@@ -21,4 +25,6 @@ public class GymProfile {
 
     public boolean isActiveSemester() { return isActiveSemester; }
     public void setActiveSemester(boolean activeSemester) { this.isActiveSemester = activeSemester; }
+
+    public List<Routine> getFollows() { return follows; }
 }

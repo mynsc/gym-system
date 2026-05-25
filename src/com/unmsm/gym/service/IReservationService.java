@@ -5,10 +5,9 @@ import src.com.unmsm.gym.model.User;
 
 public interface IReservationService {
 
-    public boolean CreateReservation(User user, String time);
-    
+    boolean createReservation(User user, String time);
 
-    public void CancelReservation(User user, Reservation res);
+    void cancelReservation(User user, Reservation res);
 
-    public boolean ProcessCheckIn(User user);
+    boolean processCheckIn(User user);
 }

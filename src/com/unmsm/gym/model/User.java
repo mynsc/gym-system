@@ -1,5 +1,8 @@
 package src.com.unmsm.gym.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import src.com.unmsm.gym.auth.IAccessControl;
 
 public abstract class User implements IAccessControl {
@@ -10,6 +13,8 @@ public abstract class User implements IAccessControl {
     protected String studentCode;
     protected boolean hasActivePenalty;
     protected GymProfile hasProfile;
+    protected GamificationProfile hasGamification;
+    protected List<Penalty> receives;
 
     public User(int id, String username, String password, String name, String studentCode) {
         this.id = id;
@@ -19,6 +24,8 @@ public abstract class User implements IAccessControl {
         this.studentCode = studentCode;
         this.hasActivePenalty = false;
         this.hasProfile = new GymProfile();
+        this.hasGamification = new GamificationProfile();
+        this.receives = new ArrayList<>();
     }
 
     @Override
@@ -47,4 +54,8 @@ public abstract class User implements IAccessControl {
     public void setHasActivePenalty(boolean hasActivePenalty) { this.hasActivePenalty = hasActivePenalty; }
 
     public GymProfile getHasProfile() { return hasProfile; }
+
+    public GamificationProfile getHasGamification() { return hasGamification; }
+
+    public List<Penalty> getReceives() { return receives; }
 }

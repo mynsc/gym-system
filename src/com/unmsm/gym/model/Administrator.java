@@ -9,8 +9,7 @@ public class Administrator extends User {
 
     }
 
-    // falta añadir parámetro Gym gym
-    public void manageCapacity(int newCapacity) {
+    public void manageCapacity(Gym gym, int newCapacity) {
 
     }
 

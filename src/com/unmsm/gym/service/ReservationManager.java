@@ -4,18 +4,21 @@ import src.com.unmsm.gym.model.Gym;
 import src.com.unmsm.gym.model.Reservation;
 import src.com.unmsm.gym.model.User;
 
-public class ReservationManager {
+public class ReservationManager implements IReservationService {
     private Gym gym;
 
+    @Override
     public boolean createReservation(User user, String time) {
         return true;
     }
 
-    public boolean cancelReservation(User user, Reservation res) {
-        return true;
-    }   
-    public boolean procesCheckIn(User user) {
-        return true;
-    }   
+    @Override
+    public void cancelReservation(User user, Reservation res) {
+        return;
+    }
 
+    @Override
+    public boolean processCheckIn(User user) {
+        return true;
+    }
 }
