@@ -30,4 +30,40 @@ public class GamificationProfile {
 
     public List<UnlockedAchievement> getEarns() { return earns; }
 
+    public int getTotalPoints() {
+        return totalPoints;
+    }
+
+    public void setTotalPoints(int totalPoints) {
+        this.totalPoints = totalPoints;
+    }
+
+    public int getCurrentStreak() {
+        return currentStreak;
+    }
+
+    public void setCurrentStreak(int currentStreak) {
+        this.currentStreak = currentStreak;
+    }
+
+    public LocalDate getLastAttendanceDate() {
+        return lastAttendanceDate;
+    }
+
+    public void setLastAttendanceDate(LocalDate lastAttendanceDate) {
+        this.lastAttendanceDate = lastAttendanceDate;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public void setEarns(List<UnlockedAchievement> earns) {
+        this.earns = earns;
+    }
+
 }

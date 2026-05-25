@@ -12,10 +12,18 @@ public class AuthManager {
     }
 
     public User login(String username, String password) {
+        for (User user : registeredUsers) {
+            if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
+                return user;
+            }
+        }
+
         return null;
     }
 
     public void registerUser(User user) {
-        
+        if (user != null) {
+            registeredUsers.add(user);
+        }
     }
 }
