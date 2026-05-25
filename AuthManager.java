@@ -8,11 +8,11 @@ public class AuthManager {
         this.registeredUsers = registeredUsers;
     }
 
-    public User Login(String username, String password) {
-        
+    public User login(String username, String password) {
+        return null;
     }
 
-    public void RegisterUser(User user) {
+    public void registerUser(User user) {
         
     }
 }

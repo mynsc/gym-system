@@ -2,14 +2,15 @@
 public class ReservationManager {
     private Gym gym;
 
-    public boolean CreateReservation(User user, String time) {
+    public boolean createReservation(User user, String time) {
+        return true;
     }
 
-    public boolean CancelReservation(User user, Reservation res) {
-        
+    public boolean cancelReservation(User user, Reservation res) {
+        return true;
     }   
-    public boolean ProcesCheckIn(User user) {
-        
+    public boolean procesCheckIn(User user) {
+        return true;
     }   
 
 }

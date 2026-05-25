@@ -1,10 +1,13 @@
 import java.util.List;
 
-public class ReportGenerator {
-    public void GenerateActiveUserReport(List<User> Users){
+public class ReportGenerator implements IReportService {
+    @Override
+    public void generateActiveUsersReport(List<User> users){
         
     }
-    public void GenerateUsageFrequency(List<AttendanceRecord> records){
+
+    @Override
+    public void generateUsageFrequency(List<AttendanceRecord> records){
         
     }
     

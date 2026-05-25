@@ -13,10 +13,10 @@ public class Penalty {
         this.isActive = true;
     }
 
-    public void ApplyPenalty() {
+    public void applyPenalty() {
         
     }
-    public void RevokePenalty() {
+    public void revokePenalty() {
         
     }
     

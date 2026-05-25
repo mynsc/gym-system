@@ -13,16 +13,14 @@ public class ScheduleBlock {
         this.endTime = endTime;
     }
 
-
-
     public boolean addReservation(Reservation res){
-
+        return true;
     }
     public void addToWaitList(User user){
-
+    
     }
     public User pollWaitList(){
-
+        return null;
     }
 
 

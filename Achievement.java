@@ -13,7 +13,7 @@ public class Achievement {
     }
 
     public boolean isCriteriaMet(int points) {
-        
+        return true;
     }
     
 }

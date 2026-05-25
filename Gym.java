@@ -15,7 +15,7 @@ public class Gym {
     }
 
     public ScheduleBlock getBlock(String time) {
-    
+        return null;
     }
 
 

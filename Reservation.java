@@ -9,9 +9,9 @@ public class Reservation {
     public Reservation(int id, LocalDate scheduleDate) {
         this.id = id;
         ScheduleDate = scheduleDate;
-        this.status = ReservationStatus.CONFIRMED;
+        this.status = ReservationStatus.PENDING;
     }
-    public void UpdateStatus(ReservationStatus newStatus){
+    public void updateStatus(ReservationStatus newStatus){
         
     }
     

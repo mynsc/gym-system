@@ -10,7 +10,7 @@ public class UnlockedAchievement {
         this.unlockDate = unlockDate;
     }
 
-    public void DisplayNotification() {
+    public void displayNotification() {
         
     }
     
