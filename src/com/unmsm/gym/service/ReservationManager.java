@@ -1,3 +1,8 @@
+package src.com.unmsm.gym.service;
+
+import src.com.unmsm.gym.model.Gym;
+import src.com.unmsm.gym.model.Reservation;
+import src.com.unmsm.gym.model.User;
 
 public class ReservationManager {
     private Gym gym;

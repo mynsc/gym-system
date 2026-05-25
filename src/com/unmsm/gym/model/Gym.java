@@ -1,3 +1,5 @@
+package src.com.unmsm.gym.model;
+
 import java.util.Map;
 
 public class Gym {

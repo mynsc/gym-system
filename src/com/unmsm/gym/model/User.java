@@ -1,3 +1,7 @@
+package src.com.unmsm.gym.model;
+
+import src.com.unmsm.gym.auth.IAccessControl;
+
 public abstract class User implements IAccessControl {
     protected int id;
     protected String username;

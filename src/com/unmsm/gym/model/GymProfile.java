@@ -1,3 +1,5 @@
+package src.com.unmsm.gym.model;
+
 public class GymProfile {
     private String faculty;
     private String major;

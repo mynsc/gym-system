@@ -1,3 +1,5 @@
+package src.com.unmsm.gym.model;
+
 public class Exercise {
     private int id;
     private String name;

@@ -1,3 +1,5 @@
+package src.com.unmsm.gym.model;
+
 public class AccessibleUser extends User {
     private String disabilityType;
 

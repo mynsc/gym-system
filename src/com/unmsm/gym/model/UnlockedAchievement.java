@@ -1,5 +1,6 @@
-import java.time.LocalDateTime;
+package src.com.unmsm.gym.model;
 
+import java.time.LocalDateTime;
 
 public class UnlockedAchievement {
     private LocalDateTime unlockDate;

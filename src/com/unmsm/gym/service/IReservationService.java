@@ -1,4 +1,9 @@
-public interface IReservationServer {
+package src.com.unmsm.gym.service;
+
+import src.com.unmsm.gym.model.Reservation;
+import src.com.unmsm.gym.model.User;
+
+public interface IReservationService {
 
     public boolean CreateReservation(User user, String time);
     

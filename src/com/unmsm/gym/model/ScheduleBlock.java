@@ -1,6 +1,7 @@
+package src.com.unmsm.gym.model;
+
 import java.util.List;
 import java.util.Queue;
-
 
 public class ScheduleBlock {
     private String startTime;

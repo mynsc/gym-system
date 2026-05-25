@@ -1,3 +1,5 @@
+package src.com.unmsm.gym.model;
+
 import java.time.LocalDate;
 
 public class Penalty {

@@ -1,3 +1,5 @@
+package src.com.unmsm.gym.model;
+
 public class Athlete extends User {
     private String sport;
     private String level;

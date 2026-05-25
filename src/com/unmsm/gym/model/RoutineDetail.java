@@ -1,3 +1,5 @@
+package src.com.unmsm.gym.model;
+
 public class RoutineDetail {
     private int sets;
     private int reps;
