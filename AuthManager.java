@@ -1,3 +1,6 @@
+import java.util.List;
+
+
 public class AuthManager {
     private List<User> registeredUsers;
 
