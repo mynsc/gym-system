@@ -7,9 +7,9 @@ import java.util.TreeMap;
 import src.com.unmsm.gym.auth.AuthManager;
 import src.com.unmsm.gym.model.Administrator;
 import src.com.unmsm.gym.model.Atleta;
-import src.com.unmsm.gym.model.RegularStudent;
+import src.com.unmsm.gym.model.Estudiante;
 import src.com.unmsm.gym.model.ScheduleBlock;
-import src.com.unmsm.gym.model.Usuario;
+import src.com.unmsm.gym.model.Persona;
 import src.com.unmsm.gym.service.ReservationManager;
 
 public class ConsoleMenu {
@@ -55,7 +55,7 @@ public class ConsoleMenu {
 
 	private void handleLogin() {
 		int attempts = 0;
-		Usuario user = null;
+		Persona user = null;
 
 		do {
 			String username = readNonEmpty("Usuario: ");
@@ -78,7 +78,7 @@ public class ConsoleMenu {
 		routeToRoleMenu(user);
 	}
 
-	private void routeToRoleMenu(Usuario user) {
+	private void routeToRoleMenu(Persona user) {
 		if (user instanceof Administrator) {
 			adminMenu((Administrator) user);
 			return;
@@ -92,7 +92,7 @@ public class ConsoleMenu {
 		studentMenu(user);
 	}
 
-	private void studentMenu(Usuario user) {
+	private void studentMenu(Persona user) {
 		int option;
 		do {
 			System.out.println("=== MENU ESTUDIANTE ===");
@@ -174,19 +174,19 @@ public class ConsoleMenu {
 		} while (option != 6);
 	}
 
-	private void handleReservation(Usuario user) {
+	private void handleReservation(Persona user) {
 		showSchedule();
 		String time = readNonEmpty("Hora de inicio (ej. 08:00): ");
 		reservationManager.createReservation(user, time);
 	}
 
-	private void handleCancelReservation(Usuario user) {
+	private void handleCancelReservation(Persona user) {
 		showSchedule();
 		String time = readNonEmpty("Hora de inicio a cancelar: ");
 		reservationManager.cancelReservation(user, time);
 	}
 
-	private void handleCheckIn(Usuario user) {
+	private void handleCheckIn(Persona user) {
 		reservationManager.processCheckIn(user);
 	}
 
@@ -262,7 +262,7 @@ public class ConsoleMenu {
 		String studentCode = readNonEmpty("Codigo: ");
 		String password = readNonEmpty("Contrasena: ");
 
-		RegularStudent student = new RegularStudent(id, username, password, name, studentCode);
+		Estudiante student = new Estudiante(id, username, password, name, studentCode);
 		authManager.registerUser(student);
 
 		System.out.println("Registro exitoso. Contrasena asignada: " + student.getPassword());

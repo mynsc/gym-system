@@ -8,7 +8,7 @@ import src.com.unmsm.gym.model.Gym;
 import src.com.unmsm.gym.model.Reservation;
 import src.com.unmsm.gym.model.ReservationStatus;
 import src.com.unmsm.gym.model.ScheduleBlock;
-import src.com.unmsm.gym.model.Usuario;
+import src.com.unmsm.gym.model.Persona;
 
 public class ReservationManager implements IReservationService {
     private Gym gym;
@@ -23,7 +23,7 @@ public class ReservationManager implements IReservationService {
     }
 
     @Override
-    public boolean createReservation(Usuario user, String time) {
+    public boolean createReservation(Persona user, String time) {
         if (user == null) {
             System.out.println("Usuario invalido.");
             return false;
@@ -68,7 +68,7 @@ public class ReservationManager implements IReservationService {
     }
 
     @Override
-    public void cancelReservation(Usuario user, Reservation res) {
+    public void cancelReservation(Persona user, Reservation res) {
         if (user == null) {
             System.out.println("Usuario invalido.");
             return;
@@ -105,7 +105,7 @@ public class ReservationManager implements IReservationService {
         target.updateStatus(ReservationStatus.CANCELLED);
         System.out.println("Reserva cancelada.");
 
-        Usuario promoted = block.pollWaitList();
+        Persona promoted = block.pollWaitList();
         if (promoted != null) {
             Reservation newReservation = buildReservation(promoted);
             if (block.addReservation(newReservation)) {
@@ -115,7 +115,7 @@ public class ReservationManager implements IReservationService {
     }
 
     @Override
-    public boolean processCheckIn(Usuario user) {
+    public boolean processCheckIn(Persona user) {
         if (user == null) {
             System.out.println("Usuario invalido.");
             return false;
@@ -143,7 +143,7 @@ public class ReservationManager implements IReservationService {
         return true;
     }
 
-    public void cancelReservation(Usuario user, String time) {
+    public void cancelReservation(Persona user, String time) {
         if (user == null) {
             System.out.println("Usuario invalido.");
             return;
@@ -165,11 +165,11 @@ public class ReservationManager implements IReservationService {
         cancelReservation(user, reservation);
     }
 
-    private Reservation buildReservation(Usuario user) {
+    private Reservation buildReservation(Persona user) {
         return new Reservation(nextReservationId++, LocalDate.now(), user, null);
     }
 
-    private Reservation findReservationForUser(Usuario user) {
+    private Reservation findReservationForUser(Persona user) {
         for (ScheduleBlock block : gym.getScheduleBlocks().values()) {
             Reservation reservation = block.findReservationByUser(user);
             if (reservation != null) {
@@ -180,7 +180,7 @@ public class ReservationManager implements IReservationService {
         return null;
     }
 
-    private ScheduleBlock findBlockForUser(Usuario user) {
+    private ScheduleBlock findBlockForUser(Persona user) {
         for (ScheduleBlock block : gym.getScheduleBlocks().values()) {
             if (block.findReservationByUser(user) != null) {
                 return block;

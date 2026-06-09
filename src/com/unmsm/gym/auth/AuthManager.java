@@ -2,17 +2,17 @@ package src.com.unmsm.gym.auth;
 
 import java.util.List;
 
-import src.com.unmsm.gym.model.Usuario;
+import src.com.unmsm.gym.model.Persona;
 
 public class AuthManager {
-    private List<Usuario> registeredUsers;
+    private List<Persona> registeredUsers;
 
-    public AuthManager(List<Usuario> registeredUsers) {
+    public AuthManager(List<Persona> registeredUsers) {
         this.registeredUsers = registeredUsers;
     }
 
-    public Usuario login(String username, String password) {
-        for (Usuario user : registeredUsers) {
+    public Persona login(String username, String password) {
+        for (Persona user : registeredUsers) {
             if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
                 return user;
             }
@@ -21,7 +21,7 @@ public class AuthManager {
         return null;
     }
 
-    public void registerUser(Usuario user) {
+    public void registerUser(Persona user) {
         if (user != null) {
             registeredUsers.add(user);
         }

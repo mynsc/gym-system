@@ -1,9 +1,9 @@
 package src.com.unmsm.gym.model;
 
-public class AccessibleUser extends Usuario {
+public class Discapacitado extends Persona {
     private String disabilityType;
 
-    public AccessibleUser(int id, String username, String password, String name, String studentCode, String disabilityType) {
+    public Discapacitado(int id, String username, String password, String name, String studentCode, String disabilityType) {
         super(id, username, password, name, studentCode);
 
         this.disabilityType = disabilityType;
