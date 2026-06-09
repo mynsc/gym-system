@@ -6,7 +6,7 @@ import java.util.TreeMap;
 
 import src.com.unmsm.gym.auth.AuthManager;
 import src.com.unmsm.gym.model.Administrator;
-import src.com.unmsm.gym.model.Athlete;
+import src.com.unmsm.gym.model.Atleta;
 import src.com.unmsm.gym.model.RegularStudent;
 import src.com.unmsm.gym.model.ScheduleBlock;
 import src.com.unmsm.gym.model.Usuario;
@@ -84,8 +84,8 @@ public class ConsoleMenu {
 			return;
 		}
 
-		if (user instanceof Athlete) {
-			athleteMenu((Athlete) user);
+		if (user instanceof Atleta) {
+			athleteMenu((Atleta) user);
 			return;
 		}
 
@@ -131,7 +131,7 @@ public class ConsoleMenu {
 		} while (option != 6);
 	}
 
-	private void athleteMenu(Athlete user) {
+	private void athleteMenu(Atleta user) {
 		int option;
 		do {
 			System.out.println("=== MENU ESTUDIANTE ===");

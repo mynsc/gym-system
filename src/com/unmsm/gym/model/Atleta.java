@@ -1,11 +1,11 @@
 package src.com.unmsm.gym.model;
 
-public class Athlete extends Usuario {
+public class Atleta extends Usuario {
     private String sport;
     private String level;
     private int trainingHours;
 
-    public Athlete(int id, String username, String password, String name, String studentCode, String sport, String level, int trainingHours) {
+    public Atleta(int id, String username, String password, String name, String studentCode, String sport, String level, int trainingHours) {
         super(id, username, password, name, studentCode);
 
         this.sport = sport;
