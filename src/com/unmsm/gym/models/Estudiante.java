@@ -1,4 +1,4 @@
-package src.com.unmsm.gym.model;
+package src.com.unmsm.gym.models;
 
 public class Estudiante extends Persona {
     public Estudiante(int id, String username, String password, String name, String studentCode) {

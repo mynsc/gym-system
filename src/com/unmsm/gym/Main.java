@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.Map;
 
 import src.com.unmsm.gym.auth.AuthManager;
-import src.com.unmsm.gym.model.Gym;
-import src.com.unmsm.gym.model.Discapacitado;
-import src.com.unmsm.gym.model.Administrator;
-import src.com.unmsm.gym.model.Atleta;
-import src.com.unmsm.gym.model.Estudiante;
-import src.com.unmsm.gym.model.ScheduleBlock;
-import src.com.unmsm.gym.model.Persona;
+import src.com.unmsm.gym.models.Administrator;
+import src.com.unmsm.gym.models.Atleta;
+import src.com.unmsm.gym.models.Discapacitado;
+import src.com.unmsm.gym.models.Estudiante;
+import src.com.unmsm.gym.models.Gym;
+import src.com.unmsm.gym.models.Persona;
+import src.com.unmsm.gym.models.ScheduleBlock;
 import src.com.unmsm.gym.service.ReservationManager;
 import src.com.unmsm.gym.ui.ConsoleMenu;
 

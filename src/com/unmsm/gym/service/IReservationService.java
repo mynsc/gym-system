@@ -1,7 +1,7 @@
 package src.com.unmsm.gym.service;
 
-import src.com.unmsm.gym.model.Reservation;
-import src.com.unmsm.gym.model.Persona;
+import src.com.unmsm.gym.models.Persona;
+import src.com.unmsm.gym.models.Reservation;
 
 public interface IReservationService {
 

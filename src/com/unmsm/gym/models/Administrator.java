@@ -1,4 +1,4 @@
-package src.com.unmsm.gym.model;
+package src.com.unmsm.gym.models;
 
 public class Administrator extends Persona {
     public Administrator(int id, String username, String password, String name, String studentCode) {

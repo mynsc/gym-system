@@ -5,11 +5,11 @@ import java.util.Scanner;
 import java.util.TreeMap;
 
 import src.com.unmsm.gym.auth.AuthManager;
-import src.com.unmsm.gym.model.Administrator;
-import src.com.unmsm.gym.model.Atleta;
-import src.com.unmsm.gym.model.Estudiante;
-import src.com.unmsm.gym.model.ScheduleBlock;
-import src.com.unmsm.gym.model.Persona;
+import src.com.unmsm.gym.models.Administrator;
+import src.com.unmsm.gym.models.Atleta;
+import src.com.unmsm.gym.models.Estudiante;
+import src.com.unmsm.gym.models.Persona;
+import src.com.unmsm.gym.models.ScheduleBlock;
 import src.com.unmsm.gym.service.ReservationManager;
 
 public class ConsoleMenu {

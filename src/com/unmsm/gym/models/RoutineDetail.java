@@ -1,4 +1,4 @@
-package src.com.unmsm.gym.model;
+package src.com.unmsm.gym.models;
 
 public class RoutineDetail {
     private int sets;

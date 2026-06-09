@@ -3,12 +3,12 @@ package src.com.unmsm.gym.service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import src.com.unmsm.gym.model.AttendanceRecord;
-import src.com.unmsm.gym.model.Gym;
-import src.com.unmsm.gym.model.Reservation;
-import src.com.unmsm.gym.model.ReservationStatus;
-import src.com.unmsm.gym.model.ScheduleBlock;
-import src.com.unmsm.gym.model.Persona;
+import src.com.unmsm.gym.models.AttendanceRecord;
+import src.com.unmsm.gym.models.Gym;
+import src.com.unmsm.gym.models.Persona;
+import src.com.unmsm.gym.models.Reservation;
+import src.com.unmsm.gym.models.ReservationStatus;
+import src.com.unmsm.gym.models.ScheduleBlock;
 
 public class ReservationManager implements IReservationService {
     private Gym gym;

@@ -2,7 +2,7 @@ package src.com.unmsm.gym.auth;
 
 import java.util.List;
 
-import src.com.unmsm.gym.model.Persona;
+import src.com.unmsm.gym.models.Persona;
 
 public class AuthManager {
     private List<Persona> registeredUsers;
