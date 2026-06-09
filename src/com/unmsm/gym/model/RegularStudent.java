@@ -1,6 +1,6 @@
 package src.com.unmsm.gym.model;
 
-public class RegularStudent extends User {
+public class RegularStudent extends Usuario {
     public RegularStudent(int id, String username, String password, String name, String studentCode) {
         super(id, username, password, name, studentCode);
     }

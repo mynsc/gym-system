@@ -1,6 +1,6 @@
 package src.com.unmsm.gym.model;
 
-public class AccessibleUser extends User {
+public class AccessibleUser extends Usuario {
     private String disabilityType;
 
     public AccessibleUser(int id, String username, String password, String name, String studentCode, String disabilityType) {

@@ -3,11 +3,11 @@ package src.com.unmsm.gym.service;
 import java.util.List;
 
 import src.com.unmsm.gym.model.AttendanceRecord;
-import src.com.unmsm.gym.model.User;
+import src.com.unmsm.gym.model.Usuario;
 
 public class ReportGenerator implements IReportService {
     @Override
-    public void generateActiveUsersReport(List<User> users){
+    public void generateActiveUsersReport(List<Usuario> users){
         
     }
 

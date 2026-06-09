@@ -9,7 +9,7 @@ import src.com.unmsm.gym.model.Administrator;
 import src.com.unmsm.gym.model.Athlete;
 import src.com.unmsm.gym.model.RegularStudent;
 import src.com.unmsm.gym.model.ScheduleBlock;
-import src.com.unmsm.gym.model.User;
+import src.com.unmsm.gym.model.Usuario;
 import src.com.unmsm.gym.service.ReservationManager;
 
 public class ConsoleMenu {
@@ -55,7 +55,7 @@ public class ConsoleMenu {
 
 	private void handleLogin() {
 		int attempts = 0;
-		User user = null;
+		Usuario user = null;
 
 		do {
 			String username = readNonEmpty("Usuario: ");
@@ -78,7 +78,7 @@ public class ConsoleMenu {
 		routeToRoleMenu(user);
 	}
 
-	private void routeToRoleMenu(User user) {
+	private void routeToRoleMenu(Usuario user) {
 		if (user instanceof Administrator) {
 			adminMenu((Administrator) user);
 			return;
@@ -92,7 +92,7 @@ public class ConsoleMenu {
 		studentMenu(user);
 	}
 
-	private void studentMenu(User user) {
+	private void studentMenu(Usuario user) {
 		int option;
 		do {
 			System.out.println("=== MENU ESTUDIANTE ===");
@@ -174,19 +174,19 @@ public class ConsoleMenu {
 		} while (option != 6);
 	}
 
-	private void handleReservation(User user) {
+	private void handleReservation(Usuario user) {
 		showSchedule();
 		String time = readNonEmpty("Hora de inicio (ej. 08:00): ");
 		reservationManager.createReservation(user, time);
 	}
 
-	private void handleCancelReservation(User user) {
+	private void handleCancelReservation(Usuario user) {
 		showSchedule();
 		String time = readNonEmpty("Hora de inicio a cancelar: ");
 		reservationManager.cancelReservation(user, time);
 	}
 
-	private void handleCheckIn(User user) {
+	private void handleCheckIn(Usuario user) {
 		reservationManager.processCheckIn(user);
 	}
 

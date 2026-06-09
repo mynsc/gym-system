@@ -6,7 +6,7 @@ public class Reservation {
     private int id;
     private LocalDate ScheduleDate;
     private ReservationStatus status;
-    private User bookedBy;
+    private Usuario bookedBy;
     private AttendanceRecord validates;
 
 
@@ -16,7 +16,7 @@ public class Reservation {
         this.status = ReservationStatus.PENDING;
     }
 
-    public Reservation(int id, LocalDate scheduleDate, User bookedBy, AttendanceRecord validates) {
+    public Reservation(int id, LocalDate scheduleDate, Usuario bookedBy, AttendanceRecord validates) {
         this.id = id;
         this.ScheduleDate = scheduleDate;
         this.status = ReservationStatus.PENDING;
@@ -27,8 +27,8 @@ public class Reservation {
         this.status = newStatus;
     }
 
-    public User getBookedBy() { return bookedBy; }
-    public void setBookedBy(User bookedBy) { this.bookedBy = bookedBy; }
+    public Usuario getBookedBy() { return bookedBy; }
+    public void setBookedBy(Usuario bookedBy) { this.bookedBy = bookedBy; }
 
     public AttendanceRecord getValidates() { return validates; }
     public void setValidates(AttendanceRecord validates) { this.validates = validates; }

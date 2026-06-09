@@ -1,6 +1,6 @@
 package src.com.unmsm.gym.model;
 
-public class Athlete extends User {
+public class Athlete extends Usuario {
     private String sport;
     private String level;
     private int trainingHours;

@@ -12,13 +12,13 @@ import src.com.unmsm.gym.model.Administrator;
 import src.com.unmsm.gym.model.Athlete;
 import src.com.unmsm.gym.model.RegularStudent;
 import src.com.unmsm.gym.model.ScheduleBlock;
-import src.com.unmsm.gym.model.User;
+import src.com.unmsm.gym.model.Usuario;
 import src.com.unmsm.gym.service.ReservationManager;
 import src.com.unmsm.gym.ui.ConsoleMenu;
 
 public class Main {
     public static void main(String args[]) {
-        List<User> users = new ArrayList<>();
+        List<Usuario> users = new ArrayList<>();
 
         users.add(new RegularStudent(1, "regular", "123456", "Matias", "20210001"));
         users.add(new Athlete(2, "atleta", "123456", "Camila", "20210002", "Natacion", "Intermedio", 8));

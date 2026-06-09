@@ -5,7 +5,7 @@ import java.util.List;
 
 import src.com.unmsm.gym.auth.IAccessControl;
 
-public abstract class User implements IAccessControl {
+public abstract class Usuario implements IAccessControl {
     protected int id;
     protected String username;
     protected String password;
@@ -16,7 +16,7 @@ public abstract class User implements IAccessControl {
     protected GamificationProfile hasGamification;
     protected List<Penalty> receives;
 
-    public User(int id, String username, String password, String name, String studentCode) {
+    public Usuario(int id, String username, String password, String name, String studentCode) {
         this.id = id;
         this.username = username;
         this.password = password;

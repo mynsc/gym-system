@@ -9,7 +9,7 @@ public class ScheduleBlock {
     private String startTime;
     private String endTime;
     private List<Reservation> confirmedReservations;
-    private Queue<User> waitList;
+    private Queue<Usuario> waitList;
     private int maxCapacity;
 
     public ScheduleBlock(String startTime, String endTime){
@@ -36,12 +36,12 @@ public class ScheduleBlock {
         confirmedReservations.add(res);
         return true;
     }
-    public void addToWaitList(User user){
+    public void addToWaitList(Usuario user){
         if (user != null && !waitList.contains(user)) {
             waitList.add(user);
         }
     }
-    public User pollWaitList(){
+    public Usuario pollWaitList(){
         return waitList.poll();
     }
 
@@ -49,7 +49,7 @@ public class ScheduleBlock {
         return confirmedReservations.remove(res);
     }
 
-    public Reservation findReservationByUser(User user) {
+    public Reservation findReservationByUser(Usuario user) {
         if (user == null) {
             return null;
         }
@@ -63,7 +63,7 @@ public class ScheduleBlock {
         return null;
     }
 
-    public boolean isUserWaiting(User user) {
+    public boolean isUserWaiting(Usuario user) {
         return user != null && waitList.contains(user);
     }
 
@@ -71,7 +71,7 @@ public class ScheduleBlock {
     public int getWaitListSize() { return waitList.size(); }
 
     public List<Reservation> getConfirmedReservations() { return confirmedReservations; }
-    public Queue<User> getWaitList() { return waitList; }
+    public Queue<Usuario> getWaitList() { return waitList; }
 
     public int getMaxCapacity() { return maxCapacity; }
     public String getStartTime() { return startTime; }

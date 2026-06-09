@@ -1,13 +1,13 @@
 package src.com.unmsm.gym.service;
 
 import src.com.unmsm.gym.model.Reservation;
-import src.com.unmsm.gym.model.User;
+import src.com.unmsm.gym.model.Usuario;
 
 public interface IReservationService {
 
-    boolean createReservation(User user, String time);
+    boolean createReservation(Usuario user, String time);
 
-    void cancelReservation(User user, Reservation res);
+    void cancelReservation(Usuario user, Reservation res);
 
-    boolean processCheckIn(User user);
+    boolean processCheckIn(Usuario user);
 }

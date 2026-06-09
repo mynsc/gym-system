@@ -1,11 +1,11 @@
 package src.com.unmsm.gym.model;
 
-public class Administrator extends User {
+public class Administrator extends Usuario {
     public Administrator(int id, String username, String password, String name, String studentCode) {
         super(id, username, password, name, studentCode);
     }
 
-    public void overridePenalty(User user) {
+    public void overridePenalty(Usuario user) {
 
     }
 
