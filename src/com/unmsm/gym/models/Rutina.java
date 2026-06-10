@@ -1,11 +1,11 @@
 package src.com.unmsm.gym.models;
 
-public class Exercise {
+public class Rutina {
     private int id;
     private String name;
     private String muscleGroup;
 
-    public Exercise(int id, String name, String muscleGroup) {
+    public Rutina(int id, String name, String muscleGroup) {
         this.id = id;
         this.name = name;
         this.muscleGroup = muscleGroup;

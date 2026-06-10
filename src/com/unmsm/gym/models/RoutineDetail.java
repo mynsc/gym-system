@@ -4,9 +4,9 @@ public class RoutineDetail {
     private int sets;
     private int reps;
     private int restTimeSeconds;
-    private Exercise refersTo;
+    private Rutina refersTo;
 
-    public RoutineDetail(int sets, int reps, int restTimeSeconds, Exercise refersTo) {
+    public RoutineDetail(int sets, int reps, int restTimeSeconds, Rutina refersTo) {
         this.sets = sets;
         this.reps = reps;
         this.restTimeSeconds = restTimeSeconds;
@@ -26,5 +26,5 @@ public class RoutineDetail {
     public int getRestTimeSeconds() { return restTimeSeconds; }
     public void setRestTimeSeconds(int restTimeSeconds) { this.restTimeSeconds = restTimeSeconds; }
 
-    public void setRefersTo(Exercise refersTo) { this.refersTo = refersTo; }
+    public void setRefersTo(Rutina refersTo) { this.refersTo = refersTo; }
 }
