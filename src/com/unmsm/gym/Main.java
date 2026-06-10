@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import src.com.unmsm.gym.auth.AuthManager;
-import src.com.unmsm.gym.models.Administrator;
+import src.com.unmsm.gym.models.Administrador;
 import src.com.unmsm.gym.models.Atleta;
 import src.com.unmsm.gym.models.Discapacitado;
 import src.com.unmsm.gym.models.Estudiante;
@@ -23,7 +23,7 @@ public class Main {
         users.add(new Estudiante(1, "regular", "123456", "Matias", "20210001"));
         users.add(new Atleta(2, "atleta", "123456", "Camila", "20210002", "Natacion", "Intermedio", 8));
         users.add(new Discapacitado(3, "discap", "123456", "Luis", "20210003", "Visual"));
-        users.add(new Administrator(4, "admin", "123456", "Rosa", "20210004"));
+        users.add(new Administrador(4, "admin", "123456", "Rosa", "20210004"));
 
         int maxCapacityPerBlock = 2;
         Map<String, ScheduleBlock> scheduleBlocks = new HashMap<>();
