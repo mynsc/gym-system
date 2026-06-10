@@ -10,7 +10,7 @@ import src.com.unmsm.gym.models.Administrador;
 import src.com.unmsm.gym.models.Atleta;
 import src.com.unmsm.gym.models.Discapacitado;
 import src.com.unmsm.gym.models.Estudiante;
-import src.com.unmsm.gym.models.Gimnasio;
+import src.com.unmsm.gym.models.Gym;
 import src.com.unmsm.gym.models.Persona;
 import src.com.unmsm.gym.models.ScheduleBlock;
 import src.com.unmsm.gym.service.ReservationManager;
@@ -32,7 +32,7 @@ public class Main {
         scheduleBlocks.put("10:00", new ScheduleBlock("10:00", "11:00", maxCapacityPerBlock));
         scheduleBlocks.put("11:00", new ScheduleBlock("11:00", "12:00", maxCapacityPerBlock));
 
-        Gimnasio gym = new Gimnasio("Gimnasio Central", maxCapacityPerBlock, scheduleBlocks);
+        Gym gym = new Gym("Gimnasio Central", maxCapacityPerBlock, scheduleBlocks);
         ReservationManager reservationManager = new ReservationManager(gym);
 
         AuthManager authManager = new AuthManager(users);

@@ -9,7 +9,7 @@ public class Administrador extends Persona {
 
     }
 
-    public void manageCapacity(Gimnasio gym, int newCapacity) {
+    public void manageCapacity(Gym gym, int newCapacity) {
 
     }
 

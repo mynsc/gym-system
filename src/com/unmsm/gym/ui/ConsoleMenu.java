@@ -5,7 +5,7 @@ import java.util.Scanner;
 import java.util.TreeMap;
 
 import src.com.unmsm.gym.auth.AuthManager;
-import src.com.unmsm.gym.models.Administrator;
+import src.com.unmsm.gym.models.Administrador;
 import src.com.unmsm.gym.models.Atleta;
 import src.com.unmsm.gym.models.Estudiante;
 import src.com.unmsm.gym.models.Persona;
@@ -79,8 +79,8 @@ public class ConsoleMenu {
 	}
 
 	private void routeToRoleMenu(Persona user) {
-		if (user instanceof Administrator) {
-			adminMenu((Administrator) user);
+		if (user instanceof Administrador) {
+			adminMenu((Administrador) user);
 			return;
 		}
 
@@ -215,7 +215,7 @@ public class ConsoleMenu {
 		}
 	}
 
-	private void adminMenu(Administrator user) {
+	private void adminMenu(Administrador user) {
 		int option;
 		do {
 			System.out.println("=== MENU ADMINISTRADOR ===");
