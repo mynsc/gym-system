@@ -10,11 +10,14 @@ public class Discapacitado extends Persona {
     }
 
     public boolean requiresAssistance() {
-        return true;
+        return disabilityType != null && !disabilityType.isBlank();
     }
 
     @Override
     public boolean canAccess() {
         return !hasActivePenalty;
     }
+
+    public String getDisabilityType() { return disabilityType; }
+    public void setDisabilityType(String disabilityType) { this.disabilityType = disabilityType; }
 }

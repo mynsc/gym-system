@@ -14,15 +14,27 @@ public class Atleta extends Persona {
     }
 
     public void train() {
-
+        trainingHours++;
     }
 
     public void complete() {
-
+        if (trainingHours > 0) {
+            hasGamification.AwardPoints(trainingHours * 5);
+            trainingHours = 0;
+        }
     }
 
     @Override
     public boolean canAccess() {
         return !hasActivePenalty;
     }
+
+    public String getSport() { return sport; }
+    public void setSport(String sport) { this.sport = sport; }
+
+    public String getLevel() { return level; }
+    public void setLevel(String level) { this.level = level; }
+
+    public int getTrainingHours() { return trainingHours; }
+    public void setTrainingHours(int trainingHours) { this.trainingHours = trainingHours; }
 }

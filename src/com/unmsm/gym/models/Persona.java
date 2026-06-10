@@ -29,10 +29,20 @@ public abstract class Persona implements IAccessControl {
     }
 
     @Override
-    public abstract boolean canAccess();
+    public boolean canAccess() {
+        return !hasActivePenalty;
+    }
 
     public String getDetails() {
-        return "hola";
+        StringBuilder details = new StringBuilder();
+        details.append("Persona #").append(id)
+            .append(": ").append(name)
+            .append(" | Usuario: ").append(username)
+            .append(" | Codigo: ").append(studentCode)
+            .append(" | Penalidad activa: ").append(hasActivePenalty)
+            .append(" | Puntos: ").append(hasGamification.getTotalPoints());
+
+        return details.toString();
     }
 
     public int getId() { return id; }
@@ -52,6 +62,20 @@ public abstract class Persona implements IAccessControl {
 
     public boolean isHasActivePenalty() { return hasActivePenalty; }
     public void setHasActivePenalty(boolean hasActivePenalty) { this.hasActivePenalty = hasActivePenalty; }
+
+    public void addPenalty(Penalty penalty) {
+        if (penalty != null) {
+            receives.add(penalty);
+            hasActivePenalty = true;
+        }
+    }
+
+    public void clearPenalties() {
+        hasActivePenalty = false;
+        for (Penalty penalty : receives) {
+            penalty.revokePenalty();
+        }
+    }
 
     public GymProfile getHasProfile() { return hasProfile; }
 

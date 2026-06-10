@@ -8,10 +8,10 @@ public class GymProfile {
     private String major;
     private String currentCycle;
     private boolean isActiveSemester;
-    private List<Routine> follows = new ArrayList<>();
+    private List<Rutina> follows = new ArrayList<>();
 
     public void updateAcademicData() {
-
+        isActiveSemester = currentCycle != null && !currentCycle.isBlank();
     }
 
     public String getFaculty() { return faculty; }
@@ -26,5 +26,5 @@ public class GymProfile {
     public boolean isActiveSemester() { return isActiveSemester; }
     public void setActiveSemester(boolean activeSemester) { this.isActiveSemester = activeSemester; }
 
-    public List<Routine> getFollows() { return follows; }
+    public List<Rutina> getFollows() { return follows; }
 }

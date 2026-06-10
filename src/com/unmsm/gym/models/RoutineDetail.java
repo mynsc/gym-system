@@ -14,7 +14,9 @@ public class RoutineDetail {
     }
 
     public void updateProgress() {
-
+        if (sets > 0) {
+            sets--;
+        }
     }
 
     public int getSets() { return sets; }
@@ -26,5 +28,6 @@ public class RoutineDetail {
     public int getRestTimeSeconds() { return restTimeSeconds; }
     public void setRestTimeSeconds(int restTimeSeconds) { this.restTimeSeconds = restTimeSeconds; }
 
+    public Rutina getRefersTo() { return refersTo; }
     public void setRefersTo(Rutina refersTo) { this.refersTo = refersTo; }
 }

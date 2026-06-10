@@ -6,11 +6,13 @@ public class Administrador extends Persona {
     }
 
     public void overridePenalty(Persona user) {
-
+        if (user != null) {
+            user.clearPenalties();
+        }
     }
 
-    public void manageCapacity(Gym gym, int newCapacity) {
-
+    public int manageCapacity(int newCapacity) {
+        return newCapacity > 0 ? newCapacity : 0;
     }
 
     @Override
