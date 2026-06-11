@@ -122,8 +122,10 @@ public class Usuario {
     public void ActualizarVetadoTemporalmente(boolean estado) {
         this.vetadoTemporalmente = estado;
     }
-    public boolean mostrarVetadoTemporalmente() {
-        return this.vetadoTemporalmente;
+    public void mostrarSiEstaVetadoTemporalmente() {
+        if(this.vetadoTemporalmente) {
+            System.out.println("\t== El usuario está vetado temporalmente ==\t");
+        } 
     }
 
 
