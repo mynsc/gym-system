@@ -15,23 +15,26 @@ public class Usuario {
 
     private String baseInicio;
 
-    private boolean autoseguroActivo;
-
+    
+    
+    // DATOS PARA CONTROL DE ASISTENCIA Y PENALIDADES
     private LocalDate ultimaVisita;  
+    
+    private boolean autoseguroActivo = false;
 
-    private boolean visitanteConcurrente;
+    private boolean visitanteConcurrente =  false;
 
-    private boolean matriculadoSemestreActual;
+    private boolean matriculadoSemestreActual  = true;
 
-    private boolean presentaReservacion;
+    private boolean presentaReservacion  = false;
 
-    private boolean presentaPenalidades;
+    private boolean presentaPenalidades = false;
 
     private short cantidadPenalidades = 0;
 
-    private boolean presentaLesionActual;
+    private boolean presentaLesionActual = false;
 
-    private boolean vetadoTemporalmente;
+    private boolean vetadoTemporalmente = false;
 
 
 
@@ -77,8 +80,10 @@ public class Usuario {
     public void ActualizarAutoseguroActivo(boolean estado) {
         this.autoseguroActivo = estado;
     }
-    public boolean mostrarAutoseguroActivo() {
-        return this.autoseguroActivo;
+    public void mostrarAutoseguroActivo() {
+        if (!this.autoseguroActivo) {
+            System.out.println("\t== El usuario no tiene el autoseguro activo ==\t");
+        }
     }
 
 

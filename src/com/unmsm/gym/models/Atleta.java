@@ -1,11 +1,9 @@
 package src.com.unmsm.gym.models;
 
-
-
-
+import src.com.unmsm.gym.enums.Deportes;
 
 public class Atleta extends Usuario {
-    private String deporte;
+    private Deportes deporte;
 
 
     public Atleta(
@@ -15,7 +13,7 @@ public class Atleta extends Usuario {
         String facultad, 
         String carrera, 
         String baseInicio,
-        String deporte) {
+        Deportes deporte) {
 
         super(nombre, apellido, codigo_estudiante, facultad, carrera, baseInicio);
         this.deporte = deporte;
