@@ -1,85 +1,117 @@
 package src.com.unmsm.gym.models;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;
 
-import src.com.unmsm.gym.auth.IAccessControl;
+public class Persona {
+    /* Atributos de la clase Persona  */
+    private int id;
+    private String nombre;
+    private String apellido;
+    private String nombreDeUsuario;
+    private String contrasenia;
 
-public abstract class Persona implements IAccessControl {
-    protected int id;
-    protected String username;
-    protected String password;
-    protected String name;
-    protected String studentCode;
-    protected boolean hasActivePenalty;
-    protected GymProfile hasProfile;
-    protected GamificationProfile hasGamification;
-    protected List<Penalty> receives;
+    /* Atributos de una posible clase Cliente  */
+    private String facultad;
+    private String carrera;
+    private String baseInicio;
+    private boolean autoseguroActivo;
+    private LocalDate ultimaVisita;  
+    private boolean visitanteConcurrente;
+    private boolean matriculadoSemestreActual;
+    private boolean presentaReservacion;
+    private boolean presentaPenalidades;
+    private short cantidadPenalidades;
+    private boolean presentaLesionActual;
+    private boolean vetadoTemporalmente;
 
-    public Persona(int id, String username, String password, String name, String studentCode) {
+    /* Constructor no finalizado */
+    public Persona(
+        int id, 
+        String nombre, 
+        String apellido, 
+        String nombreDeUsuario, 
+        String contrasenia) {
+
         this.id = id;
-        this.username = username;
-        this.password = password;
-        this.name = name;
-        this.studentCode = studentCode;
-        this.hasActivePenalty = false;
-        this.hasProfile = new GymProfile();
-        this.hasGamification = new GamificationProfile();
-        this.receives = new ArrayList<>();
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.nombreDeUsuario = nombreDeUsuario;
+        this.contrasenia = contrasenia;
     }
 
-    @Override
-    public boolean canAccess() {
-        return !hasActivePenalty;
+    public void mostrarInformacionPersonal() {
+        System.out.println("Nombre  :             " + nombre);
+        System.out.println("Apellido:             " + apellido);
     }
 
-    public String getDetails() {
-        StringBuilder details = new StringBuilder();
-        details.append("Persona #").append(id)
-            .append(": ").append(name)
-            .append(" | Usuario: ").append(username)
-            .append(" | Codigo: ").append(studentCode)
-            .append(" | Penalidad activa: ").append(hasActivePenalty)
-            .append(" | Puntos: ").append(hasGamification.getTotalPoints());
+    public void aumentarCantidadDePenalidades() {
+        this.cantidadPenalidades++;
 
-        return details.toString();
-    }
-
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
-
-    public String getUsername() { return username; }
-    public void setUsername(String username) { this.username = username; }
-
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
-
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-
-    public String getStudentCode() { return studentCode; }
-    public void setStudentCode(String studentCode) { this.studentCode = studentCode; }
-
-    public boolean isHasActivePenalty() { return hasActivePenalty; }
-    public void setHasActivePenalty(boolean hasActivePenalty) { this.hasActivePenalty = hasActivePenalty; }
-
-    public void addPenalty(Penalty penalty) {
-        if (penalty != null) {
-            receives.add(penalty);
-            hasActivePenalty = true;
+        if (this.cantidadPenalidades >= 3) {
+            this.vetadoTemporalmente = true;
         }
     }
-
-    public void clearPenalties() {
-        hasActivePenalty = false;
-        for (Penalty penalty : receives) {
-            penalty.revokePenalty();
-        }
+    
+    public void reiniciarCantidadDePenalidades() {
+        this.cantidadPenalidades = 0;
     }
 
-    public GymProfile getHasProfile() { return hasProfile; }
+    /*   Getters y setters de la clase Persona  */
+    public int obtenerId() { return id; }
+    public void establecerId(int id) {  this.id = id; }
 
-    public GamificationProfile getHasGamification() { return hasGamification; }
+    public String obtenerNombre() { return nombre; }
+    public void establecerNombre(String nombre) { this.nombre = nombre; }
 
-    public List<Penalty> getReceives() { return receives; }
+    public String obtenerApellido() { return apellido; }
+    public void establecerApellido(String apellido) { this.apellido = apellido; }
+
+    public String obtenerNombreDeUsuario() { return nombreDeUsuario; }
+    public void establecerNombreDeUsuario(String nombreDeUsuario) { this.nombreDeUsuario = nombreDeUsuario; }
+
+    public String obtenerContrasenia() { return contrasenia; }
+    public void establecerContrasenia(String contrasenia) { this.contrasenia = contrasenia; }
+
+    /*   Getters y setters de una posible clase Cliente  */
+    public String obtenerFacultad() { return facultad; }
+    public void establecerFacultad(String facultad) { this.facultad = facultad; }
+
+    public String obtenerCarrera() { return carrera; }
+    public void establecerCarrera(String carrera) { this.carrera = carrera; }
+
+    public String obtenerBaseInicio() { return baseInicio; }
+    public void establecerBaseInicio(String baseInicio) { this.baseInicio = baseInicio; }
+
+    public boolean tieneAutoseguroActivo() { return autoseguroActivo; }
+    public void establecerAutoseguroActivo(boolean autoseguroActivo) { this.autoseguroActivo = autoseguroActivo; }
+
+    public LocalDate obtenerUltimaVisita() {
+        if (ultimaVisita == null) {
+            System.out.println("\t== El usuario no ha registrado una visita aún ==");
+            return null;
+        }
+        return this.ultimaVisita;
+    }
+    public void establecerUltimaVisita(LocalDate ultimaVisita) { this.ultimaVisita = ultimaVisita; }
+
+    public boolean esVisitanteConcurrente() { return visitanteConcurrente;  }
+    public void establecerVisitanteConcurrente(boolean visitanteConcurrente) { this.visitanteConcurrente = visitanteConcurrente; }
+
+    public boolean estaMatriculadoSemestreActual() { return matriculadoSemestreActual; }
+    public void establecerMatriculadoSemestreActual(boolean matriculadoSemestreActual) { this.matriculadoSemestreActual = matriculadoSemestreActual; }
+
+    public boolean presentaReservacion() { return presentaReservacion; }
+    public void establecerPresentaReservacion(boolean presentaReservacion) { this.presentaReservacion = presentaReservacion; }
+
+    public boolean presentaPenalidades() { return presentaPenalidades; }
+    public void establecerPresentaPenalidades(boolean presentaPenalidades) { this.presentaPenalidades = presentaPenalidades; }
+
+    public short obtenerCantidadPenalidades() { return cantidadPenalidades; }
+    public void establecerCantidadPenalidades(short cantidadPenalidades) { this.cantidadPenalidades = cantidadPenalidades; }
+
+    public boolean presentaLesionActual() { return presentaLesionActual;  }
+    public void establecerPresentaLesionActual(boolean presentaLesionActual) { this.presentaLesionActual = presentaLesionActual; }
+
+    public boolean estaVetadoTemporalmente() { return vetadoTemporalmente; }
+    public void establecerVetadoTemporalmente(boolean vetadoTemporalmente) { this.vetadoTemporalmente = vetadoTemporalmente; }
 }
