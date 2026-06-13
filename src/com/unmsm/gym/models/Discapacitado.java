@@ -1,23 +1,29 @@
 package src.com.unmsm.gym.models;
 
+import src.com.unmsm.gym.enums.NivelDeDiscapacidad;
+import src.com.unmsm.gym.enums.TipoDeDiscapacidad;
+
 public class Discapacitado extends Persona {
-    private String disabilityType;
+    private TipoDeDiscapacidad tipoDeDiscapacidad;
+    private NivelDeDiscapacidad nivelDeDiscapacidad;
 
-    public Discapacitado(int id, String username, String password, String name, String studentCode, String disabilityType) {
-        super(id, username, password, name, studentCode);
+    public Discapacitado(
+        int id, 
+        String nombre, 
+        String apellido, 
+        String nombreDeUsuario, 
+        String contrasenia, 
+        TipoDeDiscapacidad tipoDeDiscapacidad,
+        NivelDeDiscapacidad nivelDeDiscapacidad) {
 
-        this.disabilityType = disabilityType;
+        super(id, nombre, apellido, nombreDeUsuario, contrasenia);
+        this.tipoDeDiscapacidad = tipoDeDiscapacidad;
+        this.nivelDeDiscapacidad = nivelDeDiscapacidad;
     }
 
-    public boolean requiresAssistance() {
-        return disabilityType != null && !disabilityType.isBlank();
+    public void mostrarInformacionPersonal() {
+        super.mostrarInformacionPersonal();
+        System.out.println("Tipo de Discapacidad: " + tipoDeDiscapacidad);
+        System.out.println("Nivel de Discapacidad: " + nivelDeDiscapacidad);
     }
-
-    @Override
-    public boolean canAccess() {
-        return !hasActivePenalty;
-    }
-
-    public String getDisabilityType() { return disabilityType; }
-    public void setDisabilityType(String disabilityType) { this.disabilityType = disabilityType; }
 }
