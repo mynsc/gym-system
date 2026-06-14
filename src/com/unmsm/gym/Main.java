@@ -89,6 +89,38 @@ public class Main {
     }
 
     private static void menuDeAdministrador(Administrador usuario) {
+        int opcion;
+        do {
+            System.out.println("=== MENU ADMINISTRADOR ===");
+            System.out.println("Panel de Control - Gimnasio Central");
+            System.out.println("1. Ver Reporte de Usuarios Activos");
+            System.out.println("2. Ver Reporte de Horarios mas concurridos");
+            System.out.println("3. Modificar Aforo de un Bloque Horario");
+            System.out.println("4. Ver lista de alumnos penalizados");
+            System.out.println("5. Revocar penalidad a un alumno");
+            System.out.println("6. Cerrar Sesion");
+            System.out.println("Ingresar opcion >>");
+            opcion = scanner.nextInt();
+
+            switch (opcion) {
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    System.out.println("Cerrando sesion...");
+                    break;
+                default:
+                    System.out.println("(!) Opcion invalida, intente de nuevo");
+                    break;
+            }
+        } while (opcion != 6);
     }
 
     private static void menuDeAtleta(Atleta usuario) {
