@@ -124,6 +124,13 @@ public class Main {
 
             switch (opcion) {
                 case 1:
+                    System.out.println("=== USUARIOS ACTIVOS ===");
+                    // listar usuarios que no hayan llegado al limite de penalidades
+                    for (Persona persona : usuarios) {
+                        if (!usuario.estaVetadoTemporalmente()) {
+                            persona.mostrarInformacionPersonal();
+                        }
+                    }
                     break;
                 case 2:
                     break;
