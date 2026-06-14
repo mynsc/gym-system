@@ -84,7 +84,7 @@ public class Persona {
     public void establecerBaseInicio(String baseInicio) { this.baseInicio = baseInicio; }
 
     public boolean tieneAutoseguroActivo() { return autoseguroActivo; }
-    public void establecerAutoseguroActivo(boolean autoseguroActivo) { this.autoseguroActivo = autoseguroActivo; }
+    public void establecerEstadoDeAutoseguro(boolean autoseguroActivo) { this.autoseguroActivo = autoseguroActivo; }
 
     public LocalDate obtenerUltimaVisita() {
         if (ultimaVisita == null) {
@@ -96,23 +96,23 @@ public class Persona {
     public void establecerUltimaVisita(LocalDate ultimaVisita) { this.ultimaVisita = ultimaVisita; }
 
     public boolean esVisitanteConcurrente() { return visitanteConcurrente;  }
-    public void establecerVisitanteConcurrente(boolean visitanteConcurrente) { this.visitanteConcurrente = visitanteConcurrente; }
+    public void establecerEstadoDeVisitanteConcurrente(boolean visitanteConcurrente) { this.visitanteConcurrente = visitanteConcurrente; }
 
     public boolean estaMatriculadoSemestreActual() { return matriculadoSemestreActual; }
-    public void establecerMatriculadoSemestreActual(boolean matriculadoSemestreActual) { this.matriculadoSemestreActual = matriculadoSemestreActual; }
+    public void establecerEstadoDeMatriculaSemestreActual(boolean matriculadoSemestreActual) { this.matriculadoSemestreActual = matriculadoSemestreActual; }
 
     public boolean presentaReservacion() { return presentaReservacion; }
-    public void establecerPresentaReservacion(boolean presentaReservacion) { this.presentaReservacion = presentaReservacion; }
+    public void establecerEstadoDeReservacion(boolean presentaReservacion) { this.presentaReservacion = presentaReservacion; }
 
     public boolean presentaPenalidades() { return presentaPenalidades; }
-    public void establecerPresentaPenalidades(boolean presentaPenalidades) { this.presentaPenalidades = presentaPenalidades; }
+    public void establecerEstadoDePenalidades(boolean presentaPenalidades) { this.presentaPenalidades = presentaPenalidades; }
 
     public short obtenerCantidadPenalidades() { return cantidadPenalidades; }
     public void establecerCantidadPenalidades(short cantidadPenalidades) { this.cantidadPenalidades = cantidadPenalidades; }
 
     public boolean presentaLesionActual() { return presentaLesionActual;  }
-    public void establecerPresentaLesionActual(boolean presentaLesionActual) { this.presentaLesionActual = presentaLesionActual; }
+    public void establecerEstadoDeLesionActual(boolean presentaLesionActual) { this.presentaLesionActual = presentaLesionActual; }
 
     public boolean estaVetadoTemporalmente() { return vetadoTemporalmente; }
-    public void establecerVetadoTemporalmente(boolean vetadoTemporalmente) { this.vetadoTemporalmente = vetadoTemporalmente; }
+    public void establecerVetoTemporal(boolean vetadoTemporalmente) { this.vetadoTemporalmente = vetadoTemporalmente; }
 }
