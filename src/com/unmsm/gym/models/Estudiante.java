@@ -1,7 +1,7 @@
 package src.com.unmsm.gym.models;
 
 public class Estudiante extends Persona {
-    public Estudiante(int id, String username, String password, String name, String studentCode) {
-        super(id, username, password, name, studentCode);
+    public Estudiante(int id, String nombre, String apellido, String nombreDeUsuario, String contrasenia) {
+        super(id, nombre, apellido, nombreDeUsuario, contrasenia);
     }
 }
