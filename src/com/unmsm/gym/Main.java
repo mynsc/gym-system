@@ -1,5 +1,6 @@
 package src.com.unmsm.gym;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -14,7 +15,11 @@ import src.com.unmsm.gym.models.Persona;
 
 public class Main {
     static Scanner scanner = new Scanner(System.in);
-    static List<Persona> usuarios = new ArrayList<>();
+    static List<Persona> usuarios = new ArrayList<>();           // lista de usuarios
+    static List<LocalTime> horarios = new ArrayList<>();         // lista de horarios disponibles
+    static List<Integer> cupos = new ArrayList<>();              // lista de cupos por cada horario
+    static List<Integer> contadorDeVisitas = new ArrayList<>();  // lista de total de veces que se ha visitado cada horario
+    static List<List<Integer>> reservas = new ArrayList<>();     // lista de listas (ID - horario reservado)
 
     public static void main(String args[]) {
         usuarios.add(new Estudiante(1, "Juan", "Tapia", "estudiante", "123456"));
