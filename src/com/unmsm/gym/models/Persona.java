@@ -40,8 +40,8 @@ public class Persona {
     }
 
     public void mostrarInformacionPersonal() {
-        System.out.println("Nombre  :             " + nombre);
-        System.out.println("Apellido:             " + apellido);
+        System.out.println("Nombre: " + nombre);
+        System.out.println("Apellido: " + apellido);
     }
 
     public void aumentarCantidadDePenalidades() {
