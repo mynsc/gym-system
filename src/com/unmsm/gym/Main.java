@@ -33,8 +33,9 @@ public class Main {
             System.out.println("1. Iniciar sesion");
             System.out.println("2. Registrarse");
             System.out.println("3. Salir del sistema");
-            System.out.print("Ingresar opcion >>");
+            System.out.print("Ingresar opcion >> ");
             opcion = scanner.nextInt();
+            scanner.nextLine();
 
             switch (opcion) {
                 case 1: {
@@ -80,6 +81,7 @@ public class Main {
                     }
 
                     menuDeEstudiante((Estudiante) usuario);
+                    break;
                 }
                 case 2:
                     break;
@@ -104,8 +106,9 @@ public class Main {
             System.out.println("4. Ver lista de alumnos penalizados");
             System.out.println("5. Revocar penalidad a un alumno");
             System.out.println("6. Cerrar Sesion");
-            System.out.print("Ingresar opcion >>");
+            System.out.print("Ingresar opcion >> ");
             opcion = scanner.nextInt();
+scanner.nextLine();
 
             switch (opcion) {
                 case 1:
@@ -140,7 +143,7 @@ public class Main {
             System.out.println("5. Ver mis Logros Desbloqueados");
             System.out.println("6. Cerrar Sesion");
             System.out.println("7. Registrar horas de entrenamiento");
-            System.out.print("Ingresar opcion >>");
+            System.out.print("Ingresar opcion >> ");
             opcion = scanner.nextInt();
 
             switch (opcion) {
@@ -180,7 +183,7 @@ public class Main {
             System.out.println("4. Simular paso por Torniquete (Check-In)");
             System.out.println("5. Ver mis Logros Desbloqueados");
             System.out.println("6. Cerrar Sesion");
-            System.out.print("Ingresar opcion >>");
+            System.out.print("Ingresar opcion >> ");
             opcion = scanner.nextInt();
 
             switch (opcion) {
