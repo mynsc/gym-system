@@ -176,6 +176,13 @@ public class Main {
                     System.out.println("Aforo actualizado correctamente");
                     break;
                 case 4:
+                    System.out.println("=== USUARIOS PENALIZADOS ===");
+                    // listar usuarios que tienen una penalizacion o mas
+                    for (Persona persona : usuarios) {
+                        if (usuario.presentaPenalidades()) {
+                            persona.mostrarInformacionPersonal();
+                        }
+                    }
                     break;
                 case 5:
                     break;
