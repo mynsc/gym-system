@@ -88,7 +88,7 @@ public class Persona {
 
     public LocalDate obtenerUltimaVisita() {
         if (ultimaVisita == null) {
-            System.out.println("\t== El usuario no ha registrado una visita aún ==");
+            System.out.println("(!) El usuario no ha registrado una visita aun");
             return null;
         }
         return this.ultimaVisita;
