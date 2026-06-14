@@ -165,6 +165,40 @@ public class Main {
     }
 
     private static void menuDeEstudiante(Estudiante usuario) {
+        int opcion;
+        do {
+            System.out.println("=== MENU ESTUDIANTE ===");
+            System.out.println("Bienvenido, " + usuario.obtenerNombre() + ". Tienes " + 1 + " punto(s) (Nivel " +  0);
+            System.out.println("1. Ver Horarios y Reservar Turno");
+            System.out.println("2. Cancelar una Reserva activa");
+            System.out.println("3. Mi Rutina (Ver/Editar Ejercicios)");
+            System.out.println("4. Simular paso por Torniquete (Check-In)");
+            System.out.println("5. Ver mis Logros Desbloqueados");
+            System.out.println("6. Cerrar Sesion");
+            System.out.println("Ingresar opcion >>");
+            opcion = scanner.nextInt();
+
+            switch (opcion) {
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    System.out.println("Mostrando rutina...");
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    System.out.println("Mostrando logros desbloqueados...");
+                    break;
+                case 6:
+                    System.out.println("Cerrando sesion...");
+                    break;
+                default:
+                    System.out.println("(!) Opcion invalida, intente de nuevo");
+                    break;
+            }
+        } while (opcion != 6);
     }
 
     private static String leerNoVacio(String textoIngresado) {
