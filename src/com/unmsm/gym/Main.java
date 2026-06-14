@@ -27,6 +27,19 @@ public class Main {
         usuarios.add(new Discapacitado(3, "Maria", "Velez", "discapacitado", "123456", TipoDeDiscapacidad.AUDITIVA, NivelDeDiscapacidad.MODERADO));
         usuarios.add(new Administrador(4, "Luciana", "Vega", "administrador", "123456"));
 
+        // fijar horarios desde las 8 hasta las 20 horas
+        for (int i = 8; i < 20; i++) {
+            // hora de almuerzo desde las 12 hasta las 14 horas
+            if (i != 12 || i != 13) {
+                horarios.add(LocalTime.of(i, 0));
+            }
+        }
+
+        // fijar aforo en 25 
+        for (int i = 1; i <= horarios.size(); i++) {
+            cupos.add(25);
+        }
+
         int opcion = 0;
         do {
             System.out.println("=== GIMNASIO UNMSM ===");
