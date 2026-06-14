@@ -57,7 +57,7 @@ public class Persona {
         this.cantidadPenalidades = 0;
     }
 
-    /*   Getters y setters de la clase Persona  */
+    /*  Getters y setters de la clase Persona  */
     public int obtenerId() { return id; }
     public void establecerId(int id) {  this.id = id; }
 
@@ -73,7 +73,7 @@ public class Persona {
     public String obtenerContrasenia() { return contrasenia; }
     public void establecerContrasenia(String contrasenia) { this.contrasenia = contrasenia; }
 
-    /*   Getters y setters de una posible clase Cliente  */
+    /*  Getters y setters de una posible clase Cliente  */
     public String obtenerFacultad() { return facultad; }
     public void establecerFacultad(String facultad) { this.facultad = facultad; }
 
