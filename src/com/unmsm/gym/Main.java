@@ -145,6 +145,35 @@ public class Main {
                         );
                     break;
                 case 3:
+                    int opcionHorario = 0;
+
+                    // visualizar horarios y seleccionar uno para modificar su aforo
+                    mostrarHorarios();
+                    do {
+                        System.out.print("Ingresar opcion >> ");
+                        opcionHorario = scanner.nextInt();
+                        scanner.nextLine();
+                        
+                        if (opcionHorario < 1 || opcion > horarios.size()) {
+                            System.out.println("(!) Opcion invalida, intente de nuevo");
+                        }
+                    } while (opcionHorario < 1 || opcion > horarios.size());
+
+                    int indiceCupos = opcionHorario - 1;
+                    int nuevoAforo = 0;
+                    do {
+                        System.out.print("Ingresar nuevo aforo >> ");
+                        nuevoAforo = scanner.nextInt();
+                        scanner.nextLine();
+                        
+                        if (nuevoAforo < 1) {
+                            System.out.println("(!) Cantidad invalida, intente de nuevo");
+                        }
+                    } while (nuevoAforo < 1);
+
+                    // cambiar aforo en el horario seleccionado
+                    cupos.set(indiceCupos, nuevoAforo);
+                    System.out.println("Aforo actualizado correctamente");
                     break;
                 case 4:
                     break;
@@ -237,6 +266,14 @@ public class Main {
             }
         } while (opcion != 6);
     }
+
+    private static void mostrarHorarios() {
+        System.out.println("=== HORARIOS DISPONIBLES ===");
+        for (int i = 0; i < horarios.size(); i++) {
+            System.out.println((i + 1) + ". " + horarios.get(i) + "-" + horarios.get(i).plusHours(1)+ " | Aforo: " + cupos.get(i));
+        }
+    }
+
 
     private static String leerNoVacio(String textoIngresado) {
         while (true) {
