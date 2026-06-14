@@ -107,7 +107,7 @@ public class Main {
             System.out.println("6. Cerrar sesion");
             System.out.print("Ingresar opcion >> ");
             opcion = scanner.nextInt();
-scanner.nextLine();
+            scanner.nextLine();
 
             switch (opcion) {
                 case 1:
