@@ -4,6 +4,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.IntStream;
 
 import src.com.unmsm.gym.enums.NivelDeDiscapacidad;
 import src.com.unmsm.gym.enums.TipoDeDiscapacidad;
@@ -133,6 +134,15 @@ public class Main {
                     }
                     break;
                 case 2:
+                    System.out.println("=== HORARIOS MAS CONCURRIDOS ===");
+    
+                    // ordenar horarios establecidos del mas concurrido al menos concurrido
+                    IntStream.range(0, horarios.size())
+                        .boxed()
+                        .sorted((a, b) -> Integer.compare(contadorDeVisitas.get(b), contadorDeVisitas.get(a)))
+                        .forEach(indice -> 
+                            System.out.println(horarios.get(indice) + " | " + contadorDeVisitas.get(indice) + " visitas")
+                        );
                     break;
                 case 3:
                     break;
