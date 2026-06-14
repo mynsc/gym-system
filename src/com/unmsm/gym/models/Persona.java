@@ -45,11 +45,12 @@ public class Persona {
     }
 
     public void aumentarCantidadDePenalidades() {
-        this.cantidadPenalidades++;
-
         if (this.cantidadPenalidades >= 3) {
             this.vetadoTemporalmente = true;
+            reiniciarCantidadDePenalidades();
         }
+
+        this.cantidadPenalidades++;
     }
     
     public void reiniciarCantidadDePenalidades() {
