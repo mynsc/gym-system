@@ -69,7 +69,7 @@ public class Estudiante extends Persona {
         }
 
         // buscar reserva activa
-        int indiceReservaActiva = new Administardor().buscarReservaPorId(this, reservas);
+        int indiceReservaActiva = new Administrador().buscarReservaPorId(this, reservas);
 
         // si se encuentra una reserva, liberar un cupo en ese horario y se elimina la reserva
         if (indiceReservaActiva != -1) {
@@ -110,7 +110,7 @@ public class Estudiante extends Persona {
 
     public void cancelarReserva(List<HorarioCuposVisitas> horariosInformacion, List<List<Integer>> reservas) {
         // buscar reserva activa
-        int indiceReserva = new Administardor().buscarReservaPorId(this, reservas);
+        int indiceReserva = new Administrador().buscarReservaPorId(this, reservas);
 
         // si no se encuentra una reserva activa, regresar al menu
         if (indiceReserva == -1) {
@@ -292,7 +292,7 @@ public class Estudiante extends Persona {
 
     public void registrarIngreso() {
         // buscar reserva activa
-        int indiceReserva = new Administardor().buscarReservaPorId(this.obtenerId());
+        int indiceReserva = new Administrador().buscarReservaPorId(this, reservas);
 
         // si no se encuentra una reserva activa, regresar al menu
         if (indiceReserva == -1) {
