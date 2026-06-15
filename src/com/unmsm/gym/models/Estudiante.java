@@ -303,7 +303,7 @@ public class Estudiante extends Persona {
         // obtener el codigo del horario de la reserva activa
         int indiceHorario = reservas.get(indiceReserva).get(1);
 
-        // establecer ultima visita en hot y aumentar el contador de visitas en 1
+        // establecer ultima visita en hoy y aumentar el contador de visitas en 1
         this.establecerUltimaVisita(LocalDate.now());
         contadorDeVisitas.set(indiceHorario, contadorDeVisitas.get(indiceHorario) + 1);
 
