@@ -215,8 +215,10 @@ public class Estudiante extends Persona {
             ejercicios.add(new LinkedList<>(List.of(nombreEjercicio, sets, repeticiones)));
         }
 
-        // todo: el id debe variar entre cada rutina de cada estudiante
-        return new Rutina(0, nombre, objetivo, this, ejercicios);
+        // generar ID distinto en un estudiante, pero no en todos
+        // todo: generar IDs distintos para cada rutina de cada estudiante
+        int nuevoId = rutinas.size();
+        return new Rutina(nuevoId, nombre, objetivo, this, ejercicios);
     }
 
     public void editarRutina(Scanner scanner) {
