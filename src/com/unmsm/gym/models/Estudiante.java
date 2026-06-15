@@ -16,6 +16,8 @@ public class Estudiante extends Persona {
     private short cantidadPenalidades;
     private boolean presentaLesionActual;
     private boolean vetadoTemporalmente;
+    private int numeroDePuntos;
+    private int nivel;
 
     /*              Constructor              */
     public Estudiante(
@@ -44,6 +46,8 @@ public class Estudiante extends Persona {
         this.cantidadPenalidades = 0;
         this.presentaLesionActual = presentaLesionActual;
         this.vetadoTemporalmente = false;
+        this.numeroDePuntos = 0;
+        this.nivel = 0;
     }
 
     /*           Getters y setters           */
@@ -88,4 +92,10 @@ public class Estudiante extends Persona {
 
     public boolean estaVetadoTemporalmente() { return vetadoTemporalmente; }
     public void establecerVetoTemporal(boolean vetadoTemporalmente) { this.vetadoTemporalmente = vetadoTemporalmente; }
+
+    public int obtenerNumeroDePuntos() { return numeroDePuntos; }
+    public void establecerNumeroDePuntos(int numeroDePuntos) { this.numeroDePuntos = numeroDePuntos; }
+
+    public int obtenerNivel() { return nivel; }
+    public void establecerNivel(int nivel) { this.nivel = nivel; }
 }
