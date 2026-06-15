@@ -326,6 +326,22 @@ public class Main {
 
             switch (opcion) {
                 case 1:
+                    int opcionHorario = 0;
+
+                    // visualizar horarios y seleccionar uno para reservar turno
+                    mostrarHorarios();
+                    do {
+                        System.out.print("Ingresar opcion >> ");
+                        opcionHorario = scanner.nextInt();
+                        scanner.nextLine();
+                        
+                        if (opcionHorario < 1 || opcion > horariosInformacion.size()) {
+                            System.out.println("(!) Opcion invalida, intente de nuevo");
+                        }
+                    } while (opcionHorario < 1 || opcion > horariosInformacion.size());
+
+                    atleta.reservarTurno(opcionHorario, atleta, horariosInformacion, reservas);
+
                     break;
                 case 2:
                     break;
@@ -366,6 +382,22 @@ public class Main {
 
             switch (opcion) {
                 case 1:
+                    int opcionHorario = 0;
+
+                    // visualizar horarios y seleccionar uno para reservar turno
+                    mostrarHorarios();
+                    do {
+                        System.out.print("Ingresar opcion >> ");
+                        opcionHorario = scanner.nextInt();
+                        scanner.nextLine();
+                        
+                        if (opcionHorario < 1 || opcion > horariosInformacion.size()) {
+                            System.out.println("(!) Opcion invalida, intente de nuevo");
+                        }
+                    } while (opcionHorario < 1 || opcion > horariosInformacion.size());
+
+                    estudianteRegular.reservarTurno(opcionHorario, estudianteRegular, horariosInformacion, reservas);
+
                     break;
                 case 2:
                     break;
