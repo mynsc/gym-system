@@ -150,7 +150,7 @@ public class Main {
         int opcion;
         do {
             System.out.println("=== MENU ADMINISTRADOR ===");
-            System.out.println("1. Ver reporte de usuarios activos");
+            System.out.println("1. Ver reporte de estudiantes activos");
             System.out.println("2. Ver reporte de horarios mas concurridos");
             System.out.println("3. Modificar aforo de un bloque de horario");
             System.out.println("4. Ver lista de alumnos penalizados");
@@ -228,7 +228,7 @@ public class Main {
                         });
                     break;
                 case 5:
-                    // listar usuarios que tienen penalidad(es)
+                    // listar estudiantes que tengan una penalidad o mas
                     // ID | Nombre | Cantidad de penalidades
                     usuarios.stream()
                         .filter(p -> p instanceof Estudiante)
@@ -239,7 +239,7 @@ public class Main {
                         }
                         });
 
-                    // encontrar el usuario por ID
+                    // encontrar el estudiante por ID
                     int idIngresado = 0;
                     Estudiante estudianteEncontrado = null;
                     do {
@@ -255,7 +255,7 @@ public class Main {
                             continue;
                         }
                         
-                        // verificar que el usuario tenga alguna penalidad
+                        // verificar que el estudiante tenga alguna penalidad
                         if (!estudianteEncontrado.presentaPenalidades()) {
                             System.out.println("(!) Este usuario no tiene penalidades, intente de nuevo");
                         }
