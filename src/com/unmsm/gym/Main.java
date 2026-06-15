@@ -1,11 +1,15 @@
 package src.com.unmsm.gym;
 
+import java.sql.Connection;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.IntStream;
+
+import src.com.unmsm.gym.db.database;
+import src.com.unmsm.gym.config.conexion;
 
 import src.com.unmsm.gym.enums.NivelDeDiscapacidad;
 import src.com.unmsm.gym.enums.TipoDeDiscapacidad;
@@ -17,25 +21,34 @@ import src.com.unmsm.gym.models.Persona;
 import src.com.unmsm.gym.models.Regular;
 
 public class Main {
-    public record HorarioCuposVisitas(LocalTime hora, Integer cupos, Integer cantidadDeVisitas) {}
+    public record HorarioCuposVisitas(LocalTime hora, Integer cupos, Integer cantidadDeVisitas) {
+    }
+
     static Scanner scanner = new Scanner(System.in);
     static List<Persona> usuarios = new ArrayList<>();                         // lista de usuarios
     static List<HorarioCuposVisitas> horariosInformacion = new ArrayList<>();  // lista de horario, aforo y veces que se ha visitado cada horario
     static List<List<Integer>> reservas = new LinkedList<>();                  // lista de listas (ID - horario reservado)
 
     public static void main(String args[]) {
+        try {
+            Connection con = conexion.conectar();
+            System.out.println("Conexion exitosa");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error al conectar a la base de datos");
+        }
         usuarios.add(new Regular(
-            0, 
-            "Juan", 
-            "Tapia", 
-            "estudiante", 
-            "123456", 
-            "FISI", 
-            "Ingenieria de Software", 
-            "B25",
-            true, 
-            true, 
-            false));
+                0,
+                "Juan",
+                "Tapia",
+                "estudiante",
+                "123456",
+                "FISI",
+                "Ingenieria de Software",
+                "B25",
+                true,
+                true,
+                false));
         usuarios.add(new Atleta(
             1, 
             "Lucas", 
@@ -64,7 +77,7 @@ public class Main {
             TipoDeDiscapacidad.AUDITIVA, 
             NivelDeDiscapacidad.MODERADO));
         usuarios.add(new Administrador(3, "Luciana", "Vega", "administrador", "123456"));
-        
+
         // fijar horarios desde las 8 hasta las 20 horas
         for (int i = 8; i < 20; i++) {
             // hora de almuerzo desde las 12 hasta las 14 horas
@@ -72,7 +85,7 @@ public class Main {
                 // tambien se inicializa el aforo y las veces que se ha visitado un turno
                 HorarioCuposVisitas nuevoHorarioInformacion = new HorarioCuposVisitas(LocalTime.of(i, 0), 25, 0);
 
-                horariosInformacion.add(nuevoHorarioInformacion); 
+                horariosInformacion.add(nuevoHorarioInformacion);
             }
         }
 
@@ -97,10 +110,17 @@ public class Main {
                     do {
                         String nombreDeUsuario = leerNoVacio("Usuario >> ");
                         String contrasenia = leerNoVacio("Contrasena >> ");
-                        
-                        // busca coincidencias entre el nombre de usuario y la contraseña en el ArrayList
+
+                        database db = new database();
+                        // insertar el nuevo usuario en la base de datos1
+
+                        db.insertar(nombreDeUsuario, contrasenia);
+
+                        // busca coincidencias entre el nombre de usuario y la contraseña en el
+                        // ArrayList
                         for (Persona usuarioEncontrado : usuarios) {
-                            if (usuarioEncontrado.obtenerNombreDeUsuario().equals(nombreDeUsuario) && usuarioEncontrado.obtenerContrasenia().equals(contrasenia)) {
+                            if (usuarioEncontrado.obtenerNombreDeUsuario().equals(nombreDeUsuario)
+                                    && usuarioEncontrado.obtenerContrasenia().equals(contrasenia)) {
                                 usuario = usuarioEncontrado;
                             }
                         }
@@ -109,7 +129,8 @@ public class Main {
                         if (usuario == null) {
                             intentos++;
                             if (intentos < 3) {
-                                System.out.println("(!) Credenciales invalidas [Quedan " + (3 - intentos) + " intentos]");
+                                System.out
+                                        .println("(!) Credenciales invalidas [Quedan " + (3 - intentos) + " intentos]");
                             }
                         }
                     } while (usuario == null && intentos < 3);
@@ -292,7 +313,7 @@ public class Main {
                 case 2:
                     limpiarPantalla();
                     System.out.println("=== HORARIOS MAS CONCURRIDOS ===");
-    
+
                     // ordenar horarios establecidos del mas concurrido al menos concurrido
                     IntStream.range(0, horariosInformacion.size())
                         .boxed()
@@ -326,7 +347,7 @@ public class Main {
                         System.out.print("Ingresar nuevo aforo >> ");
                         nuevoAforo = scanner.nextInt();
                         scanner.nextLine();
-                        
+
                         if (nuevoAforo < 1) {
                             System.out.println("(!) Cantidad invalida, intente de nuevo");
                         }
@@ -334,10 +355,9 @@ public class Main {
 
                     // cambiar aforo en el horario seleccionado
                     HorarioCuposVisitas horarioConNuevoAforo = new HorarioCuposVisitas(
-                        horariosInformacion.get(indiceHorario).hora(), 
-                        nuevoAforo, 
-                        horariosInformacion.get(indiceHorario).cantidadDeVisitas()
-                    );
+                            horariosInformacion.get(indiceHorario).hora(),
+                            nuevoAforo,
+                            horariosInformacion.get(indiceHorario).cantidadDeVisitas());
                     horariosInformacion.set(indiceHorario, horarioConNuevoAforo);
 
                     System.out.print("(!) Aforo actualizado correctamente");
@@ -376,13 +396,14 @@ public class Main {
                     // listar estudiantes que tengan una penalidad o mas
                     // ID | Nombre | Cantidad de penalidades
                     usuarios.stream()
-                        .filter(p -> p instanceof Estudiante)
-                        .map(p -> (Estudiante) p)
-                        .forEach( estudiante -> {
-                            if (estudiante.presentaPenalidades()) {
-                                System.out.println(estudiante.obtenerId() + " | " + estudiante.obtenerNombre() + " | " + estudiante.obtenerCantidadPenalidades());
-                            }
-                        });
+                            .filter(p -> p instanceof Estudiante)
+                            .map(p -> (Estudiante) p)
+                            .forEach(estudiante -> {
+                                if (estudiante.presentaPenalidades()) {
+                                    System.out.println(estudiante.obtenerId() + " | " + estudiante.obtenerNombre()
+                                            + " | " + estudiante.obtenerCantidadPenalidades());
+                                }
+                            });
 
                     // encontrar el estudiante por ID
                     int idIngresado = 0;
@@ -399,7 +420,7 @@ public class Main {
                             System.err.println("(!) ID no encontrado, intente de nuevo");
                             continue;
                         }
-                        
+
                         // verificar que el estudiante tenga alguna penalidad
                         if (!estudianteEncontrado.presentaPenalidades()) {
                             System.out.println("(!) Este usuario no tiene penalidades, intente de nuevo");
@@ -459,7 +480,8 @@ public class Main {
         do {
             limpiarPantalla();
             System.out.println("=== MENU ESTUDIANTE ===");
-            System.out.println("Bienvenido, " + atleta.obtenerNombre() + ". Tienes " + atleta.obtenerNumeroDePuntos() + " punto(s) - Nivel " +  atleta.obtenerNivel());
+            System.out.println("Bienvenido, " + atleta.obtenerNombre() + ". Tienes " + atleta.obtenerNumeroDePuntos()
+                    + " punto(s) - Nivel " + atleta.obtenerNivel());
             System.out.println("1. Reservar turno");
             System.out.println("2. Cancelar reserva");
             System.out.println("3. Ver y editar mi rutina");
@@ -525,7 +547,9 @@ public class Main {
         do {
             limpiarPantalla();
             System.out.println("=== MENU ESTUDIANTE ===");
-            System.out.println("Bienvenido, " + estudianteRegular.obtenerNombre() + ". Tienes " + estudianteRegular.obtenerNumeroDePuntos() + " punto(s) - Nivel " +  estudianteRegular.obtenerNivel());
+            System.out.println("Bienvenido, " + estudianteRegular.obtenerNombre() + ". Tienes "
+                    + estudianteRegular.obtenerNumeroDePuntos() + " punto(s) - Nivel "
+                    + estudianteRegular.obtenerNivel());
             System.out.println("1. Reservar turno");
             System.out.println("2. Cancelar reserva");
             System.out.println("3. Ver y editar mi rutina");
@@ -585,7 +609,9 @@ public class Main {
     private static void mostrarHorarios() {
         System.out.println("=== HORARIOS DISPONIBLES ===");
         for (int i = 0; i < horariosInformacion.size(); i++) {
-            System.out.println((i + 1) + ". " + horariosInformacion.get(i).hora() + "-" + horariosInformacion.get(i).hora().plusHours(1)+ " | Aforo: " + horariosInformacion.get(i).cupos());
+            System.out.println((i + 1) + ". " + horariosInformacion.get(i).hora() + "-"
+                    + horariosInformacion.get(i).hora().plusHours(1) + " | Aforo: "
+                    + horariosInformacion.get(i).cupos());
         }
     }
 
