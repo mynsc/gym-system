@@ -344,6 +344,7 @@ public class Main {
 
                     break;
                 case 2:
+                    atleta.cancelarReserva(atleta, horariosInformacion, reservas);
                     break;
                 case 3:
                     System.out.println("Mostrando rutina...");
@@ -400,6 +401,7 @@ public class Main {
 
                     break;
                 case 2:
+                    estudianteRegular.cancelarReserva(estudianteRegular, horariosInformacion, reservas);
                     break;
                 case 3:
                     System.out.println("Mostrando rutina...");

@@ -104,6 +104,34 @@ public class Estudiante extends Persona {
 
         System.out.println("Reserva realizada para " + horariosInformacion.get(codigoNuevoHorario).hora());
     }
+
+    public void cancelarReserva(Estudiante estudiante, List<HorarioCuposVisitas> horariosInformacion, List<List<Integer>> reservas) {
+        // buscar reserva activa
+        Administrador administrador = new Administrador();
+        int indiceReserva = administrador.buscarReservaPorId(estudiante, reservas);
+
+        // si no se encuentra una reserva activa, regresar al menu
+        if (indiceReserva == -1) {
+            System.out.println("(!) No tienes una reserva activa");
+            return;
+        }
+
+        // obtener el codigo del horario de la reserva activa
+        int indiceHorario = reservas.get(indiceReserva).get(1);
+
+        // liberar un cupo de ArrayList horariosInformacion para que alguien mas pueda acceder
+        HorarioCuposVisitas horarioConNuevoAforo = new HorarioCuposVisitas(
+                    horariosInformacion.get(indiceHorario).hora(), 
+                    (horariosInformacion.get(indiceHorario).cupos() + 1), 
+                    horariosInformacion.get(indiceHorario).cantidadDeVisitas()
+                );
+        horariosInformacion.set(indiceHorario, horarioConNuevoAforo);
+        estudiante.establecerEstadoDeReservacion(false);
+
+        // eliminar la reserva de ArrayList reservas
+        reservas.remove(indiceReserva);
+
+        System.out.println("Reserva cancelada para " + horariosInformacion.get(indiceHorario).hora());
     }
 
     /*           Getters y setters           */
