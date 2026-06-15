@@ -11,10 +11,12 @@ public class Estudiante extends Persona {
     private String facultad;
     private String carrera;
     private String baseInicio;
+    private boolean matriculadoSemestreActual;
     private boolean autoseguroActivo;
+
+    // atributos relacionados a las visitas al gimnasio
     private LocalDate ultimaVisita;  
     private boolean visitanteConcurrente;
-    private boolean matriculadoSemestreActual;
     private boolean presentaReservacion;
     private boolean presentaPenalidades;
     private short cantidadPenalidades;
