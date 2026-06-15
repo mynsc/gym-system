@@ -340,11 +340,11 @@ public class Main {
                         }
                     } while (opcionHorario < 1 || opcion > horariosInformacion.size());
 
-                    atleta.reservarTurno(opcionHorario, atleta, horariosInformacion, reservas);
+                    atleta.reservarTurno(opcionHorario, horariosInformacion, reservas);
 
                     break;
                 case 2:
-                    atleta.cancelarReserva(atleta, horariosInformacion, reservas);
+                    atleta.cancelarReserva(horariosInformacion, reservas);
                     break;
                 case 3:
                     System.out.println("Mostrando rutina...");
@@ -397,11 +397,11 @@ public class Main {
                         }
                     } while (opcionHorario < 1 || opcion > horariosInformacion.size());
 
-                    estudianteRegular.reservarTurno(opcionHorario, estudianteRegular, horariosInformacion, reservas);
+                    estudianteRegular.reservarTurno(opcionHorario, horariosInformacion, reservas);
 
                     break;
                 case 2:
-                    estudianteRegular.cancelarReserva(estudianteRegular, horariosInformacion, reservas);
+                    estudianteRegular.cancelarReserva(horariosInformacion, reservas);
                     break;
                 case 3:
                     System.out.println("Mostrando rutina...");

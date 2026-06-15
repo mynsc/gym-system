@@ -55,7 +55,7 @@ public class Estudiante extends Persona {
     }
 
     /*               Metodos               */
-    public void reservarTurno(int opcionHorario, Estudiante estudiante, List<HorarioCuposVisitas> horariosInformacion, List<List<Integer>> reservas) {
+    public void reservarTurno(int opcionHorario, List<HorarioCuposVisitas> horariosInformacion, List<List<Integer>> reservas) {
         
         // verificar que haya disponibilidad en el turno
         int codigoNuevoHorario = opcionHorario - 1;
@@ -66,7 +66,7 @@ public class Estudiante extends Persona {
 
         // buscar reserva activa
         Administrador administrador = new Administrador();
-        int indiceReservaActiva = administrador.buscarReservaPorId(estudiante, reservas);
+        int indiceReservaActiva = administrador.buscarReservaPorId(this, reservas);
 
         // si se encuentra una reserva, liberar un cupo en ese horario y se elimina la reserva
         if (indiceReservaActiva != -1) {
@@ -89,7 +89,7 @@ public class Estudiante extends Persona {
 
         // agregar nuevaReserva [ID del Estudiante, indice de ArrayList horariosInformacion]
         List<Integer> nuevaReserva = new ArrayList<>();
-        nuevaReserva.add(estudiante.obtenerId());
+        nuevaReserva.add(this.obtenerId());
         nuevaReserva.add(codigoNuevoHorario);
         reservas.add(nuevaReserva);
 
@@ -100,15 +100,15 @@ public class Estudiante extends Persona {
                         horariosInformacion.get(codigoNuevoHorario).cantidadDeVisitas()
                     );
         horariosInformacion.set(codigoNuevoHorario, horarioConNuevoAforo);
-        estudiante.establecerEstadoDeReservacion(true);
+        this.establecerEstadoDeReservacion(true);
 
         System.out.println("Reserva realizada para " + horariosInformacion.get(codigoNuevoHorario).hora());
     }
 
-    public void cancelarReserva(Estudiante estudiante, List<HorarioCuposVisitas> horariosInformacion, List<List<Integer>> reservas) {
+    public void cancelarReserva(List<HorarioCuposVisitas> horariosInformacion, List<List<Integer>> reservas) {
         // buscar reserva activa
         Administrador administrador = new Administrador();
-        int indiceReserva = administrador.buscarReservaPorId(estudiante, reservas);
+        int indiceReserva = administrador.buscarReservaPorId(this, reservas);
 
         // si no se encuentra una reserva activa, regresar al menu
         if (indiceReserva == -1) {
@@ -126,7 +126,7 @@ public class Estudiante extends Persona {
                     horariosInformacion.get(indiceHorario).cantidadDeVisitas()
                 );
         horariosInformacion.set(indiceHorario, horarioConNuevoAforo);
-        estudiante.establecerEstadoDeReservacion(false);
+        this.establecerEstadoDeReservacion(false);
 
         // eliminar la reserva de ArrayList reservas
         reservas.remove(indiceReserva);
