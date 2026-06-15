@@ -23,10 +23,10 @@ public class Main {
     static List<List<Integer>> reservas = new ArrayList<>();     // lista de listas (ID - horario reservado)
 
     public static void main(String args[]) {
-        usuarios.add(new Estudiante(1, "Juan", "Tapia", "estudiante", "123456"));
-        usuarios.add(new Atleta(2, "Lucas", "Sanchez", "atleta", "123456", "Basquetbol"));
-        usuarios.add(new Discapacitado(3, "Maria", "Velez", "discapacitado", "123456", TipoDeDiscapacidad.AUDITIVA, NivelDeDiscapacidad.MODERADO));
-        usuarios.add(new Administrador(4, "Luciana", "Vega", "administrador", "123456"));
+        usuarios.add(new Estudiante(0, "Juan", "Tapia", "estudiante", "123456"));
+        usuarios.add(new Atleta(1, "Lucas", "Sanchez", "atleta", "123456", "Basquetbol"));
+        usuarios.add(new Discapacitado(2, "Maria", "Velez", "discapacitado", "123456", TipoDeDiscapacidad.AUDITIVA, NivelDeDiscapacidad.MODERADO));
+        usuarios.add(new Administrador(3, "Luciana", "Vega", "administrador", "123456"));
 
         // fijar horarios desde las 8 hasta las 20 horas
         for (int i = 8; i < 20; i++) {
@@ -177,7 +177,7 @@ public class Main {
                     break;
                 case 4:
                     System.out.println("=== USUARIOS PENALIZADOS ===");
-                    // listar usuarios que tienen una penalizacion o mas
+                    // listar usuarios que tienen una penalidad o mas
                     for (Persona persona : usuarios) {
                         if (usuario.presentaPenalidades()) {
                             persona.mostrarInformacionPersonal();
@@ -185,6 +185,70 @@ public class Main {
                     }
                     break;
                 case 5:
+                    // listar usuarios que tienen penalidad(es)
+                    // ID | Nombre | Cantidad de penalidades
+                    for (Persona persona : usuarios) {
+                        if (persona.presentaPenalidades()) {
+                            System.out.println(persona.obtenerId() + " | " + persona.obtenerNombre() + " | " + persona.obtenerCantidadPenalidades());
+                        }
+                    }
+
+                    // encontrar el usuario por ID
+                    int idIngresado = 0;
+                    Persona usuarioEncontrado = null;
+                    do {
+                        System.out.print("Ingresar el ID de un usuario >> ");
+                        idIngresado = scanner.nextInt();
+                        scanner.nextLine();
+
+                        // verificar que sea un ID valido
+                        try {
+                            usuarioEncontrado = usuarios.get(idIngresado);
+                        } catch (IndexOutOfBoundsException e) {
+                            System.err.println("(!) ID no encontrado, intente de nuevo");
+                            continue;
+                        }
+                        
+                        // verificar que el usuario tenga alguna penalidad
+                        if (!usuarioEncontrado.presentaPenalidades()) {
+                            System.out.println("(!) Este usuario no tiene penalidades, intente de nuevo");
+                        }
+                    } while (usuarioEncontrado == null || !usuarioEncontrado.presentaPenalidades());
+
+                    // solicitar la cantidad de penalidades que desea descontar
+                    // deben estar entre 0 y 3
+                    short descuentoPenalidades = 0;
+                    do {
+                        System.out.print("Cantidad de penalidades a descontar (0 - 3) >> ");
+                        descuentoPenalidades = scanner.nextShort();
+                        scanner.nextLine();
+
+                        if (descuentoPenalidades < 0 || descuentoPenalidades > 3) {
+                            System.out.println("(!) Cantidad invalida, intente de nuevo");
+                        }
+                    } while (descuentoPenalidades < 0 || descuentoPenalidades > 3);
+
+                    // no hacer nada porque no hay reduccion
+                    if (descuentoPenalidades == 0)  {
+                        System.out.println("No se redujo la penalidad");
+                        break;
+                    }
+
+                    // revocar el estado de las penalidades cuando se reducen a 0
+                    if (descuentoPenalidades == usuarioEncontrado.obtenerCantidadPenalidades()) {
+                        usuarioEncontrado.establecerEstadoDePenalidades(false);
+                    }
+
+                    // revocar el veto cuando las penalidades se reducen a 0, 1 o 2
+                    usuarioEncontrado.establecerVetoTemporal(false);
+
+                    // actualizar la cantidad de penalidades
+                    short nuevaCantidadDePenalidades = usuarioEncontrado.obtenerCantidadPenalidades();
+                    nuevaCantidadDePenalidades -= descuentoPenalidades;
+                    usuarioEncontrado.establecerCantidadPenalidades(nuevaCantidadDePenalidades);
+
+                    System.out.println("Reduccion de penalidad exitosa");
+
                     break;
                 case 6:
                     System.out.println("Cerrando sesion...");
