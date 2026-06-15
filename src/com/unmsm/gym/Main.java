@@ -36,7 +36,7 @@ public class Main {
             true, 
             false));
         usuarios.add(new Atleta(
-            0, 
+            1, 
             "Lucas", 
             "Sanchez", 
             "atleta", 
@@ -49,7 +49,7 @@ public class Main {
             false,
             "Basquetbol"));
         usuarios.add(new Discapacitado(
-            0, 
+            2, 
             "Maria", 
             "Velez", 
             "discapacitado", 
