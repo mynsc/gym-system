@@ -16,11 +16,10 @@ import src.com.unmsm.gym.models.Persona;
 import src.com.unmsm.gym.models.Regular;
 
 public class Main {
+    public record HorarioCuposVisitas(LocalTime horario, Integer cupos, Integer cantidadDeVisitas) {}
     static Scanner scanner = new Scanner(System.in);
-    static List<Persona> usuarios = new ArrayList<>();           // lista de usuarios
-    static List<LocalTime> horarios = new ArrayList<>();         // lista de horarios disponibles
-    static List<Integer> cupos = new ArrayList<>();              // lista de cupos por cada horario
-    static List<Integer> contadorDeVisitas = new ArrayList<>();  // lista de total de veces que se ha visitado cada horario
+    static List<Persona> usuarios = new ArrayList<>();                         // lista de usuarios
+    static List<HorarioCuposVisitas> horariosInformacion = new ArrayList<>();  // lista de horario, aforo y veces que se ha visitado cada horario
     static List<List<Integer>> reservas = new ArrayList<>();     // lista de listas (ID - horario reservado)
 
     public static void main(String args[]) {
@@ -64,14 +63,15 @@ public class Main {
             TipoDeDiscapacidad.AUDITIVA, 
             NivelDeDiscapacidad.MODERADO));
         usuarios.add(new Administrador(3, "Luciana", "Vega", "administrador", "123456"));
-
+        
         // fijar horarios desde las 8 hasta las 20 horas
         for (int i = 8; i < 20; i++) {
             // hora de almuerzo desde las 12 hasta las 14 horas
             if (i != 12 && i != 13) {
-                horarios.add(LocalTime.of(i, 0)); // inicializar hora del principio de turno
-                cupos.add(25);                         // inicializar aforo por turno
-                contadorDeVisitas.add(0);              // inicializar veces que se ha visitado un turno
+                // tambien se inicializa el aforo y las veces que se ha visitado un turno
+                HorarioCuposVisitas nuevoHorarioInformacion = new HorarioCuposVisitas(LocalTime.of(i, 0), 25, 0);
+
+                horariosInformacion.add(nuevoHorarioInformacion); 
             }
         }
 
@@ -174,11 +174,11 @@ public class Main {
                     System.out.println("=== HORARIOS MAS CONCURRIDOS ===");
     
                     // ordenar horarios establecidos del mas concurrido al menos concurrido
-                    IntStream.range(0, horarios.size())
+                    IntStream.range(0, horariosInformacion.size())
                         .boxed()
-                        .sorted((a, b) -> Integer.compare(contadorDeVisitas.get(b), contadorDeVisitas.get(a)))
+                        .sorted((a, b) -> Integer.compare(horariosInformacion.get(b).cantidadDeVisitas(), horariosInformacion.get(a).cantidadDeVisitas()))
                         .forEach(i -> 
-                            System.out.println(horarios.get(i) + "-" + horarios.get(i).plusHours(1) + " | " + contadorDeVisitas.get(i) + " visitas")
+                            System.out.println(horariosInformacion.get(i).horario() + "-" + horariosInformacion.get(i).horario().plusHours(1) + " | " + horariosInformacion.get(i).cantidadDeVisitas() + " visitas")
                         );
                     break;
                 case 3:
@@ -191,13 +191,13 @@ public class Main {
                         opcionHorario = scanner.nextInt();
                         scanner.nextLine();
                         
-                        if (opcionHorario < 1 || opcion > horarios.size()) {
+                        if (opcionHorario < 1 || opcion > horariosInformacion.size()) {
                             System.out.println("(!) Opcion invalida, intente de nuevo");
                         }
-                    } while (opcionHorario < 1 || opcion > horarios.size());
+                    } while (opcionHorario < 1 || opcion > horariosInformacion.size());
 
-                    int indiceCupos = opcionHorario - 1;
-                    int nuevoAforo = 0;
+                    int indiceHorario = opcionHorario - 1;
+                    Integer nuevoAforo = 0;
                     do {
                         System.out.print("Ingresar nuevo aforo >> ");
                         nuevoAforo = scanner.nextInt();
@@ -209,7 +209,13 @@ public class Main {
                     } while (nuevoAforo < 1);
 
                     // cambiar aforo en el horario seleccionado
-                    cupos.set(indiceCupos, nuevoAforo);
+                    HorarioCuposVisitas horarioConNuevoAforo = new HorarioCuposVisitas(
+                        horariosInformacion.get(indiceHorario).horario(), 
+                        nuevoAforo, 
+                        horariosInformacion.get(indiceHorario).cantidadDeVisitas()
+                    );
+                    horariosInformacion.set(indiceHorario, horarioConNuevoAforo);
+
                     System.out.println("Aforo actualizado correctamente");
                     break;
                 case 4:
@@ -383,8 +389,10 @@ public class Main {
 
     private static void mostrarHorarios() {
         System.out.println("=== HORARIOS DISPONIBLES ===");
-        for (int i = 0; i < horarios.size(); i++) {
-            System.out.println((i + 1) + ". " + horarios.get(i) + "-" + horarios.get(i).plusHours(1)+ " | Aforo: " + cupos.get(i));
+        for (int i = 0; i < horariosInformacion.size(); i++) {
+            System.out.println((i + 1) + ". " + horariosInformacion.get(i).horario() + "-" + horariosInformacion.get(i).horario().plusHours(1)+ " | Aforo: " + horariosInformacion.get(i).cupos());
+        }
+    }
         }
     }
 
