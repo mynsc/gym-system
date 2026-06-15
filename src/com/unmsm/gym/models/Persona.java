@@ -8,7 +8,9 @@ public class Persona {
     private String nombreDeUsuario;
     private String contrasenia;    
 
-    /*              Constructor              */
+    /*              Constructores              */
+    public Persona() {}
+
     public Persona(
         int id, 
         String nombre, 
@@ -23,6 +25,7 @@ public class Persona {
         this.contrasenia = contrasenia;
     }
 
+    /*               Metodos               */
     public void mostrarInformacionPersonal() {
         System.out.println("Nombre: " + nombre);
         System.out.println("Apellido: " + apellido);
