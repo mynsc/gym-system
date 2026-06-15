@@ -425,8 +425,8 @@ public class Main {
             System.out.println((i + 1) + ". " + horariosInformacion.get(i).hora() + "-" + horariosInformacion.get(i).hora().plusHours(1)+ " | Aforo: " + horariosInformacion.get(i).cupos());
         }
     }
-        }
-    }
+        
+    
 
 
     private static String leerNoVacio(String textoIngresado) {

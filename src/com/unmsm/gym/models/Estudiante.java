@@ -104,7 +104,7 @@ public class Estudiante extends Persona {
 
         System.out.println("Reserva realizada para " + horariosInformacion.get(codigoNuevoHorario).hora());
     }
-    }
+    
 
     /*           Getters y setters           */
     public String obtenerFacultad() { return facultad; }
