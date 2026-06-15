@@ -442,4 +442,15 @@ public class Main {
             System.out.println("(!) El valor no puede estar vacio");
         }
     }
+
+    public static void limpiarPantalla() {
+        try {
+            new ProcessBuilder("cmd", "/c", "cls")
+                    .inheritIO()
+                    .start()
+                    .waitFor();
+        } catch (Exception e) {
+            System.out.println("No se pudo limpiar la pantalla.");
+        }
+    }
 }
