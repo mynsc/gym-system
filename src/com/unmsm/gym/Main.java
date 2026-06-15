@@ -3,6 +3,7 @@ package src.com.unmsm.gym;
 import java.sql.Connection;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.IntStream;
@@ -24,10 +25,9 @@ public class Main {
     }
 
     static Scanner scanner = new Scanner(System.in);
-    static List<Persona> usuarios = new ArrayList<>(); // lista de usuarios
-    static List<HorarioCuposVisitas> horariosInformacion = new ArrayList<>(); // lista de horario, aforo y veces que se
-                                                                              // ha visitado cada horario
-    static List<List<Integer>> reservas = new ArrayList<>(); // lista de listas (ID - horario reservado)
+    static List<Persona> usuarios = new ArrayList<>();                         // lista de usuarios
+    static List<HorarioCuposVisitas> horariosInformacion = new ArrayList<>();  // lista de horario, aforo y veces que se ha visitado cada horario
+    static List<List<Integer>> reservas = new LinkedList<>();     // lista de listas (ID - horario reservado)
 
     public static void main(String args[]) {
         try {
@@ -50,32 +50,32 @@ public class Main {
                 true,
                 false));
         usuarios.add(new Atleta(
-                0,
-                "Lucas",
-                "Sanchez",
-                "atleta",
-                "123456",
-                "FISI",
-                "Ingenieria de Software",
-                "B26",
-                true,
-                true,
-                false,
-                "Basquetbol"));
+            1, 
+            "Lucas", 
+            "Sanchez", 
+            "atleta", 
+            "123456", 
+            "FISI", 
+            "Ingenieria de Software", 
+            "B26",
+            true, 
+            true, 
+            false,
+            "Basquetbol"));
         usuarios.add(new Discapacitado(
-                0,
-                "Maria",
-                "Velez",
-                "discapacitado",
-                "123456",
-                "FII",
-                "Ingenieria Industrial",
-                "B20",
-                true,
-                true,
-                true,
-                TipoDeDiscapacidad.AUDITIVA,
-                NivelDeDiscapacidad.MODERADO));
+            2, 
+            "Maria", 
+            "Velez", 
+            "discapacitado", 
+            "123456", 
+            "FII", 
+            "Ingenieria Industrial", 
+            "B20",
+            true, 
+            true, 
+            true, 
+            TipoDeDiscapacidad.AUDITIVA, 
+            NivelDeDiscapacidad.MODERADO));
         usuarios.add(new Administrador(3, "Luciana", "Vega", "administrador", "123456"));
 
         // fijar horarios desde las 8 hasta las 20 horas
@@ -176,7 +176,7 @@ public class Main {
     }
 
     private static void menuDeAdministrador(Administrador usuario) {
-        int opcion;
+        int opcion = 0;
         do {
             System.out.println("=== MENU ADMINISTRADOR ===");
             System.out.println("1. Ver reporte de estudiantes activos");
@@ -343,7 +343,7 @@ public class Main {
     }
 
     private static void menuDeAtleta(Atleta atleta) {
-        int opcion;
+        int opcion = 0;
         do {
             System.out.println("=== MENU ESTUDIANTE ===");
             System.out.println("Bienvenido, " + atleta.obtenerNombre() + ". Tienes " + atleta.obtenerNumeroDePuntos()
@@ -374,13 +374,14 @@ public class Main {
                         }
                     } while (opcionHorario < 1 || opcion > horariosInformacion.size());
 
-                    atleta.reservarTurno(opcionHorario, atleta, horariosInformacion, reservas);
+                    atleta.reservarTurno(opcionHorario, horariosInformacion, reservas);
 
                     break;
                 case 2:
+                    atleta.cancelarReserva(horariosInformacion, reservas);
                     break;
                 case 3:
-                    System.out.println("Mostrando rutina...");
+                    atleta.menuRutinas();
                     break;
                 case 4:
                     break;
@@ -401,7 +402,7 @@ public class Main {
     }
 
     private static void menuDeEstudianteRegular(Regular estudianteRegular) {
-        int opcion;
+        int opcion = 0;
         do {
             System.out.println("=== MENU ESTUDIANTE ===");
             System.out.println("Bienvenido, " + estudianteRegular.obtenerNombre() + ". Tienes "
@@ -432,13 +433,14 @@ public class Main {
                         }
                     } while (opcionHorario < 1 || opcion > horariosInformacion.size());
 
-                    estudianteRegular.reservarTurno(opcionHorario, estudianteRegular, horariosInformacion, reservas);
+                    estudianteRegular.reservarTurno(opcionHorario, horariosInformacion, reservas);
 
                     break;
                 case 2:
+                    estudianteRegular.cancelarReserva(horariosInformacion, reservas);
                     break;
                 case 3:
-                    System.out.println("Mostrando rutina...");
+                    estudianteRegular.menuRutinas();
                     break;
                 case 4:
                     break;
