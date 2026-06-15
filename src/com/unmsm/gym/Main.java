@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.IntStream;
 
-import src.com.unmsm.gym.db.database;
+import src.com.unmsm.gym.db.db_usuarios;
 import src.com.unmsm.gym.config.conexion;
 
 import src.com.unmsm.gym.enums.NivelDeDiscapacidad;
@@ -111,10 +111,8 @@ public class Main {
                         String nombreDeUsuario = leerNoVacio("Usuario >> ");
                         String contrasenia = leerNoVacio("Contrasena >> ");
 
-                        database db = new database();
+                        db_usuarios usuarios_table = new db_usuarios();
                         // insertar el nuevo usuario en la base de datos1
-
-                        db.insertar(nombreDeUsuario, contrasenia);
 
                         // busca coincidencias entre el nombre de usuario y la contraseña en el
                         // ArrayList
@@ -122,6 +120,18 @@ public class Main {
                             if (usuarioEncontrado.obtenerNombreDeUsuario().equals(nombreDeUsuario)
                                     && usuarioEncontrado.obtenerContrasenia().equals(contrasenia)) {
                                 usuario = usuarioEncontrado;
+                                
+                                usuarios_table.create(
+                                        usuario.obtenerNombre(),
+                                        usuario.obtenerApellido(),
+                                        usuario.obtenerNombreDeUsuario(),
+                                        usuario.obtenerContrasenia(),
+                                        "FISI",
+                                        "Ingenieria de Software",
+                                        "B25",
+                                        true,
+                                        true);
+
                             }
                         }
 
