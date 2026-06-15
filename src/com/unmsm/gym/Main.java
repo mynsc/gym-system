@@ -135,15 +135,15 @@ public class Main {
                 case 2:
                     System.out.println("=== REGISTRO DE NUEVO ESTUDIANTE ===");
                     System.out.println("Selecciona tu perfil >>");
-                    System.out.println("1. Estudiante Regular");
-                    System.out.println("2. Atleta Universitario");
-                    System.out.println("3. Estudiante con Discapacidad");
+                    System.out.println("1. Estudiante regular");
+                    System.out.println("2. Atleta universitario");
+                    System.out.println("3. Estudiante con discapacidad");
                     System.out.print("Ingresar opcion >> ");
                     int tipoPerfil = scanner.nextInt();
                     scanner.nextLine();
 
                     if (tipoPerfil < 1 || tipoPerfil > 3) {
-                        System.out.println("(!) Opcion invalida. Cancelando registro...");
+                        System.out.println("(!) Opcion invalida");
                         break;
                     }
 
@@ -153,11 +153,11 @@ public class Main {
                     
                     String nombre = leerNoVacio("Nombre >> ");
                     String apellido = leerNoVacio("Apellido >> ");
-                    String nombreDeUsuario = leerNoVacio("Nombre de usuario (Login) >> ");
+                    String nombreDeUsuario = leerNoVacio("Nombre de usuario >> ");
                     String contrasenia = leerNoVacio("Contrasena >> ");
-                    String facultad = leerNoVacio("Facultad (ej. FISI) >> ");
+                    String facultad = leerNoVacio("Facultad >> ");
                     String carrera = leerNoVacio("Carrera >> ");
-                    String baseInicio = leerNoVacio("Base de ingreso (ej. B26) >> ");
+                    String baseInicio = leerNoVacio("Base de ingreso >> ");
 
                     // atributos booleanas
                     System.out.print("Tienes autoseguro activo (1 = Si, 0 = No) >> ");
@@ -179,7 +179,7 @@ public class Main {
                                 facultad, carrera, baseInicio, seguroActivo, matriculado, lesionado
                             );
                             usuarios.add(nuevoRegular);
-                            System.out.println("(+) ¡Registro exitoso! Bienvenido, " + nombre);
+                            System.out.println("(+) Registro exitoso, bienvenido, " + nombre);
                             break;
 
                         case 2:
@@ -191,7 +191,7 @@ public class Main {
                                 facultad, carrera, baseInicio, seguroActivo, matriculado, lesionado, deporte
                             );
                             usuarios.add(nuevoAtleta);
-                            System.out.println("(+) ¡Registro de atleta exitoso! Bienvenido, " + nombre);
+                            System.out.println("(+) Registro de atleta exitoso, bienvenido, " + nombre);
                             break;
 
                         case 3:
@@ -217,7 +217,7 @@ public class Main {
                                 
                             } catch (IllegalArgumentException e) {
                                 // si escriben mal el Enum, el sistema no colapsa, solo cancela el registro
-                                System.out.println("(!) Error: El tipo o nivel ingresado no coincide con los registros");
+                                System.out.println("(!) Error, el tipo o nivel ingresado no coincide con los registros");
                             }
                             break;
                     }
