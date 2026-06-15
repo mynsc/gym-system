@@ -1,28 +1,22 @@
 package src.com.unmsm.gym.models;
 
-import src.com.unmsm.gym.enums.Deportes;
-
-public class Atleta extends Usuario {
-    private Deportes deporte;
-
+public class Atleta extends Persona {
+    private String deporte;
 
     public Atleta(
+        int id, 
         String nombre, 
         String apellido, 
-        String codigo_estudiante, 
-        String facultad, 
-        String carrera, 
-        String baseInicio,
-        Deportes deporte) {
+        String nombreDeUsuario, 
+        String contrasenia, 
+        String deporte) {
 
-        super(nombre, apellido, codigo_estudiante, facultad, carrera, baseInicio);
+        super(id, nombre, apellido, nombreDeUsuario, contrasenia);
         this.deporte = deporte;
     }
 
     public void mostrarInformacionPersonal() {
         super.mostrarInformacionPersonal();
-        System.out.println("Deporte:              " + deporte);
+        System.out.println("Deporte: " + deporte);
     }
-
-    
 }
