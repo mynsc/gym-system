@@ -68,14 +68,11 @@ public class Main {
         // fijar horarios desde las 8 hasta las 20 horas
         for (int i = 8; i < 20; i++) {
             // hora de almuerzo desde las 12 hasta las 14 horas
-            if (i != 12 || i != 13) {
-                horarios.add(LocalTime.of(i, 0));
+            if (i != 12 && i != 13) {
+                horarios.add(LocalTime.of(i, 0)); // inicializar hora del principio de turno
+                cupos.add(25);                         // inicializar aforo por turno
+                contadorDeVisitas.add(0);              // inicializar veces que se ha visitado un turno
             }
-        }
-
-        // fijar aforo en 25 
-        for (int i = 1; i <= horarios.size(); i++) {
-            cupos.add(25);
         }
 
         int opcion = 0;
@@ -180,8 +177,8 @@ public class Main {
                     IntStream.range(0, horarios.size())
                         .boxed()
                         .sorted((a, b) -> Integer.compare(contadorDeVisitas.get(b), contadorDeVisitas.get(a)))
-                        .forEach(indice -> 
-                            System.out.println(horarios.get(indice) + " | " + contadorDeVisitas.get(indice) + " visitas")
+                        .forEach(i -> 
+                            System.out.println(horarios.get(i) + "-" + horarios.get(i).plusHours(1) + " | " + contadorDeVisitas.get(i) + " visitas")
                         );
                     break;
                 case 3:
