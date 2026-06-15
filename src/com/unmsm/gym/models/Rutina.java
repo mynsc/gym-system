@@ -51,7 +51,7 @@ public class Rutina {
                 String sets = ejercicio.get(1);
                 String repeticiones = ejercicio.get(2);
                 
-                listaFormateada.append(String.format("   %d. %s  -->  %s series x %s reps\n", 
+                listaFormateada.append(String.format("   %d. %s  -->  %s series x %s repeticiones\n", 
                         (i + 1), tipo, sets, repeticiones));
             }
         }

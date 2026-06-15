@@ -198,6 +198,7 @@ public class Estudiante extends Persona {
         objetivo = scanner.nextLine();
         System.out.print("Cantidad de ejercicios de la rutina >> ");
         cantidadDeEjercicios = scanner.nextInt();
+        scanner.nextLine();
 
         // crear ejercicio(s) para una rutina
         for (int i = 0; i < cantidadDeEjercicios; i++) {
@@ -311,7 +312,7 @@ public class Estudiante extends Persona {
             horariosInformacion.get(indiceHorario).cantidadDeVisitas() + 1
         );
         horariosInformacion.set(indiceHorario, horarioActualizado);
-        
+
         // elimiar la reserva de LinkedList reservas y cambiar su estado de reservación a false
         reservas.remove(indiceReserva);
         this.establecerEstadoDeReservacion(false);
