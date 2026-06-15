@@ -4,7 +4,9 @@ import java.util.List;
 
 public class Administrador extends Persona {
     /*              Constructores              */
-    public Administrador() {}
+    public Administrador() {
+        super(0, "Administrador", "Principal", "admin", "admin123"); 
+    }
     
     public Administrador(int id, String nombre, String apellido, String nombreDeUsuario, String contrasenia) {
         super(id, nombre, apellido, nombreDeUsuario, contrasenia);
