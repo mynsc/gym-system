@@ -288,6 +288,30 @@ public class Estudiante extends Persona {
         }
     }
 
+    public void registrarIngreso() {
+        // buscar reserva activa
+        int indiceReserva = new Administardor().buscarReservaPorId(this.obtenerId());
+
+        // si no se encuentra una reserva activa, regresar al menu
+        if (indiceReserva == -1) {
+            System.out.println("(!) No tienes una reserva activa para registrar visita");
+            return;
+        }
+
+        // obtener el codigo del horario de la reserva activa
+        int indiceHorario = reservas.get(indiceReserva).get(1);
+
+        // establecer ultima visita en hot y aumentar el contador de visitas en 1
+        this.establecerUltimaVisita(LocalDate.now());
+        contadorDeVisitas.set(indiceHorario, contadorDeVisitas.get(indiceHorario) + 1);
+
+        // elimiar la reserva de LinkedList reservas y cambiar su estado de reservación a false
+        reservas.remove(indiceReserva);
+        this.establecerEstadoDeReservacion(false);
+
+        System.out.println("Visita registrada en el horario " + horarios.get(indiceHorario));
+    }
+
     /*           Getters y setters           */
     public String obtenerFacultad() { return facultad; }
     public void establecerFacultad(String facultad) { this.facultad = facultad; }
