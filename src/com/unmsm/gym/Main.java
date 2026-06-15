@@ -439,7 +439,7 @@ public class Main {
                     atleta.menuRutinas();
                     break;
                 case 4:
-                    atleta.registrarIngreso();
+                    atleta.registrarIngreso(horariosInformacion, reservas);
                     break;
                 case 5:
                     System.out.println("Mostrando logros desbloqueados...");
@@ -497,7 +497,7 @@ public class Main {
                     estudianteRegular.menuRutinas();
                     break;
                 case 4:
-                    estudianteRegular.registrarIngreso();
+                    estudianteRegular.registrarIngreso(horariosInformacion, reservas);
                     break;
                 case 5:
                     System.out.println("Mostrando logros desbloqueados...");

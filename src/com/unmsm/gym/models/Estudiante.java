@@ -290,7 +290,7 @@ public class Estudiante extends Persona {
         }
     }
 
-    public void registrarIngreso() {
+    public void registrarIngreso(List<HorarioCuposVisitas> horariosInformacion, List<List<Integer>> reservas) {
         // buscar reserva activa
         int indiceReserva = new Administrador().buscarReservaPorId(this, reservas);
 
@@ -305,13 +305,18 @@ public class Estudiante extends Persona {
 
         // establecer ultima visita en hoy y aumentar el contador de visitas en 1
         this.establecerUltimaVisita(LocalDate.now());
-        contadorDeVisitas.set(indiceHorario, contadorDeVisitas.get(indiceHorario) + 1);
-
+        HorarioCuposVisitas horarioActualizado = new HorarioCuposVisitas(
+            horariosInformacion.get(indiceHorario).hora(), 
+            horariosInformacion.get(indiceHorario).cupos(), 
+            horariosInformacion.get(indiceHorario).cantidadDeVisitas() + 1
+        );
+        horariosInformacion.set(indiceHorario, horarioActualizado);
+        
         // elimiar la reserva de LinkedList reservas y cambiar su estado de reservación a false
         reservas.remove(indiceReserva);
         this.establecerEstadoDeReservacion(false);
 
-        System.out.println("Visita registrada en el horario " + horarios.get(indiceHorario));
+        System.out.println("Visita registrada en el horario " + horariosInformacion.get(indiceHorario));
     }
 
     /*           Getters y setters           */
