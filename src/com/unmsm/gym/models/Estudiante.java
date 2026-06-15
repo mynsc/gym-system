@@ -86,7 +86,7 @@ public class Estudiante extends Persona {
                     );
             horariosInformacion.set(codigoHorarioActivo, horarioConNuevoAforo);
 
-            // eliminar la reserva de ArrayList reservas
+            // eliminar la reserva de LinkedList reservas
             reservas.remove(indiceReservaActiva);
         }
 
@@ -130,7 +130,7 @@ public class Estudiante extends Persona {
         horariosInformacion.set(indiceHorario, horarioConNuevoAforo);
         this.establecerEstadoDeReservacion(false);
 
-        // eliminar la reserva de ArrayList reservas
+        // eliminar la reserva de LinkedList reservas
         reservas.remove(indiceReserva);
 
         System.out.println("Reserva cancelada para " + horariosInformacion.get(indiceHorario).hora());
