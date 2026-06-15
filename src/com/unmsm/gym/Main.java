@@ -13,32 +13,66 @@ import src.com.unmsm.gym.models.Atleta;
 import src.com.unmsm.gym.models.Discapacitado;
 import src.com.unmsm.gym.models.Estudiante;
 import src.com.unmsm.gym.models.Persona;
+import src.com.unmsm.gym.models.Regular;
 
 public class Main {
+    public record HorarioCuposVisitas(LocalTime hora, Integer cupos, Integer cantidadDeVisitas) {}
     static Scanner scanner = new Scanner(System.in);
-    static List<Persona> usuarios = new ArrayList<>();           // lista de usuarios
-    static List<LocalTime> horarios = new ArrayList<>();         // lista de horarios disponibles
-    static List<Integer> cupos = new ArrayList<>();              // lista de cupos por cada horario
-    static List<Integer> contadorDeVisitas = new ArrayList<>();  // lista de total de veces que se ha visitado cada horario
+    static List<Persona> usuarios = new ArrayList<>();                         // lista de usuarios
+    static List<HorarioCuposVisitas> horariosInformacion = new ArrayList<>();  // lista de horario, aforo y veces que se ha visitado cada horario
     static List<List<Integer>> reservas = new ArrayList<>();     // lista de listas (ID - horario reservado)
 
     public static void main(String args[]) {
-        usuarios.add(new Estudiante(0, "Juan", "Tapia", "estudiante", "123456"));
-        usuarios.add(new Atleta(1, "Lucas", "Sanchez", "atleta", "123456", "Basquetbol"));
-        usuarios.add(new Discapacitado(2, "Maria", "Velez", "discapacitado", "123456", TipoDeDiscapacidad.AUDITIVA, NivelDeDiscapacidad.MODERADO));
+        usuarios.add(new Regular(
+            0, 
+            "Juan", 
+            "Tapia", 
+            "estudiante", 
+            "123456", 
+            "FISI", 
+            "Ingenieria de Software", 
+            "B25",
+            true, 
+            true, 
+            false));
+        usuarios.add(new Atleta(
+            0, 
+            "Lucas", 
+            "Sanchez", 
+            "atleta", 
+            "123456", 
+            "FISI", 
+            "Ingenieria de Software", 
+            "B26",
+            true, 
+            true, 
+            false,
+            "Basquetbol"));
+        usuarios.add(new Discapacitado(
+            0, 
+            "Maria", 
+            "Velez", 
+            "discapacitado", 
+            "123456", 
+            "FII", 
+            "Ingenieria Industrial", 
+            "B20",
+            true, 
+            true, 
+            true, 
+            TipoDeDiscapacidad.AUDITIVA, 
+            NivelDeDiscapacidad.MODERADO));
         usuarios.add(new Administrador(3, "Luciana", "Vega", "administrador", "123456"));
-
+        
         // fijar horarios desde las 8 hasta las 20 horas
         for (int i = 8; i < 20; i++) {
             // hora de almuerzo desde las 12 hasta las 14 horas
-            if (i != 12 || i != 13) {
-                horarios.add(LocalTime.of(i, 0));
-            }
-        }
+            if (i != 12 && i != 13) {
+                // tambien se inicializa el aforo y las veces que se ha visitado un turno
+                HorarioCuposVisitas nuevoHorarioInformacion = new HorarioCuposVisitas(LocalTime.of(i, 0), 25, 0);
 
-        // fijar aforo en 25 
-        for (int i = 1; i <= horarios.size(); i++) {
-            cupos.add(25);
+                horariosInformacion.add(nuevoHorarioInformacion); 
+            }
         }
 
         int opcion = 0;
@@ -94,7 +128,7 @@ public class Main {
                         break;
                     }
 
-                    menuDeEstudiante((Estudiante) usuario);
+                    menuDeEstudianteRegular((Regular) usuario);
                     break;
                 }
                 case 2:
@@ -113,7 +147,7 @@ public class Main {
         int opcion;
         do {
             System.out.println("=== MENU ADMINISTRADOR ===");
-            System.out.println("1. Ver reporte de usuarios activos");
+            System.out.println("1. Ver reporte de estudiantes activos");
             System.out.println("2. Ver reporte de horarios mas concurridos");
             System.out.println("3. Modificar aforo de un bloque de horario");
             System.out.println("4. Ver lista de alumnos penalizados");
@@ -125,23 +159,26 @@ public class Main {
 
             switch (opcion) {
                 case 1:
-                    System.out.println("=== USUARIOS ACTIVOS ===");
-                    // listar usuarios que no hayan llegado al limite de penalidades
-                    for (Persona persona : usuarios) {
-                        if (!usuario.estaVetadoTemporalmente()) {
-                            persona.mostrarInformacionPersonal();
-                        }
-                    }
+                    System.out.println("=== ESTUDIANTES ACTIVOS ===");
+                    // listar estudiantes que no hayan llegado al limite de penalidades
+                    usuarios.stream()
+                        .filter(p -> p instanceof Estudiante)
+                        .map(p -> (Estudiante) p)
+                        .forEach( estudiante -> {
+                            if (!estudiante.estaVetadoTemporalmente()) {
+                                estudiante.mostrarInformacionPersonal();
+                            }
+                        });
                     break;
                 case 2:
                     System.out.println("=== HORARIOS MAS CONCURRIDOS ===");
     
                     // ordenar horarios establecidos del mas concurrido al menos concurrido
-                    IntStream.range(0, horarios.size())
+                    IntStream.range(0, horariosInformacion.size())
                         .boxed()
-                        .sorted((a, b) -> Integer.compare(contadorDeVisitas.get(b), contadorDeVisitas.get(a)))
-                        .forEach(indice -> 
-                            System.out.println(horarios.get(indice) + " | " + contadorDeVisitas.get(indice) + " visitas")
+                        .sorted((a, b) -> Integer.compare(horariosInformacion.get(b).cantidadDeVisitas(), horariosInformacion.get(a).cantidadDeVisitas()))
+                        .forEach(i -> 
+                            System.out.println(horariosInformacion.get(i).hora() + "-" + horariosInformacion.get(i).hora().plusHours(1) + " | " + horariosInformacion.get(i).cantidadDeVisitas() + " visitas")
                         );
                     break;
                 case 3:
@@ -154,13 +191,13 @@ public class Main {
                         opcionHorario = scanner.nextInt();
                         scanner.nextLine();
                         
-                        if (opcionHorario < 1 || opcion > horarios.size()) {
+                        if (opcionHorario < 1 || opcion > horariosInformacion.size()) {
                             System.out.println("(!) Opcion invalida, intente de nuevo");
                         }
-                    } while (opcionHorario < 1 || opcion > horarios.size());
+                    } while (opcionHorario < 1 || opcion > horariosInformacion.size());
 
-                    int indiceCupos = opcionHorario - 1;
-                    int nuevoAforo = 0;
+                    int indiceHorario = opcionHorario - 1;
+                    Integer nuevoAforo = 0;
                     do {
                         System.out.print("Ingresar nuevo aforo >> ");
                         nuevoAforo = scanner.nextInt();
@@ -172,30 +209,42 @@ public class Main {
                     } while (nuevoAforo < 1);
 
                     // cambiar aforo en el horario seleccionado
-                    cupos.set(indiceCupos, nuevoAforo);
+                    HorarioCuposVisitas horarioConNuevoAforo = new HorarioCuposVisitas(
+                        horariosInformacion.get(indiceHorario).hora(), 
+                        nuevoAforo, 
+                        horariosInformacion.get(indiceHorario).cantidadDeVisitas()
+                    );
+                    horariosInformacion.set(indiceHorario, horarioConNuevoAforo);
+
                     System.out.println("Aforo actualizado correctamente");
                     break;
                 case 4:
-                    System.out.println("=== USUARIOS PENALIZADOS ===");
-                    // listar usuarios que tienen una penalidad o mas
-                    for (Persona persona : usuarios) {
-                        if (usuario.presentaPenalidades()) {
-                            persona.mostrarInformacionPersonal();
-                        }
-                    }
+                    System.out.println("=== ESTUDIANTES PENALIZADOS ===");
+                    // listar estudiantes que tengan una penalidad o mas
+                    usuarios.stream()
+                        .filter(p -> p instanceof Estudiante)
+                        .map(p -> (Estudiante) p)
+                        .forEach( estudiante -> {
+                            if (estudiante.presentaPenalidades()) {
+                                estudiante.mostrarInformacionPersonal();
+                            }
+                        });
                     break;
                 case 5:
-                    // listar usuarios que tienen penalidad(es)
+                    // listar estudiantes que tengan una penalidad o mas
                     // ID | Nombre | Cantidad de penalidades
-                    for (Persona persona : usuarios) {
-                        if (persona.presentaPenalidades()) {
-                            System.out.println(persona.obtenerId() + " | " + persona.obtenerNombre() + " | " + persona.obtenerCantidadPenalidades());
-                        }
-                    }
+                    usuarios.stream()
+                        .filter(p -> p instanceof Estudiante)
+                        .map(p -> (Estudiante) p)
+                        .forEach( estudiante -> {
+                            if (estudiante.presentaPenalidades()) {
+                                System.out.println(estudiante.obtenerId() + " | " + estudiante.obtenerNombre() + " | " + estudiante.obtenerCantidadPenalidades());
+                            }
+                        });
 
-                    // encontrar el usuario por ID
+                    // encontrar el estudiante por ID
                     int idIngresado = 0;
-                    Persona usuarioEncontrado = null;
+                    Estudiante estudianteEncontrado = null;
                     do {
                         System.out.print("Ingresar el ID de un usuario >> ");
                         idIngresado = scanner.nextInt();
@@ -203,17 +252,17 @@ public class Main {
 
                         // verificar que sea un ID valido
                         try {
-                            usuarioEncontrado = usuarios.get(idIngresado);
+                            estudianteEncontrado = (Estudiante) usuarios.get(idIngresado);
                         } catch (IndexOutOfBoundsException e) {
                             System.err.println("(!) ID no encontrado, intente de nuevo");
                             continue;
                         }
                         
-                        // verificar que el usuario tenga alguna penalidad
-                        if (!usuarioEncontrado.presentaPenalidades()) {
+                        // verificar que el estudiante tenga alguna penalidad
+                        if (!estudianteEncontrado.presentaPenalidades()) {
                             System.out.println("(!) Este usuario no tiene penalidades, intente de nuevo");
                         }
-                    } while (usuarioEncontrado == null || !usuarioEncontrado.presentaPenalidades());
+                    } while (estudianteEncontrado == null || !estudianteEncontrado.presentaPenalidades());
 
                     // solicitar la cantidad de penalidades que desea descontar
                     // deben estar entre 0 y 3
@@ -235,17 +284,17 @@ public class Main {
                     }
 
                     // revocar el estado de las penalidades cuando se reducen a 0
-                    if (descuentoPenalidades == usuarioEncontrado.obtenerCantidadPenalidades()) {
-                        usuarioEncontrado.establecerEstadoDePenalidades(false);
+                    if (descuentoPenalidades == estudianteEncontrado.obtenerCantidadPenalidades()) {
+                        estudianteEncontrado.establecerEstadoDePenalidades(false);
                     }
 
                     // revocar el veto cuando las penalidades se reducen a 0, 1 o 2
-                    usuarioEncontrado.establecerVetoTemporal(false);
+                    estudianteEncontrado.establecerVetoTemporal(false);
 
                     // actualizar la cantidad de penalidades
-                    short nuevaCantidadDePenalidades = usuarioEncontrado.obtenerCantidadPenalidades();
+                    short nuevaCantidadDePenalidades = estudianteEncontrado.obtenerCantidadPenalidades();
                     nuevaCantidadDePenalidades -= descuentoPenalidades;
-                    usuarioEncontrado.establecerCantidadPenalidades(nuevaCantidadDePenalidades);
+                    estudianteEncontrado.establecerCantidadPenalidades(nuevaCantidadDePenalidades);
 
                     System.out.println("Reduccion de penalidad exitosa");
 
@@ -260,11 +309,11 @@ public class Main {
         } while (opcion != 6);
     }
 
-    private static void menuDeAtleta(Atleta usuario) {
+    private static void menuDeAtleta(Atleta atleta) {
         int opcion;
         do {
             System.out.println("=== MENU ESTUDIANTE ===");
-            System.out.println("Bienvenido, " + usuario.obtenerNombre() + ". Tienes " + 1 + " punto(s) Nivel " +  0);
+            System.out.println("Bienvenido, " + atleta.obtenerNombre() + ". Tienes " + atleta.obtenerNumeroDePuntos() + " punto(s) - Nivel " +  atleta.obtenerNivel());
             System.out.println("1. Reservar turno");
             System.out.println("2. Cancelar reserva");
             System.out.println("3. Ver y editar mi rutina");
@@ -277,6 +326,22 @@ public class Main {
 
             switch (opcion) {
                 case 1:
+                    int opcionHorario = 0;
+
+                    // visualizar horarios y seleccionar uno para reservar turno
+                    mostrarHorarios();
+                    do {
+                        System.out.print("Ingresar opcion >> ");
+                        opcionHorario = scanner.nextInt();
+                        scanner.nextLine();
+                        
+                        if (opcionHorario < 1 || opcion > horariosInformacion.size()) {
+                            System.out.println("(!) Opcion invalida, intente de nuevo");
+                        }
+                    } while (opcionHorario < 1 || opcion > horariosInformacion.size());
+
+                    atleta.reservarTurno(opcionHorario, atleta, horariosInformacion, reservas);
+
                     break;
                 case 2:
                     break;
@@ -301,11 +366,11 @@ public class Main {
         } while (opcion != 6);
     }
 
-    private static void menuDeEstudiante(Estudiante usuario) {
+    private static void menuDeEstudianteRegular(Regular estudianteRegular) {
         int opcion;
         do {
             System.out.println("=== MENU ESTUDIANTE ===");
-            System.out.println("Bienvenido, " + usuario.obtenerNombre() + ". Tienes " + 1 + " punto(s) Nivel " +  0);
+            System.out.println("Bienvenido, " + estudianteRegular.obtenerNombre() + ". Tienes " + estudianteRegular.obtenerNumeroDePuntos() + " punto(s) - Nivel " +  estudianteRegular.obtenerNivel());
             System.out.println("1. Reservar turno");
             System.out.println("2. Cancelar reserva");
             System.out.println("3. Ver y editar mi rutina");
@@ -317,6 +382,22 @@ public class Main {
 
             switch (opcion) {
                 case 1:
+                    int opcionHorario = 0;
+
+                    // visualizar horarios y seleccionar uno para reservar turno
+                    mostrarHorarios();
+                    do {
+                        System.out.print("Ingresar opcion >> ");
+                        opcionHorario = scanner.nextInt();
+                        scanner.nextLine();
+                        
+                        if (opcionHorario < 1 || opcion > horariosInformacion.size()) {
+                            System.out.println("(!) Opcion invalida, intente de nuevo");
+                        }
+                    } while (opcionHorario < 1 || opcion > horariosInformacion.size());
+
+                    estudianteRegular.reservarTurno(opcionHorario, estudianteRegular, horariosInformacion, reservas);
+
                     break;
                 case 2:
                     break;
@@ -340,10 +421,12 @@ public class Main {
 
     private static void mostrarHorarios() {
         System.out.println("=== HORARIOS DISPONIBLES ===");
-        for (int i = 0; i < horarios.size(); i++) {
-            System.out.println((i + 1) + ". " + horarios.get(i) + "-" + horarios.get(i).plusHours(1)+ " | Aforo: " + cupos.get(i));
+        for (int i = 0; i < horariosInformacion.size(); i++) {
+            System.out.println((i + 1) + ". " + horariosInformacion.get(i).hora() + "-" + horariosInformacion.get(i).hora().plusHours(1)+ " | Aforo: " + horariosInformacion.get(i).cupos());
         }
     }
+        
+    
 
 
     private static String leerNoVacio(String textoIngresado) {
