@@ -131,7 +131,7 @@ public class Main {
                         break;
                     }
 
-                    menuDeEstudiante((Estudiante) usuario);
+                    menuDeEstudianteRegular((Regular) usuario);
                     break;
                 }
                 case 2:
@@ -170,7 +170,7 @@ public class Main {
                         .forEach( estudiante -> {
                             if (!estudiante.estaVetadoTemporalmente()) {
                                 estudiante.mostrarInformacionPersonal();
-                        }
+                            }
                         });
                     break;
                 case 2:
@@ -224,7 +224,7 @@ public class Main {
                         .forEach( estudiante -> {
                             if (estudiante.presentaPenalidades()) {
                                 estudiante.mostrarInformacionPersonal();
-                        }
+                            }
                         });
                     break;
                 case 5:
@@ -236,7 +236,7 @@ public class Main {
                         .forEach( estudiante -> {
                             if (estudiante.presentaPenalidades()) {
                                 System.out.println(estudiante.obtenerId() + " | " + estudiante.obtenerNombre() + " | " + estudiante.obtenerCantidadPenalidades());
-                        }
+                            }
                         });
 
                     // encontrar el estudiante por ID
@@ -306,11 +306,11 @@ public class Main {
         } while (opcion != 6);
     }
 
-    private static void menuDeAtleta(Atleta usuario) {
+    private static void menuDeAtleta(Atleta atleta) {
         int opcion;
         do {
             System.out.println("=== MENU ESTUDIANTE ===");
-            System.out.println("Bienvenido, " + usuario.obtenerNombre() + ". Tienes " + 1 + " punto(s) Nivel " +  0);
+            System.out.println("Bienvenido, " + atleta.obtenerNombre() + ". Tienes " + atleta.obtenerNumeroDePuntos() + " punto(s) - Nivel " +  atleta.obtenerNivel());
             System.out.println("1. Reservar turno");
             System.out.println("2. Cancelar reserva");
             System.out.println("3. Ver y editar mi rutina");
@@ -347,11 +347,11 @@ public class Main {
         } while (opcion != 6);
     }
 
-    private static void menuDeEstudiante(Estudiante usuario) {
+    private static void menuDeEstudianteRegular(Regular estudianteRegular) {
         int opcion;
         do {
             System.out.println("=== MENU ESTUDIANTE ===");
-            System.out.println("Bienvenido, " + usuario.obtenerNombre() + ". Tienes " + 1 + " punto(s) Nivel " +  0);
+            System.out.println("Bienvenido, " + estudianteRegular.obtenerNombre() + ". Tienes " + estudianteRegular.obtenerNumeroDePuntos() + " punto(s) - Nivel " +  estudianteRegular.obtenerNivel());
             System.out.println("1. Reservar turno");
             System.out.println("2. Cancelar reserva");
             System.out.println("3. Ver y editar mi rutina");
