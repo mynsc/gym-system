@@ -145,7 +145,7 @@ public class Main {
     }
 
     private static void menuDeAdministrador(Administrador usuario) {
-        int opcion;
+        int opcion = 0;
         do {
             System.out.println("=== MENU ADMINISTRADOR ===");
             System.out.println("1. Ver reporte de estudiantes activos");
@@ -311,7 +311,7 @@ public class Main {
     }
 
     private static void menuDeAtleta(Atleta atleta) {
-        int opcion;
+        int opcion = 0;
         do {
             System.out.println("=== MENU ESTUDIANTE ===");
             System.out.println("Bienvenido, " + atleta.obtenerNombre() + ". Tienes " + atleta.obtenerNumeroDePuntos() + " punto(s) - Nivel " +  atleta.obtenerNivel());
@@ -369,7 +369,7 @@ public class Main {
     }
 
     private static void menuDeEstudianteRegular(Regular estudianteRegular) {
-        int opcion;
+        int opcion = 0;
         do {
             System.out.println("=== MENU ESTUDIANTE ===");
             System.out.println("Bienvenido, " + estudianteRegular.obtenerNombre() + ". Tienes " + estudianteRegular.obtenerNumeroDePuntos() + " punto(s) - Nivel " +  estudianteRegular.obtenerNivel());
