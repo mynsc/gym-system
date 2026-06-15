@@ -1,11 +1,8 @@
 package src.com.unmsm.gym.models;
 
-public class Atleta extends Estudiante {
-    /*                Atributo                */
-    private String deporte;
-
+public class Regular extends Estudiante {
     /*              Constructor              */
-    public Atleta(
+    public Regular(
         int id, 
         String nombre, 
         String apellido, 
@@ -16,8 +13,7 @@ public class Atleta extends Estudiante {
         String baseInicio, 
         boolean autoseguroActivo, 
         boolean matriculadoSemestreActual,
-        boolean presentaLesionActual, 
-        String deporte) {
+        boolean presentaLesionActual) {
 
         super(
             id, 
@@ -32,15 +28,5 @@ public class Atleta extends Estudiante {
             matriculadoSemestreActual, 
             presentaLesionActual
         );
-        this.deporte = deporte;
     }
-
-    public void mostrarInformacionPersonal() {
-        super.mostrarInformacionPersonal();
-        System.out.println("Deporte: " + deporte);
-    }
-
-    /*           Getters y setters           */
-    public String obtenerDeporte() { return deporte; }
-    public void establecerDeporte(String deporte) { this.deporte = deporte; }
 }

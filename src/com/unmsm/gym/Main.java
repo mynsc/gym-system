@@ -13,6 +13,7 @@ import src.com.unmsm.gym.models.Atleta;
 import src.com.unmsm.gym.models.Discapacitado;
 import src.com.unmsm.gym.models.Estudiante;
 import src.com.unmsm.gym.models.Persona;
+import src.com.unmsm.gym.models.Regular;
 
 public class Main {
     static Scanner scanner = new Scanner(System.in);
@@ -23,9 +24,45 @@ public class Main {
     static List<List<Integer>> reservas = new ArrayList<>();     // lista de listas (ID - horario reservado)
 
     public static void main(String args[]) {
-        usuarios.add(new Estudiante(0, "Juan", "Tapia", "estudiante", "123456"));
-        usuarios.add(new Atleta(1, "Lucas", "Sanchez", "atleta", "123456", "Basquetbol"));
-        usuarios.add(new Discapacitado(2, "Maria", "Velez", "discapacitado", "123456", TipoDeDiscapacidad.AUDITIVA, NivelDeDiscapacidad.MODERADO));
+        usuarios.add(new Regular(
+            0, 
+            "Juan", 
+            "Tapia", 
+            "estudiante", 
+            "123456", 
+            "FISI", 
+            "Ingenieria de Software", 
+            "B25",
+            true, 
+            true, 
+            false));
+        usuarios.add(new Atleta(
+            0, 
+            "Lucas", 
+            "Sanchez", 
+            "atleta", 
+            "123456", 
+            "FISI", 
+            "Ingenieria de Software", 
+            "B26",
+            true, 
+            true, 
+            false,
+            "Basquetbol"));
+        usuarios.add(new Discapacitado(
+            0, 
+            "Maria", 
+            "Velez", 
+            "discapacitado", 
+            "123456", 
+            "FII", 
+            "Ingenieria Industrial", 
+            "B20",
+            true, 
+            true, 
+            true, 
+            TipoDeDiscapacidad.AUDITIVA, 
+            NivelDeDiscapacidad.MODERADO));
         usuarios.add(new Administrador(3, "Luciana", "Vega", "administrador", "123456"));
 
         // fijar horarios desde las 8 hasta las 20 horas
@@ -125,13 +162,16 @@ public class Main {
 
             switch (opcion) {
                 case 1:
-                    System.out.println("=== USUARIOS ACTIVOS ===");
-                    // listar usuarios que no hayan llegado al limite de penalidades
-                    for (Persona persona : usuarios) {
-                        if (!usuario.estaVetadoTemporalmente()) {
-                            persona.mostrarInformacionPersonal();
+                    System.out.println("=== ESTUDIANTES ACTIVOS ===");
+                    // listar estudiantes que no hayan llegado al limite de penalidades
+                    usuarios.stream()
+                        .filter(p -> p instanceof Estudiante)
+                        .map(p -> (Estudiante) p)
+                        .forEach( estudiante -> {
+                            if (!estudiante.estaVetadoTemporalmente()) {
+                                estudiante.mostrarInformacionPersonal();
                         }
-                    }
+                        });
                     break;
                 case 2:
                     System.out.println("=== HORARIOS MAS CONCURRIDOS ===");
@@ -176,26 +216,32 @@ public class Main {
                     System.out.println("Aforo actualizado correctamente");
                     break;
                 case 4:
-                    System.out.println("=== USUARIOS PENALIZADOS ===");
-                    // listar usuarios que tienen una penalidad o mas
-                    for (Persona persona : usuarios) {
-                        if (usuario.presentaPenalidades()) {
-                            persona.mostrarInformacionPersonal();
+                    System.out.println("=== ESTUDIANTES PENALIZADOS ===");
+                    // listar estudiantes que tengan una penalidad o mas
+                    usuarios.stream()
+                        .filter(p -> p instanceof Estudiante)
+                        .map(p -> (Estudiante) p)
+                        .forEach( estudiante -> {
+                            if (estudiante.presentaPenalidades()) {
+                                estudiante.mostrarInformacionPersonal();
                         }
-                    }
+                        });
                     break;
                 case 5:
                     // listar usuarios que tienen penalidad(es)
                     // ID | Nombre | Cantidad de penalidades
-                    for (Persona persona : usuarios) {
-                        if (persona.presentaPenalidades()) {
-                            System.out.println(persona.obtenerId() + " | " + persona.obtenerNombre() + " | " + persona.obtenerCantidadPenalidades());
+                    usuarios.stream()
+                        .filter(p -> p instanceof Estudiante)
+                        .map(p -> (Estudiante) p)
+                        .forEach( estudiante -> {
+                            if (estudiante.presentaPenalidades()) {
+                                System.out.println(estudiante.obtenerId() + " | " + estudiante.obtenerNombre() + " | " + estudiante.obtenerCantidadPenalidades());
                         }
-                    }
+                        });
 
                     // encontrar el usuario por ID
                     int idIngresado = 0;
-                    Persona usuarioEncontrado = null;
+                    Estudiante estudianteEncontrado = null;
                     do {
                         System.out.print("Ingresar el ID de un usuario >> ");
                         idIngresado = scanner.nextInt();
@@ -203,17 +249,17 @@ public class Main {
 
                         // verificar que sea un ID valido
                         try {
-                            usuarioEncontrado = usuarios.get(idIngresado);
+                            estudianteEncontrado = (Estudiante) usuarios.get(idIngresado);
                         } catch (IndexOutOfBoundsException e) {
                             System.err.println("(!) ID no encontrado, intente de nuevo");
                             continue;
                         }
                         
                         // verificar que el usuario tenga alguna penalidad
-                        if (!usuarioEncontrado.presentaPenalidades()) {
+                        if (!estudianteEncontrado.presentaPenalidades()) {
                             System.out.println("(!) Este usuario no tiene penalidades, intente de nuevo");
                         }
-                    } while (usuarioEncontrado == null || !usuarioEncontrado.presentaPenalidades());
+                    } while (estudianteEncontrado == null || !estudianteEncontrado.presentaPenalidades());
 
                     // solicitar la cantidad de penalidades que desea descontar
                     // deben estar entre 0 y 3
@@ -235,17 +281,17 @@ public class Main {
                     }
 
                     // revocar el estado de las penalidades cuando se reducen a 0
-                    if (descuentoPenalidades == usuarioEncontrado.obtenerCantidadPenalidades()) {
-                        usuarioEncontrado.establecerEstadoDePenalidades(false);
+                    if (descuentoPenalidades == estudianteEncontrado.obtenerCantidadPenalidades()) {
+                        estudianteEncontrado.establecerEstadoDePenalidades(false);
                     }
 
                     // revocar el veto cuando las penalidades se reducen a 0, 1 o 2
-                    usuarioEncontrado.establecerVetoTemporal(false);
+                    estudianteEncontrado.establecerVetoTemporal(false);
 
                     // actualizar la cantidad de penalidades
-                    short nuevaCantidadDePenalidades = usuarioEncontrado.obtenerCantidadPenalidades();
+                    short nuevaCantidadDePenalidades = estudianteEncontrado.obtenerCantidadPenalidades();
                     nuevaCantidadDePenalidades -= descuentoPenalidades;
-                    usuarioEncontrado.establecerCantidadPenalidades(nuevaCantidadDePenalidades);
+                    estudianteEncontrado.establecerCantidadPenalidades(nuevaCantidadDePenalidades);
 
                     System.out.println("Reduccion de penalidad exitosa");
 
