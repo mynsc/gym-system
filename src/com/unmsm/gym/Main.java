@@ -133,6 +133,94 @@ public class Main {
                     break;
                 }
                 case 2:
+                    System.out.println("=== REGISTRO DE NUEVO ESTUDIANTE ===");
+                    System.out.println("Selecciona tu perfil >>");
+                    System.out.println("1. Estudiante Regular");
+                    System.out.println("2. Atleta Universitario");
+                    System.out.println("3. Estudiante con Discapacidad");
+                    System.out.print("Ingresar opcion >> ");
+                    int tipoPerfil = scanner.nextInt();
+                    scanner.nextLine();
+
+                    if (tipoPerfil < 1 || tipoPerfil > 3) {
+                        System.out.println("(!) Opcion invalida. Cancelando registro...");
+                        break;
+                    }
+
+                    // pedir atributos comunes de clase Estudiante
+                    // el ID se genera automaticamente basado en el tamaño de la lista
+                    int nuevoId = usuarios.size(); 
+                    
+                    String nombre = leerNoVacio("Nombre >> ");
+                    String apellido = leerNoVacio("Apellido >> ");
+                    String nombreDeUsuario = leerNoVacio("Nombre de usuario (Login) >> ");
+                    String contrasenia = leerNoVacio("Contrasena >> ");
+                    String facultad = leerNoVacio("Facultad (ej. FISI) >> ");
+                    String carrera = leerNoVacio("Carrera >> ");
+                    String baseInicio = leerNoVacio("Base de ingreso (ej. B26) >> ");
+
+                    // atributos booleanas
+                    System.out.print("Tienes autoseguro activo (1 = Si, 0 = No) >> ");
+                    boolean seguroActivo = scanner.nextInt() == 1;
+
+                    System.out.print("Estas matriculado en el semestre actual (1 = Si, 0 = No) >> ");
+                    boolean matriculado = scanner.nextInt() == 1;
+
+                    System.out.print("Presentas alguna lesion fisica actual (1 = Si, 0 = No) >> ");
+                    boolean lesionado = scanner.nextInt() == 1;
+                    scanner.nextLine();
+
+                    // crear el objeto segun el tipo de Estudiante y pedir atributos especificos
+                    switch (tipoPerfil) {
+                        case 1:
+                            /*               REGULAR                */
+                            Regular nuevoRegular = new Regular(
+                                nuevoId, nombre, apellido, nombreDeUsuario, contrasenia, 
+                                facultad, carrera, baseInicio, seguroActivo, matriculado, lesionado
+                            );
+                            usuarios.add(nuevoRegular);
+                            System.out.println("(+) ¡Registro exitoso! Bienvenido, " + nombre);
+                            break;
+
+                        case 2:
+                            /*               ATLETA                */
+                            String deporte = leerNoVacio("Deporte que practicas >> ");
+                            
+                            Atleta nuevoAtleta = new Atleta(
+                                nuevoId, nombre, apellido, nombreDeUsuario, contrasenia, 
+                                facultad, carrera, baseInicio, seguroActivo, matriculado, lesionado, deporte
+                            );
+                            usuarios.add(nuevoAtleta);
+                            System.out.println("(+) ¡Registro de atleta exitoso! Bienvenido, " + nombre);
+                            break;
+
+                        case 3:
+                            /*               DISCAPACITADO                */
+                            System.out.println("Tipos de discapacidad: FISICA, AUDITIVA, VISUAL, INTELECTUAL, OTRA");
+                            String tipoDiscStr = leerNoVacio("Ingresa el tipo >> ").toUpperCase();
+                            
+                            System.out.println("Niveles: LEVE, MODERADO, GRAVE");
+                            String nivelDiscStr = leerNoVacio("Ingresa el nivel >> ").toUpperCase();
+
+                            try {
+                                // convertir el String ingresado al Enum correspondiente
+                                TipoDeDiscapacidad tipoDisc = TipoDeDiscapacidad.valueOf(tipoDiscStr);
+                                NivelDeDiscapacidad nivelDisc = NivelDeDiscapacidad.valueOf(nivelDiscStr);
+
+                                Discapacitado nuevoDiscapacitado = new Discapacitado(
+                                    nuevoId, nombre, apellido, nombreDeUsuario, contrasenia, 
+                                    facultad, carrera, baseInicio, seguroActivo, matriculado, lesionado, 
+                                    tipoDisc, nivelDisc
+                                );
+                                usuarios.add(nuevoDiscapacitado);
+                                System.out.println("(!) Registro exitoso, bienvenido, " + nombre);
+                                
+                            } catch (IllegalArgumentException e) {
+                                // si escriben mal el Enum, el sistema no colapsa, solo cancela el registro
+                                System.out.println("(!) Error: El tipo o nivel ingresado no coincide con los registros");
+                            }
+                            break;
+                    }
                     break;
                 case 3:
                     System.out.println("Saliendo del sistema...");
