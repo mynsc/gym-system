@@ -453,4 +453,12 @@ public class Main {
             System.out.println("No se pudo limpiar la pantalla.");
         }
     }
+
+    public static void delay(int segundos) {
+        try {
+            Thread.sleep(segundos * 1000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
 }
