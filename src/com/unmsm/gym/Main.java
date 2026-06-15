@@ -2,6 +2,7 @@ package src.com.unmsm.gym;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.IntStream;
@@ -20,7 +21,7 @@ public class Main {
     static Scanner scanner = new Scanner(System.in);
     static List<Persona> usuarios = new ArrayList<>();                         // lista de usuarios
     static List<HorarioCuposVisitas> horariosInformacion = new ArrayList<>();  // lista de horario, aforo y veces que se ha visitado cada horario
-    static List<List<Integer>> reservas = new ArrayList<>();     // lista de listas (ID - horario reservado)
+    static List<List<Integer>> reservas = new LinkedList<>();     // lista de listas (ID - horario reservado)
 
     public static void main(String args[]) {
         usuarios.add(new Regular(
