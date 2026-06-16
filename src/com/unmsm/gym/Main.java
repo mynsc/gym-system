@@ -8,8 +8,12 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.IntStream;
 
-import src.com.unmsm.gym.db.db_usuarios;
 import src.com.unmsm.gym.config.conexion;
+
+import src.com.unmsm.gym.db.db_usuarios;
+import src.com.unmsm.gym.db.db_estudiantes;
+import src.com.unmsm.gym.db.db_atletas;
+import src.com.unmsm.gym.db.db_discapacitados;
 
 import src.com.unmsm.gym.enums.NivelDeDiscapacidad;
 import src.com.unmsm.gym.enums.TipoDeDiscapacidad;
@@ -25,9 +29,10 @@ public class Main {
     }
 
     static Scanner scanner = new Scanner(System.in);
-    static List<Persona> usuarios = new ArrayList<>();                         // lista de usuarios
-    static List<HorarioCuposVisitas> horariosInformacion = new ArrayList<>();  // lista de horario, aforo y veces que se ha visitado cada horario
-    static List<List<Integer>> reservas = new LinkedList<>();     // lista de listas (ID - horario reservado)
+    static List<Persona> usuarios = new ArrayList<>(); // lista de usuarios
+    static List<HorarioCuposVisitas> horariosInformacion = new ArrayList<>(); // lista de horario, aforo y veces que se
+                                                                              // ha visitado cada horario
+    static List<List<Integer>> reservas = new LinkedList<>(); // lista de listas (ID - horario reservado)
 
     public static void main(String args[]) {
         try {
@@ -50,32 +55,32 @@ public class Main {
                 true,
                 false));
         usuarios.add(new Atleta(
-            1, 
-            "Lucas", 
-            "Sanchez", 
-            "atleta", 
-            "123456", 
-            "FISI", 
-            "Ingenieria de Software", 
-            "B26",
-            true, 
-            true, 
-            false,
-            "Basquetbol"));
+                1,
+                "Lucas",
+                "Sanchez",
+                "atleta",
+                "123456",
+                "FISI",
+                "Ingenieria de Software",
+                "B26",
+                true,
+                true,
+                false,
+                "Basquetbol"));
         usuarios.add(new Discapacitado(
-            2, 
-            "Maria", 
-            "Velez", 
-            "discapacitado", 
-            "123456", 
-            "FII", 
-            "Ingenieria Industrial", 
-            "B20",
-            true, 
-            true, 
-            true, 
-            TipoDeDiscapacidad.AUDITIVA, 
-            NivelDeDiscapacidad.MODERADO));
+                2,
+                "Maria",
+                "Velez",
+                "discapacitado",
+                "123456",
+                "FII",
+                "Ingenieria Industrial",
+                "B20",
+                true,
+                true,
+                true,
+                TipoDeDiscapacidad.AUDITIVA,
+                NivelDeDiscapacidad.MODERADO));
         usuarios.add(new Administrador(3, "Luciana", "Vega", "administrador", "123456"));
 
         // fijar horarios desde las 8 hasta las 20 horas
@@ -109,7 +114,6 @@ public class Main {
                         String nombreDeUsuario = leerNoVacio("Usuario >> ");
                         String contrasenia = leerNoVacio("Contrasena >> ");
 
-                        db_usuarios usuarios_table = new db_usuarios();
                         // insertar el nuevo usuario en la base de datos1
 
                         // busca coincidencias entre el nombre de usuario y la contraseña en el
@@ -118,17 +122,6 @@ public class Main {
                             if (usuarioEncontrado.obtenerNombreDeUsuario().equals(nombreDeUsuario)
                                     && usuarioEncontrado.obtenerContrasenia().equals(contrasenia)) {
                                 usuario = usuarioEncontrado;
-                                
-                                usuarios_table.create(
-                                        usuario.obtenerNombre(),
-                                        usuario.obtenerApellido(),
-                                        usuario.obtenerNombreDeUsuario(),
-                                        usuario.obtenerContrasenia(),
-                                        "FISI",
-                                        "Ingenieria de Software",
-                                        "B25",
-                                        true,
-                                        true);
 
                             }
                         }
@@ -155,10 +148,66 @@ public class Main {
                         break;
                     }
 
+                    db_atletas atletas_table = new db_atletas();
+                    db_usuarios usuarios_table = new db_usuarios();
+                    db_discapacitados discapacitados_table = new db_discapacitados();
+                    db_estudiantes estudiantes_table = new db_estudiantes();
+
+                    if (usuario instanceof Estudiante) {
+                        estudiantes_table.create(
+                                usuario.obtenerNombre(),
+                                usuario.obtenerApellido(),
+                                usuario.obtenerNombreDeUsuario(),
+                                usuario.obtenerContrasenia(),
+                                "FISI",
+                                "Ingenieria de Software",
+                                "B25",
+                                true,
+                                true);
+
+                    }
+                    if (usuario instanceof Discapacitado) {
+                        discapacitados_table.create(
+                                usuario.obtenerNombre(),
+                                usuario.obtenerApellido(),
+                                usuario.obtenerNombreDeUsuario(),
+                                usuario.obtenerContrasenia(),
+                                "FISI",
+                                "Ingenieria de Software",
+                                "B25",
+                                "Motriz",
+                                "Moderada",
+                                true,
+                                true);
+                    }
                     if (usuario instanceof Atleta) {
+                        if (usuario instanceof Atleta) {
+                            atletas_table.create(
+                                    usuario.obtenerNombre(),
+                                    usuario.obtenerApellido(),
+                                    usuario.obtenerNombreDeUsuario(),
+                                    usuario.obtenerContrasenia(),
+                                    "FISI",
+                                    "Ingenieria de Software",
+                                    "B25",
+                                    "Basquetbol",
+                                    true,
+                                    true);
+                        }
                         menuDeAtleta((Atleta) usuario);
                         break;
                     }
+
+                    usuarios_table.create(
+                            usuario.obtenerNombre(),
+                            usuario.obtenerApellido(),
+                            usuario.obtenerNombreDeUsuario(),
+                            usuario.obtenerContrasenia(),
+                            "FISI",
+                            "Ingenieria de Software",
+                            "B25",
+                            true,
+                            true);
 
                     menuDeEstudianteRegular((Regular) usuario);
                     break;
@@ -198,7 +247,9 @@ public class Main {
                             .map(p -> (Estudiante) p)
                             .forEach(estudiante -> {
                                 if (!estudiante.estaVetadoTemporalmente()) {
+                                    System.out.println("------------------------------------------");
                                     estudiante.mostrarInformacionPersonal();
+                                    System.out.println("------------------------------------------");
                                 }
                             });
                     break;
@@ -253,12 +304,16 @@ public class Main {
                 case 4:
                     System.out.println("=== ESTUDIANTES PENALIZADOS ===");
                     // listar estudiantes que tengan una penalidad o mas
+
                     usuarios.stream()
                             .filter(p -> p instanceof Estudiante)
                             .map(p -> (Estudiante) p)
                             .forEach(estudiante -> {
                                 if (estudiante.presentaPenalidades()) {
+
+                                    System.out.println("------------------------------------------");
                                     estudiante.mostrarInformacionPersonal();
+                                    System.out.println("------------------------------------------");
                                 }
                             });
                     break;

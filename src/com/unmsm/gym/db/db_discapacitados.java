@@ -1,11 +1,12 @@
 package src.com.unmsm.gym.db;
 
 import src.com.unmsm.gym.config.conexion;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
-public class db_usuarios {
-    public void create(
+public class db_discapacitados {
+     public void create(
             String nombre,
             String apellido,
             String usuario,
@@ -13,11 +14,13 @@ public class db_usuarios {
             String facultad,
             String carrera,
             String baseInicio,
+            String tipoDiscapacidad,
+            String nivelDiscapacidad,
             boolean matriculadoSemestreActual,
             boolean autoseguroActivo) {
 
         String sql = """
-                INSERT INTO usuarios_table(
+                INSERT INTO estudiantes_dis(
                     nombre,
                     apellido,
                     usuario,
@@ -25,9 +28,11 @@ public class db_usuarios {
                     facultad,
                     carrera,
                     base_incio,
+                    tipo_discapacidad,
+                    nivel_discapacidad,
                     actualmente_matriculado,
                     autoseguro_activo
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """;
 
         try (
@@ -41,40 +46,19 @@ public class db_usuarios {
             ps.setString(5, facultad);
             ps.setString(6, carrera);
             ps.setString(7, baseInicio);
-            ps.setBoolean(8, matriculadoSemestreActual);
-            ps.setBoolean(9, autoseguroActivo);
+            ps.setString(8, tipoDiscapacidad);
+            ps.setString(9, nivelDiscapacidad);
+            ps.setBoolean(10, matriculadoSemestreActual);
+            ps.setBoolean(11, autoseguroActivo);
 
             ps.executeUpdate();
 
-            System.out.println("usuario registrado");
+            System.out.println("Discapacitado registrado");
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-//     public void update(int id, boolean actualmente_matriculado, boolean autoseguro_activo) {
-
-//         String sql = """
-//                 UPDATE usuarios_table
-//                 SET actualmente_matriculado = ?, autoseguro_activo = ?
-//                 WHERE id = ?
-//                 """;
-
-//         try (
-//                 Connection con = conexion.conectar();
-//                 PreparedStatement ps = con.prepareStatement(sql)) {
-
-//             ps.setBoolean(1, actualmente_matriculado);
-//             ps.setBoolean(2, autoseguro_activo);
-//             ps.setInt(3, id);
-
-//             ps.executeUpdate();
-
-//             System.out.println("\tDATOS ACTUALIZADOS\t");
-
-//         } catch (Exception e) {
-//             e.printStackTrace();
-//         }
-//     }
+    
 }

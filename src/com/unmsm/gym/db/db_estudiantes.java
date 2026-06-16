@@ -1,10 +1,11 @@
 package src.com.unmsm.gym.db;
 
 import src.com.unmsm.gym.config.conexion;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
-public class db_usuarios {
+public class db_estudiantes {
     public void create(
             String nombre,
             String apellido,
@@ -17,7 +18,7 @@ public class db_usuarios {
             boolean autoseguroActivo) {
 
         String sql = """
-                INSERT INTO usuarios_table(
+                INSERT INTO estudiantes_reg(
                     nombre,
                     apellido,
                     usuario,
@@ -46,35 +47,11 @@ public class db_usuarios {
 
             ps.executeUpdate();
 
-            System.out.println("usuario registrado");
+            System.out.println("Estudiante regular registrado");
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-//     public void update(int id, boolean actualmente_matriculado, boolean autoseguro_activo) {
-
-//         String sql = """
-//                 UPDATE usuarios_table
-//                 SET actualmente_matriculado = ?, autoseguro_activo = ?
-//                 WHERE id = ?
-//                 """;
-
-//         try (
-//                 Connection con = conexion.conectar();
-//                 PreparedStatement ps = con.prepareStatement(sql)) {
-
-//             ps.setBoolean(1, actualmente_matriculado);
-//             ps.setBoolean(2, autoseguro_activo);
-//             ps.setInt(3, id);
-
-//             ps.executeUpdate();
-
-//             System.out.println("\tDATOS ACTUALIZADOS\t");
-
-//         } catch (Exception e) {
-//             e.printStackTrace();
-//         }
-//     }
 }
