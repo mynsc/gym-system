@@ -31,7 +31,7 @@ public class db_atletas {
                     autoseguro_activo
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """;
-    
+
         try (
                 Connection con = conexion.conectar();
                 PreparedStatement ps = con.prepareStatement(sql)) {

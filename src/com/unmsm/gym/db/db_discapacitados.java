@@ -6,7 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 
 public class db_discapacitados {
-     public void create(
+    public void create(
             String nombre,
             String apellido,
             String usuario,
@@ -60,5 +60,4 @@ public class db_discapacitados {
         }
     }
 
-    
 }

@@ -1,4 +1,4 @@
-package src.com.unmsm.gym.enums;
+        package      src.com.unmsm.gym.enums;
 
 public enum TipoDeDiscapacidad {
     INMOVILIDAD_PARCIAL,
