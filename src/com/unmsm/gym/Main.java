@@ -29,10 +29,9 @@ public class Main {
     }
 
     static Scanner scanner = new Scanner(System.in);
-    static List<Persona> usuarios = new ArrayList<>(); // lista de usuarios
-    static List<HorarioCuposVisitas> horariosInformacion = new ArrayList<>(); // lista de horario, aforo y veces que se
-                                                                              // ha visitado cada horario
-    static List<List<Integer>> reservas = new LinkedList<>(); // lista de listas (ID - horario reservado)
+    static List<Persona> usuarios = new ArrayList<>();                         // lista de usuarios
+    static List<HorarioCuposVisitas> horariosInformacion = new ArrayList<>();  // lista de horario, aforo y veces que se ha visitado cada horario
+    static List<List<Integer>> reservas = new LinkedList<>();                  // lista de listas (ID - horario reservado)
 
     public static void main(String args[]) {
         try {
@@ -96,6 +95,7 @@ public class Main {
 
         int opcion = 0;
         do {
+            limpiarPantalla();
             System.out.println("=== GIMNASIO UNMSM ===");
             System.out.println("1. Iniciar sesion");
             System.out.println("2. Registrarse");
@@ -104,6 +104,7 @@ public class Main {
             opcion = scanner.nextInt();
             scanner.nextLine();
 
+            limpiarPantalla();
             switch (opcion) {
                 case 1: {
                     int intentos = 0;
@@ -139,6 +140,7 @@ public class Main {
                     // si se agotan los intentos, regresa al menu
                     if (usuario == null) {
                         System.out.println("(!) Maximo de intentos, volviendo al menu principal");
+                        delay(2);
                         break;
                     }
 
@@ -213,12 +215,103 @@ public class Main {
                     break;
                 }
                 case 2:
+                    /* Registro */
+                    System.out.println("=== REGISTRO DE NUEVO ESTUDIANTE ===");
+                    System.out.println("<< Selecciona tu perfil >>");
+                    System.out.println("1. Estudiante regular");
+                    System.out.println("2. Atleta universitario");
+                    System.out.println("3. Estudiante con discapacidad");
+                    System.out.print("Ingresar opcion >> ");
+                    int tipoPerfil = scanner.nextInt();
+                    scanner.nextLine();
+
+                    if (tipoPerfil < 1 || tipoPerfil > 3) {
+                        System.out.println("(!) Opcion invalida");
+                        break;
+                    }
+
+                    // pedir atributos comunes de clase Estudiante
+                    // el ID se genera automaticamente basado en el tamaño de la lista
+                    int nuevoId = usuarios.size(); 
+                    
+                    String nombre = leerNoVacio("Nombre >> ");
+                    String apellido = leerNoVacio("Apellido >> ");
+                    String nombreDeUsuario = leerNoVacio("Nombre de usuario >> ");
+                    String contrasenia = leerNoVacio("Contrasena >> ");
+                    String facultad = leerNoVacio("Facultad >> ");
+                    String carrera = leerNoVacio("Carrera >> ");
+                    String baseInicio = leerNoVacio("Base de ingreso >> ");
+
+                    // atributos booleanas
+                    System.out.print("Tienes autoseguro activo (1 = Si, 0 = No) >> ");
+                    boolean seguroActivo = scanner.nextInt() == 1;
+
+                    System.out.print("Estas matriculado en el semestre actual (1 = Si, 0 = No) >> ");
+                    boolean matriculado = scanner.nextInt() == 1;
+
+                    System.out.print("Presentas alguna lesion fisica actual (1 = Si, 0 = No) >> ");
+                    boolean lesionado = scanner.nextInt() == 1;
+                    scanner.nextLine();
+
+                    // crear el objeto segun el tipo de Estudiante y pedir atributos especificos
+                    switch (tipoPerfil) {
+                        case 1:
+                            /*               REGULAR                */
+                            Regular nuevoRegular = new Regular(
+                                nuevoId, nombre, apellido, nombreDeUsuario, contrasenia, 
+                                facultad, carrera, baseInicio, seguroActivo, matriculado, lesionado
+                            );
+                            usuarios.add(nuevoRegular);
+                            System.out.println("(+) Registro exitoso, bienvenido, " + nombre);
+                            break;
+
+                        case 2:
+                            /*               ATLETA                */
+                            String deporte = leerNoVacio("Deporte que practicas >> ");
+                            
+                            Atleta nuevoAtleta = new Atleta(
+                                nuevoId, nombre, apellido, nombreDeUsuario, contrasenia, 
+                                facultad, carrera, baseInicio, seguroActivo, matriculado, lesionado, deporte
+                            );
+                            usuarios.add(nuevoAtleta);
+                            System.out.println("(+) Registro de atleta exitoso, bienvenido, " + nombre);
+                            break;
+
+                        case 3:
+                            /*               DISCAPACITADO                */
+                            System.out.println("Tipos de discapacidad: FISICA, AUDITIVA, VISUAL, INTELECTUAL, OTRA");
+                            String tipoDiscStr = leerNoVacio("Ingresa el tipo >> ").toUpperCase();
+                            
+                            System.out.println("Niveles: LEVE, MODERADO, GRAVE");
+                            String nivelDiscStr = leerNoVacio("Ingresa el nivel >> ").toUpperCase();
+
+                            try {
+                                // convertir el String ingresado al Enum correspondiente
+                                TipoDeDiscapacidad tipoDisc = TipoDeDiscapacidad.valueOf(tipoDiscStr);
+                                NivelDeDiscapacidad nivelDisc = NivelDeDiscapacidad.valueOf(nivelDiscStr);
+
+                                Discapacitado nuevoDiscapacitado = new Discapacitado(
+                                    nuevoId, nombre, apellido, nombreDeUsuario, contrasenia, 
+                                    facultad, carrera, baseInicio, seguroActivo, matriculado, lesionado, 
+                                    tipoDisc, nivelDisc
+                                );
+                                usuarios.add(nuevoDiscapacitado);
+                                System.out.println("(!) Registro exitoso, bienvenido, " + nombre);
+                                
+                            } catch (IllegalArgumentException e) {
+                                // si escriben mal el Enum, el sistema no colapsa, solo cancela el registro
+                                System.out.println("(!) Error, el tipo o nivel ingresado no coincide con los registros");
+                            }
+                            break;
+                    }
                     break;
                 case 3:
                     System.out.println("Saliendo del sistema...");
+                    delay(2);
                     break;
                 default:
                     System.out.println("(!) Opcion invalida, intente de nuevo");
+                    delay(2);
                     break;
             }
         } while (opcion != 3);
@@ -227,6 +320,7 @@ public class Main {
     private static void menuDeAdministrador(Administrador usuario) {
         int opcion = 0;
         do {
+            limpiarPantalla();
             System.out.println("=== MENU ADMINISTRADOR ===");
             System.out.println("1. Ver reporte de estudiantes activos");
             System.out.println("2. Ver reporte de horarios mas concurridos");
@@ -237,6 +331,7 @@ public class Main {
             System.out.print("Ingresar opcion >> ");
             opcion = scanner.nextInt();
             scanner.nextLine();
+            limpiarPantalla();
 
             switch (opcion) {
                 case 1:
@@ -258,12 +353,13 @@ public class Main {
 
                     // ordenar horarios establecidos del mas concurrido al menos concurrido
                     IntStream.range(0, horariosInformacion.size())
-                            .boxed()
-                            .sorted((a, b) -> Integer.compare(horariosInformacion.get(b).cantidadDeVisitas(),
-                                    horariosInformacion.get(a).cantidadDeVisitas()))
-                            .forEach(i -> System.out.println(horariosInformacion.get(i).hora() + "-"
-                                    + horariosInformacion.get(i).hora().plusHours(1) + " | "
-                                    + horariosInformacion.get(i).cantidadDeVisitas() + " visitas"));
+                        .boxed()
+                        .sorted((a, b) -> Integer.compare(horariosInformacion.get(b).cantidadDeVisitas(), horariosInformacion.get(a).cantidadDeVisitas()))
+                        .forEach(i -> 
+                            System.out.println(horariosInformacion.get(i).hora() + "-" + horariosInformacion.get(i).hora().plusHours(1) + " | " + horariosInformacion.get(i).cantidadDeVisitas() + " visitas")
+                        );
+
+                    delay(2);
                     break;
                 case 3:
                     int opcionHorario = 0;
@@ -300,6 +396,8 @@ public class Main {
                     horariosInformacion.set(indiceHorario, horarioConNuevoAforo);
 
                     System.out.println("Aforo actualizado correctamente");
+
+                    delay(2);
                     break;
                 case 4:
                     System.out.println("=== ESTUDIANTES PENALIZADOS ===");
@@ -400,6 +498,7 @@ public class Main {
     private static void menuDeAtleta(Atleta atleta) {
         int opcion = 0;
         do {
+            limpiarPantalla();
             System.out.println("=== MENU ESTUDIANTE ===");
             System.out.println("Bienvenido, " + atleta.obtenerNombre() + ". Tienes " + atleta.obtenerNumeroDePuntos()
                     + " punto(s) - Nivel " + atleta.obtenerNivel());
@@ -439,6 +538,7 @@ public class Main {
                     atleta.menuRutinas();
                     break;
                 case 4:
+                    atleta.registrarIngreso(horariosInformacion, reservas);
                     break;
                 case 5:
                     System.out.println("Mostrando logros desbloqueados...");
@@ -459,6 +559,7 @@ public class Main {
     private static void menuDeEstudianteRegular(Regular estudianteRegular) {
         int opcion = 0;
         do {
+            limpiarPantalla();
             System.out.println("=== MENU ESTUDIANTE ===");
             System.out.println("Bienvenido, " + estudianteRegular.obtenerNombre() + ". Tienes "
                     + estudianteRegular.obtenerNumeroDePuntos() + " punto(s) - Nivel "
@@ -498,6 +599,7 @@ public class Main {
                     estudianteRegular.menuRutinas();
                     break;
                 case 4:
+                    estudianteRegular.registrarIngreso(horariosInformacion, reservas);
                     break;
                 case 5:
                     System.out.println("Mostrando logros desbloqueados...");
@@ -529,7 +631,27 @@ public class Main {
                 return linea;
             }
 
+            limpiarPantalla();
             System.out.println("(!) El valor no puede estar vacio");
+        }
+    }
+
+    public static void limpiarPantalla() {
+        try {
+            new ProcessBuilder("cmd", "/c", "cls")
+                    .inheritIO()
+                    .start()
+                    .waitFor();
+        } catch (Exception e) {
+            System.out.println("No se pudo limpiar la pantalla");
+        }
+    }
+
+    public static void delay(int segundos) {
+        try {
+            Thread.sleep(segundos * 1000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
     }
 }

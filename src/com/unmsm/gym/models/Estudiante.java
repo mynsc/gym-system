@@ -72,8 +72,7 @@ public class Estudiante extends Persona {
         }
 
         // buscar reserva activa
-        Administrador administrador = new Administrador();
-        int indiceReservaActiva = administrador.buscarReservaPorId(this, reservas);
+        int indiceReservaActiva = new Administrador().buscarReservaPorId(this, reservas);
 
         // si se encuentra una reserva, liberar un cupo en ese horario y se elimina la
         // reserva
@@ -91,7 +90,7 @@ public class Estudiante extends Persona {
                     horariosInformacion.get(codigoHorarioActivo).cantidadDeVisitas());
             horariosInformacion.set(codigoHorarioActivo, horarioConNuevoAforo);
 
-            // eliminar la reserva de ArrayList reservas
+            // eliminar la reserva de LinkedList reservas
             reservas.remove(indiceReservaActiva);
         }
 
@@ -116,8 +115,7 @@ public class Estudiante extends Persona {
 
     public void cancelarReserva(List<HorarioCuposVisitas> horariosInformacion, List<List<Integer>> reservas) {
         // buscar reserva activa
-        Administrador administrador = new Administrador();
-        int indiceReserva = administrador.buscarReservaPorId(this, reservas);
+        int indiceReserva = new Administrador().buscarReservaPorId(this, reservas);
 
         // si no se encuentra una reserva activa, regresar al menu
         if (indiceReserva == -1) {
@@ -137,7 +135,7 @@ public class Estudiante extends Persona {
         horariosInformacion.set(indiceHorario, horarioConNuevoAforo);
         this.establecerEstadoDeReservacion(false);
 
-        // eliminar la reserva de ArrayList reservas
+        // eliminar la reserva de LinkedList reservas
         reservas.remove(indiceReserva);
 
         System.out.println("Reserva cancelada para " + horariosInformacion.get(indiceHorario).hora());
@@ -205,6 +203,7 @@ public class Estudiante extends Persona {
         objetivo = scanner.nextLine();
         System.out.print("Cantidad de ejercicios de la rutina >> ");
         cantidadDeEjercicios = scanner.nextInt();
+        scanner.nextLine();
 
         // crear ejercicio(s) para una rutina
         for (int i = 0; i < cantidadDeEjercicios; i++) {
@@ -222,8 +221,10 @@ public class Estudiante extends Persona {
             ejercicios.add(new LinkedList<>(List.of(nombreEjercicio, sets, repeticiones)));
         }
 
-        // todo: el id debe variar entre cada rutina de cada estudiante
-        return new Rutina(0, nombre, objetivo, this, ejercicios);
+        // generar ID distinto en un estudiante, pero no en todos
+        // todo: generar IDs distintos para cada rutina de cada estudiante
+        int nuevoId = rutinas.size();
+        return new Rutina(nuevoId, nombre, objetivo, this, ejercicios);
     }
 
     public void editarRutina(Scanner scanner) {
@@ -295,14 +296,38 @@ public class Estudiante extends Persona {
         }
     }
 
-    /* Getters y setters */
-    public String obtenerFacultad() {
-        return facultad;
+    public void registrarIngreso(List<HorarioCuposVisitas> horariosInformacion, List<List<Integer>> reservas) {
+        // buscar reserva activa
+        int indiceReserva = new Administrador().buscarReservaPorId(this, reservas);
+
+        // si no se encuentra una reserva activa, regresar al menu
+        if (indiceReserva == -1) {
+            System.out.println("(!) No tienes una reserva activa para registrar visita");
+            return;
+        }
+
+        // obtener el codigo del horario de la reserva activa
+        int indiceHorario = reservas.get(indiceReserva).get(1);
+
+        // establecer ultima visita en hoy y aumentar el contador de visitas en 1
+        this.establecerUltimaVisita(LocalDate.now());
+        HorarioCuposVisitas horarioActualizado = new HorarioCuposVisitas(
+            horariosInformacion.get(indiceHorario).hora(), 
+            horariosInformacion.get(indiceHorario).cupos(), 
+            horariosInformacion.get(indiceHorario).cantidadDeVisitas() + 1
+        );
+        horariosInformacion.set(indiceHorario, horarioActualizado);
+
+        // elimiar la reserva de LinkedList reservas y cambiar su estado de reservación a false
+        reservas.remove(indiceReserva);
+        this.establecerEstadoDeReservacion(false);
+
+        System.out.println("Visita registrada en el horario " + horariosInformacion.get(indiceHorario));
     }
 
-    public void establecerFacultad(String facultad) {
-        this.facultad = facultad;
-    }
+    /*           Getters y setters           */
+    public String obtenerFacultad() { return facultad; }
+    public void establecerFacultad(String facultad) { this.facultad = facultad; }
 
     public String obtenerCarrera() {
         return carrera;

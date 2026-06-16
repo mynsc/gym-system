@@ -16,7 +16,7 @@ public class Administrador extends Persona {
     public int buscarReservaPorId(Estudiante estudiante, List<List<Integer>> reservas) {
         // ubicar la posicion (i) en la que se encuentre una posible reserva activa
         /*
-                                ArrayList reservas
+                                LinkedList reservas
                 (i) ID del Estudiante, codigo del horario
         */
         for (int indiceReserva = 0; indiceReserva < reservas.size(); indiceReserva++) {
