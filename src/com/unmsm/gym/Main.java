@@ -533,12 +533,16 @@ public class Main {
 
     public static void limpiarPantalla() {
         try {
-            new ProcessBuilder("cmd", "/c", "cls")
-                    .inheritIO()
-                    .start()
-                    .waitFor();
+            ProcessBuilder pb;
+            if (System.getProperty("os.name").toLowerCase().contains("win")) {
+                pb = new ProcessBuilder("cmd", "/c", "cls");
+            } else {
+                pb = new ProcessBuilder("clear");
+            }
+
+            pb.inheritIO().start().waitFor();
         } catch (Exception e) {
-            System.out.println("No se pudo limpiar la pantalla.");
+            System.out.println("(!) No se pudo limpiar la pantalla");
         }
     }
 
