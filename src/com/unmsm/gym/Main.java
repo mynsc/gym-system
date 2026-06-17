@@ -553,4 +553,14 @@ public class Main {
             Thread.currentThread().interrupt();
         }
     }
+
+    public static void pausar() {
+    try {
+        while (System.in.available() > 0) {
+            System.in.read();
+        }
+        System.in.read();
+    } catch (Exception e) {
+    }
+}
 }
