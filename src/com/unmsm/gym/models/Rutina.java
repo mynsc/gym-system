@@ -23,6 +23,7 @@ public class Rutina {
     public String mostrarDetallesDeRutina() {
         StringBuilder detalles = new StringBuilder();
         detalles.append("=========================================\n")
+                .append("ID: ").append(this.id).append("\n")
                 .append("Nombre: ").append(this.nombre).append("\n")
                 .append("Objetivo: ").append(this.objetivo).append("\n")
                 .append("-----------------------------------------\n");

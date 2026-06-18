@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
+import src.com.unmsm.gym.Main;
 import src.com.unmsm.gym.Main.HorarioCuposVisitas;
 
 public class Estudiante extends Persona {
@@ -105,7 +106,7 @@ public class Estudiante extends Persona {
         horariosInformacion.set(codigoNuevoHorario, horarioConNuevoAforo);
         this.establecerEstadoDeReservacion(true);
 
-        System.out.println("Reserva realizada para " + horariosInformacion.get(codigoNuevoHorario).hora());
+        System.out.print("(!) Reserva realizada para " + horariosInformacion.get(codigoNuevoHorario).hora());
     }
 
     public void cancelarReserva(List<HorarioCuposVisitas> horariosInformacion, List<List<Integer>> reservas) {
@@ -114,7 +115,7 @@ public class Estudiante extends Persona {
 
         // si no se encuentra una reserva activa, regresar al menu
         if (indiceReserva == -1) {
-            System.out.println("(!) No tienes una reserva activa");
+            System.out.print("(!) No tienes una reserva activa");
             return;
         }
 
@@ -133,7 +134,7 @@ public class Estudiante extends Persona {
         // eliminar la reserva de LinkedList reservas
         reservas.remove(indiceReserva);
 
-        System.out.println("Reserva cancelada para " + horariosInformacion.get(indiceHorario).hora());
+        System.out.print("Reserva cancelada para " + horariosInformacion.get(indiceHorario).hora());
     }
 
     public void menuRutinas() {
@@ -145,6 +146,7 @@ public class Estudiante extends Persona {
 
         int opcion = 0;
         do {
+            Main.limpiarPantalla();
             System.out.println("=== MENU RUTINAS ===");
             System.out.println("1. Agregar rutina");
             System.out.println("2. Mostrar rutinas");
@@ -157,14 +159,17 @@ public class Estudiante extends Persona {
 
             switch (opcion) {
                 case 1:
+                    Main.limpiarPantalla();
                     Rutina nuevaRutina = crearRutina(scanner);
                     rutinas.add(nuevaRutina);
                     break;
                 case 2:
+                    Main.limpiarPantalla();
                     System.out.println("=== TUS RUTINAS ===");
                     
-                    if (rutinas.isEmpty()) {
-                        System.out.println("(!) No tienes rutinas registradas actualmente.");
+                    if (this.rutinas.isEmpty()) {
+                        System.out.print("(!) No tienes rutinas registradas actualmente");
+                        Main.delay(2);
                         break;
                     }
 
@@ -172,6 +177,7 @@ public class Estudiante extends Persona {
                     for (Rutina rutina : rutinas) {
                         System.out.println(rutina.mostrarDetallesDeRutina());
                     }
+                    Main.pausar();
                     break;
                 case 3:
                     if (this.rutinas.isEmpty()) {
@@ -186,7 +192,11 @@ public class Estudiante extends Persona {
                 case 4:
                     eliminarRutina(scanner);
                     break;
+                case 5:
+                    break;
                 default:
+                    System.out.println("(!) Opcion invalida, intente de nuevo");
+                    Main.delay(2);
                     break;
             }
         } while (opcion != 5);
@@ -230,11 +240,7 @@ public class Estudiante extends Persona {
     }
 
     public void editarRutina(Scanner scanner) {
-        if (this.rutinas.isEmpty()) {
-            System.out.println("(!) No tienes rutinas para editar");
-            return;
-        }
-
+        Main.limpiarPantalla();
         System.out.print("Ingresa el ID de la rutina que deseas editar >> ");
         int idBuscado = scanner.nextInt();
         scanner.nextLine();
@@ -271,10 +277,12 @@ public class Estudiante extends Persona {
 
     public void eliminarRutina(Scanner scanner) {
         if (this.rutinas.isEmpty()) {
-            System.out.println("(!) No tienes rutinas para eliminar");
+            System.out.print("(!) No tienes rutinas para eliminar");
+            Main.delay(2);
             return;
         }
 
+        Main.limpiarPantalla();
         System.out.print("Ingresa el ID de la rutina que deseas eliminar >> ");
         int idBuscado = scanner.nextInt();
         scanner.nextLine();
@@ -292,10 +300,11 @@ public class Estudiante extends Persona {
         // si se encuentra la rutina,borrar de rutinas
         if (rutinaAEliminar != null) {
             this.rutinas.remove(rutinaAEliminar);
-            System.out.println("(!) La rutina '" + rutinaAEliminar.obtenerNombre() + "' ha sido eliminada");
+            System.out.print("(!) La rutina '" + rutinaAEliminar.obtenerNombre() + "' ha sido eliminada");
         } else {
-            System.out.println("(!) No se encontro ninguna rutina con el ID " + idBuscado);
+            System.out.print("(!) No se encontro ninguna rutina con el ID " + idBuscado);
         }
+        Main.delay(2);
     }
 
     public void registrarIngreso(List<HorarioCuposVisitas> horariosInformacion, List<List<Integer>> reservas) {
@@ -304,7 +313,7 @@ public class Estudiante extends Persona {
 
         // si no se encuentra una reserva activa, regresar al menu
         if (indiceReserva == -1) {
-            System.out.println("(!) No tienes una reserva activa para registrar visita");
+            System.out.print("(!) No tienes una reserva activa para registrar visita");
             return;
         }
 
@@ -324,7 +333,7 @@ public class Estudiante extends Persona {
         reservas.remove(indiceReserva);
         this.establecerEstadoDeReservacion(false);
 
-        System.out.println("Visita registrada en el horario " + horariosInformacion.get(indiceHorario));
+        System.out.print("Visita registrada en el horario " + horariosInformacion.get(indiceHorario).hora());
     }
 
     /*           Getters y setters           */
