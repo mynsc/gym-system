@@ -309,6 +309,18 @@ public class Main {
                     break;
                 case 4:
                     System.out.println("=== ESTUDIANTES PENALIZADOS ===");
+
+                    boolean existeEstudianteActivo = usuarios.stream()
+                        .filter(p -> p instanceof Estudiante e && e.presentaPenalidades())
+                        .findAny()
+                        .isPresent();
+                        
+                    if (!existeEstudianteActivo) {
+                        System.out.print("(!) No hay estudiantes con penalidades");
+                        delay(2);
+                        break;
+                    }
+                    
                     // listar estudiantes que tengan una penalidad o mas
                     usuarios.stream()
                         .filter(p -> p instanceof Estudiante)
