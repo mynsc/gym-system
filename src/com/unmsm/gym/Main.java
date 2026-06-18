@@ -280,10 +280,10 @@ public class Main {
                         opcionHorario = scanner.nextInt();
                         scanner.nextLine();
                         
-                        if (opcionHorario < 1 || opcion > horariosInformacion.size()) {
+                        if (opcionHorario < 1 || opcionHorario > horariosInformacion.size()) {
                             System.out.println("(!) Opcion invalida, intente de nuevo");
                         }
-                    } while (opcionHorario < 1 || opcion > horariosInformacion.size());
+                    } while (opcionHorario < 1 || opcionHorario > horariosInformacion.size());
 
                     int indiceHorario = opcionHorario - 1;
                     Integer nuevoAforo = 0;
@@ -424,10 +424,10 @@ public class Main {
                         opcionHorario = scanner.nextInt();
                         scanner.nextLine();
                         
-                        if (opcionHorario < 1 || opcion > horariosInformacion.size()) {
+                        if (opcionHorario < 1 || opcionHorario > horariosInformacion.size()) {
                             System.out.println("(!) Opcion invalida, intente de nuevo");
                         }
-                    } while (opcionHorario < 1 || opcion > horariosInformacion.size());
+                    } while (opcionHorario < 1 || opcionHorario > horariosInformacion.size());
 
                     atleta.reservarTurno(opcionHorario, horariosInformacion, reservas);
 
@@ -482,10 +482,10 @@ public class Main {
                         opcionHorario = scanner.nextInt();
                         scanner.nextLine();
                         
-                        if (opcionHorario < 1 || opcion > horariosInformacion.size()) {
+                        if (opcionHorario < 1 || opcionHorario > horariosInformacion.size()) {
                             System.out.println("(!) Opcion invalida, intente de nuevo");
                         }
-                    } while (opcionHorario < 1 || opcion > horariosInformacion.size());
+                    } while (opcionHorario < 1 || opcionHorario > horariosInformacion.size());
 
                     estudianteRegular.reservarTurno(opcionHorario, horariosInformacion, reservas);
 
