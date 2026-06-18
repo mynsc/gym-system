@@ -174,6 +174,13 @@ public class Estudiante extends Persona {
                     }
                     break;
                 case 3:
+                    if (this.rutinas.isEmpty()) {
+                        System.out.print("(!) No tienes rutinas registradas actualmente");
+                        Main.delay(2);
+                        break;
+                    }
+
+                    Main.limpiarPantalla();
                     editarRutina(scanner);
                     break;
                 case 4:
