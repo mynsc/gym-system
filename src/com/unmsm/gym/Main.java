@@ -139,8 +139,7 @@ public class Main {
                         if (usuario == null) {
                             intentos++;
                             if (intentos < 3) {
-                                System.out
-                                        .println("(!) Credenciales invalidas [Quedan " + (3 - intentos) + " intentos]");
+                                System.out.println("(!) Credenciales invalidas [Quedan " + (3 - intentos) + " intentos]");
                             }
                         }
                     } while (usuario == null && intentos < 3);
@@ -410,8 +409,7 @@ public class Main {
                             .map(p -> (Estudiante) p)
                             .forEach(estudiante -> {
                                 if (estudiante.presentaPenalidades()) {
-                                    System.out.println(estudiante.obtenerId() + " | " + estudiante.obtenerNombre()
-                                            + " | " + estudiante.obtenerCantidadPenalidades());
+                                    System.out.println(estudiante.obtenerId() + " | " + estudiante.obtenerNombre() + " | " + estudiante.obtenerCantidadPenalidades());
                                 }
                             });
 
@@ -490,8 +488,9 @@ public class Main {
         do {
             limpiarPantalla();
             System.out.println("=== MENU ESTUDIANTE ===");
-            System.out.println("Bienvenido, " + atleta.obtenerNombre() + ". Tienes " + atleta.obtenerNumeroDePuntos()
-                    + " punto(s) - Nivel " + atleta.obtenerNivel());
+            // Ejemplo de salida
+            // Bienvenido, Lucas. Tienes 5 punto(s) - Nivel 1
+            System.out.println("Bienvenido, " + atleta.obtenerNombre() + ". Tienes " + atleta.obtenerNumeroDePuntos() + " punto(s) - Nivel " + atleta.obtenerNivel());
             System.out.println("1. Reservar turno");
             System.out.println("2. Cancelar reserva");
             System.out.println("3. Ver y editar mi rutina");
@@ -557,9 +556,9 @@ public class Main {
         do {
             limpiarPantalla();
             System.out.println("=== MENU ESTUDIANTE ===");
-            System.out.println("Bienvenido, " + estudianteRegular.obtenerNombre() + ". Tienes "
-                    + estudianteRegular.obtenerNumeroDePuntos() + " punto(s) - Nivel "
-                    + estudianteRegular.obtenerNivel());
+            // Ejemplo de salida
+            // Bienvenido, Juan. Tienes 5 punto(s) - Nivel 1
+            System.out.println("Bienvenido, " + estudianteRegular.obtenerNombre() + ". Tienes " + estudianteRegular.obtenerNumeroDePuntos() + " punto(s) - Nivel " + estudianteRegular.obtenerNivel());
             System.out.println("1. Reservar turno");
             System.out.println("2. Cancelar reserva");
             System.out.println("3. Ver y editar mi rutina");
@@ -619,9 +618,10 @@ public class Main {
     private static void mostrarHorarios() {
         System.out.println("=== HORARIOS DISPONIBLES ===");
         for (int i = 0; i < horariosInformacion.size(); i++) {
-            System.out.println((i + 1) + ". " + horariosInformacion.get(i).hora() + "-"
-                    + horariosInformacion.get(i).hora().plusHours(1) + " | Aforo: "
-                    + horariosInformacion.get(i).cupos());
+            // Ejemplo de salida
+            // 1. 8:00 - 9:00 | Aforo: 25
+            System.out.println((i + 1) + ". " + horariosInformacion.get(i).hora() + "-" + horariosInformacion.get(i).hora().plusHours(1) + " | Aforo: " + horariosInformacion.get(i).cupos()
+            );
         }
     }
 
