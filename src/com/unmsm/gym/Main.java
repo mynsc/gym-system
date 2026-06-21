@@ -23,7 +23,6 @@ public class Main {
 
     public static void main(String args[]) {
         usuarios.add(new Estudiante(
-                0,
                 "Juan",
                 "Tapia",
                 "estudiante",
@@ -37,7 +36,6 @@ public class Main {
                 false
             ));
         usuarios.add(new Estudiante(
-                1,
                 "Lucas",
                 "Valdez",
                 "atleta",
@@ -51,7 +49,6 @@ public class Main {
                 false
             ));
         usuarios.add(new Estudiante(
-                2,
                 "Luna",
                 "Velez",
                 "discapacitado",
@@ -64,7 +61,7 @@ public class Main {
                 true,
                 false
             ));
-        usuarios.add(new Administrador(3, "Luciana", "Vega", "administrador", "123456"));
+        usuarios.add(new Administrador("Luciana", "Vega", "administrador", "123456"));
 
         // fijar horarios desde las 8 hasta las 20 horas
         for (int i = 8; i < 20; i++) {
@@ -203,7 +200,6 @@ public class Main {
                         case 1:
                             /*               REGULAR                */
                             Estudiante nuevoRegular = new Estudiante(
-                                nuevoId, 
                                 nombre, 
                                 apellido, 
                                 nombreDeUsuario, 
@@ -227,7 +223,6 @@ public class Main {
                             String deporte = leerNoVacio("Deporte que practicas >> ");
                             
                             Estudiante nuevoAtleta = new Estudiante(
-                                nuevoId, 
                                 nombre, 
                                 apellido, 
                                 nombreDeUsuario, 
@@ -256,7 +251,6 @@ public class Main {
                             String nivelDeDiscapacidad = leerNoVacio("Ingresa el nivel >> ");
                            
                             Estudiante nuevoDiscapacitado = new Estudiante(
-                                nuevoId, 
                                 nombre, 
                                 apellido, 
                                 nombreDeUsuario, 

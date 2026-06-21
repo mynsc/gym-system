@@ -35,7 +35,6 @@ public class Estudiante extends Persona {
 
     /*              Constructor              */
     public Estudiante(
-        int id, 
         String nombre, 
         String apellido, 
         String nombreDeUsuario, 
@@ -48,7 +47,7 @@ public class Estudiante extends Persona {
         boolean matriculadoSemestreActual,
         boolean presentaLesion) {
 
-        super(id, nombre, apellido, nombreDeUsuario, contrasenia);
+        super(nombre, apellido, nombreDeUsuario, contrasenia);
         this.tipoDeEstudiante = tipoDeEstudiante;
         this.facultad = facultad;
         this.carrera = carrera;

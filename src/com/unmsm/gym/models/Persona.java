@@ -11,14 +11,12 @@ public class Persona {
     /*              Constructores              */
     public Persona() {}
 
-    public Persona(
-        int id, 
+    public Persona( 
         String nombre, 
         String apellido, 
         String nombreDeUsuario, 
         String contrasenia) {
 
-        this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
         this.nombreDeUsuario = nombreDeUsuario;
