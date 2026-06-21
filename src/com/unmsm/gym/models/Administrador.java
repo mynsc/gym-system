@@ -23,11 +23,11 @@ public class Administrador extends Persona {
             //   - Siempre tendra 2 elementos [index:0, index:1]
             //   - Se sobreescribe en cada iteración
             
-            List<Integer> reservaAnterior = reservas.get(indiceReserva);
+            List<Integer> reservaActiva = reservas.get(indiceReserva);
 
 
             // si tiene una reserva activa, el ID que se acaba de guardar va a coincidir con su ID
-            if (reservaAnterior.get(0) == estudiante.obtenerId()) {
+            if (reservaActiva.get(0) == estudiante.obtenerId()) {
                 return indiceReserva;
             }
         }
