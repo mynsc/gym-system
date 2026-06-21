@@ -8,17 +8,9 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.IntStream;
 
-import src.com.unmsm.gym.db.db_usuarios;
-import src.com.unmsm.gym.config.conexion;
-
-import src.com.unmsm.gym.enums.NivelDeDiscapacidad;
-import src.com.unmsm.gym.enums.TipoDeDiscapacidad;
 import src.com.unmsm.gym.models.Administrador;
-import src.com.unmsm.gym.models.Atleta;
-import src.com.unmsm.gym.models.Discapacitado;
 import src.com.unmsm.gym.models.Estudiante;
 import src.com.unmsm.gym.models.Persona;
-import src.com.unmsm.gym.models.Regular;
 
 public class Main {
     public record HorarioCuposVisitas(LocalTime hora, Integer cupos, Integer cantidadDeVisitas) {
@@ -30,52 +22,48 @@ public class Main {
     static List<List<Integer>> reservas = new LinkedList<>();                  // lista de listas (ID - horario reservado)
 
     public static void main(String args[]) {
-        try {
-            Connection con = conexion.conectar();
-            System.out.println("Conexion exitosa");
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Error al conectar a la base de datos");
-        }
-        usuarios.add(new Regular(
+        usuarios.add(new Estudiante(
                 0,
                 "Juan",
                 "Tapia",
                 "estudiante",
                 "123456",
+                "Regular",
                 "FISI",
                 "Ingenieria de Software",
                 "B25",
                 true,
                 true,
-                false));
-        usuarios.add(new Atleta(
-            1, 
-            "Lucas", 
-            "Sanchez", 
-            "atleta", 
-            "123456", 
-            "FISI", 
-            "Ingenieria de Software", 
-            "B26",
-            true, 
-            true, 
-            false,
-            "Basquetbol"));
-        usuarios.add(new Discapacitado(
-            2, 
-            "Maria", 
-            "Velez", 
-            "discapacitado", 
-            "123456", 
-            "FII", 
-            "Ingenieria Industrial", 
-            "B20",
-            true, 
-            true, 
-            true, 
-            TipoDeDiscapacidad.AUDITIVA, 
-            NivelDeDiscapacidad.MODERADO));
+                false
+            ));
+        usuarios.add(new Estudiante(
+                1,
+                "Lucas",
+                "Valdez",
+                "atleta",
+                "123456",
+                "Atleta",
+                "FII",
+                "Ingenieria Industrial",
+                "B23",
+                true,
+                true,
+                false
+            ));
+        usuarios.add(new Estudiante(
+                2,
+                "Luna",
+                "Velez",
+                "discapacitado",
+                "123456",
+                "Discapacitado",
+                "FIEE",
+                "Ingenieria Electronica",
+                "B19",
+                true,
+                true,
+                false
+            ));
         usuarios.add(new Administrador(3, "Luciana", "Vega", "administrador", "123456"));
 
         // fijar horarios desde las 8 hasta las 20 horas
@@ -152,18 +140,20 @@ public class Main {
                     }
 
                     /* Visualizacion de un menu segun el tipo de usuario */
-                    if (usuario instanceof Administrador) {
-                        menuDeAdministrador((Administrador) usuario);
+                    if (usuario instanceof Administrador administrador) {
+                        menuDeAdministrador(administrador);
                         break;
                     }
 
-                    if (usuario instanceof Atleta) {
-                        menuDeAtleta((Atleta) usuario);
+                    if (usuario instanceof Estudiante atleta && atleta.obtenerTipoDeEstudiante() == "Atleta") {
+                        menuDeAtleta(atleta);
                         break;
                     }
 
-                    menuDeEstudianteRegular((Regular) usuario);
-                    break;
+                    if (usuario instanceof Estudiante estudiante) {
+                        menuDeEstudianteRegular(estudiante);
+                        break;
+                    }
                 }
                 case 2:
                     limpiarPantalla();
@@ -199,23 +189,34 @@ public class Main {
 
                     // atributos booleanas
                     System.out.print("Tienes autoseguro activo (1 = Si, 0 = No) >> ");
-                    boolean seguroActivo = scanner.nextInt() == 1;
+                    boolean autoseguroActivo = scanner.nextInt() == 1;
 
                     System.out.print("Estas matriculado en el semestre actual (1 = Si, 0 = No) >> ");
-                    boolean matriculado = scanner.nextInt() == 1;
+                    boolean matriculadoSemestreActual = scanner.nextInt() == 1;
 
-                    System.out.print("Presentas alguna lesion fisica actual (1 = Si, 0 = No) >> ");
-                    boolean lesionado = scanner.nextInt() == 1;
+                    System.out.print("Presentas alguna lesion fisica (1 = Si, 0 = No) >> ");
+                    boolean presentaLesion = scanner.nextInt() == 1;
                     scanner.nextLine();
 
                     // crear el objeto segun el tipo de Estudiante y pedir atributos especificos
                     switch (tipoPerfil) {
                         case 1:
                             /*               REGULAR                */
-                            Regular nuevoRegular = new Regular(
-                                nuevoId, nombre, apellido, nombreDeUsuario, contrasenia, 
-                                facultad, carrera, baseInicio, seguroActivo, matriculado, lesionado
+                            Estudiante nuevoRegular = new Estudiante(
+                                nuevoId, 
+                                nombre, 
+                                apellido, 
+                                nombreDeUsuario, 
+                                contrasenia, 
+                                "Regular", 
+                                facultad, 
+                                carrera, 
+                                baseInicio, 
+                                autoseguroActivo, 
+                                matriculadoSemestreActual, 
+                                presentaLesion
                             );
+
                             usuarios.add(nuevoRegular);
                             System.out.print("(!) Registro exitoso, bienvenido, " + nombre);
                             delay(2);
@@ -225,10 +226,22 @@ public class Main {
                             /*               ATLETA                */
                             String deporte = leerNoVacio("Deporte que practicas >> ");
                             
-                            Atleta nuevoAtleta = new Atleta(
-                                nuevoId, nombre, apellido, nombreDeUsuario, contrasenia, 
-                                facultad, carrera, baseInicio, seguroActivo, matriculado, lesionado, deporte
+                            Estudiante nuevoAtleta = new Estudiante(
+                                nuevoId, 
+                                nombre, 
+                                apellido, 
+                                nombreDeUsuario, 
+                                contrasenia, 
+                                "Atleta", 
+                                facultad, 
+                                carrera, 
+                                baseInicio, 
+                                autoseguroActivo, 
+                                matriculadoSemestreActual, 
+                                presentaLesion
                             );
+                            nuevoAtleta.establecerDeporte(deporte);
+
                             usuarios.add(nuevoAtleta);
                             System.out.print("(!) Registro de atleta exitoso, bienvenido, " + nombre);
                             delay(2);
@@ -237,28 +250,30 @@ public class Main {
                         case 3:
                             /*               DISCAPACITADO                */
                             System.out.println("Tipos de discapacidad: FISICA, AUDITIVA, VISUAL, INTELECTUAL, OTRA");
-                            String tipoDiscStr = leerNoVacio("Ingresa el tipo >> ").toUpperCase();
+                            String tipoDeDiscapacidad = leerNoVacio("Ingresa el tipo >> ");
                             
                             System.out.println("Niveles: LEVE, MODERADO, GRAVE");
-                            String nivelDiscStr = leerNoVacio("Ingresa el nivel >> ").toUpperCase();
+                            String nivelDeDiscapacidad = leerNoVacio("Ingresa el nivel >> ");
+                           
+                            Estudiante nuevoDiscapacitado = new Estudiante(
+                                nuevoId, 
+                                nombre, 
+                                apellido, 
+                                nombreDeUsuario, 
+                                contrasenia, 
+                                "Discapacitado", 
+                                facultad, 
+                                carrera, 
+                                baseInicio, 
+                                autoseguroActivo, 
+                                matriculadoSemestreActual, 
+                                presentaLesion
+                            );
+                            nuevoDiscapacitado.establecerTipoDeDiscapacidad(tipoDeDiscapacidad);
+                            nuevoDiscapacitado.establecerNivelDeDiscapacidad(nivelDeDiscapacidad);
 
-                            try {
-                                // convertir el String ingresado al Enum correspondiente
-                                TipoDeDiscapacidad tipoDisc = TipoDeDiscapacidad.valueOf(tipoDiscStr);
-                                NivelDeDiscapacidad nivelDisc = NivelDeDiscapacidad.valueOf(nivelDiscStr);
-
-                                Discapacitado nuevoDiscapacitado = new Discapacitado(
-                                    nuevoId, nombre, apellido, nombreDeUsuario, contrasenia, 
-                                    facultad, carrera, baseInicio, seguroActivo, matriculado, lesionado, 
-                                    tipoDisc, nivelDisc
-                                );
-                                usuarios.add(nuevoDiscapacitado);
-                                System.out.println("(!) Registro exitoso, bienvenido, " + nombre);
-                                
-                            } catch (IllegalArgumentException e) {
-                                // si escriben mal el Enum, el sistema no colapsa, solo cancela el registro
-                                System.out.println("(!) Error, el tipo o nivel ingresado no coincide con los registros");
-                            }
+                            usuarios.add(nuevoDiscapacitado);
+                            System.out.println("(!) Registro exitoso, bienvenido, " + nombre);
                             delay(2);
                             break;
                     }
@@ -483,7 +498,7 @@ public class Main {
         } while (opcion != 6);
     }
 
-    private static void menuDeAtleta(Atleta atleta) {
+    private static void menuDeAtleta(Estudiante atleta) {
         int opcion = 0;
         do {
             limpiarPantalla();
@@ -551,7 +566,7 @@ public class Main {
         } while (opcion != 6);
     }
 
-    private static void menuDeEstudianteRegular(Regular estudianteRegular) {
+    private static void menuDeEstudianteRegular(Estudiante estudianteRegular) {
         int opcion = 0;
         do {
             limpiarPantalla();
