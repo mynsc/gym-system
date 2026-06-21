@@ -299,8 +299,8 @@ public class Main {
             System.out.println("1. Ver reporte de estudiantes activos");
             System.out.println("2. Ver reporte de horarios mas concurridos");
             System.out.println("3. Modificar aforo de un bloque de horario");
-            System.out.println("4. Ver lista de alumnos penalizados");          // todo: mostrar mensaje cuando no hay penalizados
-            System.out.println("5. Revocar penalidad a un alumno");             // todo: colocar un maximo de intentos
+            System.out.println("4. Ver lista de alumnos penalizados");
+            System.out.println("5. Revocar penalidad a un alumno");
             System.out.println("6. Cerrar sesion");
             System.out.print("Ingresar opcion >> ");
             opcion = scanner.nextInt();
