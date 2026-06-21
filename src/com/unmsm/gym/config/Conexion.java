@@ -1,0 +1,36 @@
+package src.com.unmsm.gym.config;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class Conexion {
+
+    private static String url = "jdbc:mysql://localhost:3306/jdbc";
+    private static String usuario = "root";
+    private static String contrasenia = "admin";
+    private static Connection conexion;
+
+    public static Connection conectar() {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conexion = DriverManager.getConnection(url, usuario, contrasenia);
+
+            return conexion;
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static boolean hayConexion () {
+        conectar();
+
+        if (conexion == null) {
+            return false;
+        } 
+
+        return true;
+    }
+}
