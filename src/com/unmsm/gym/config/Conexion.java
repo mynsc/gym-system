@@ -28,4 +28,12 @@ public class Conexion {
 
         return true;
     }
+
+    public static void cerrarConexion(Connection conexion) {
+        try {
+            conexion.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
