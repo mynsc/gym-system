@@ -9,14 +9,11 @@ public class Conexion {
     private static String url = "jdbc:mysql://localhost:3306/jdbc";
     private static String usuario = "root";
     private static String contrasenia = "admin";
-    private static Connection conexion;
 
     public static Connection conectar() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conexion = DriverManager.getConnection(url, usuario, contrasenia);
-
-            return conexion;
+            return DriverManager.getConnection(url, usuario, contrasenia);
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -24,9 +21,7 @@ public class Conexion {
         return null;
     }
 
-    public static boolean hayConexion () {
-        conectar();
-
+    public static boolean hayConexion (Connection conexion) {
         if (conexion == null) {
             return false;
         } 
