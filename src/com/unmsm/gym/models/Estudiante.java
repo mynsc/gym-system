@@ -17,7 +17,7 @@ public class Estudiante extends Persona {
     private String baseInicio;
     private boolean autoseguroActivo;
     private boolean matriculadoSemestreActual;
-    private boolean presentaLesionActual;
+    private boolean presentaLesion;
     private String deporte;
     private String tipoDeDiscapacidad;
     private String nivelDeDiscapacidad;
@@ -46,7 +46,7 @@ public class Estudiante extends Persona {
         String baseInicio, 
         boolean autoseguroActivo, 
         boolean matriculadoSemestreActual,
-        boolean presentaLesionActual) {
+        boolean presentaLesion) {
 
         super(id, nombre, apellido, nombreDeUsuario, contrasenia);
         this.tipoDeEstudiante = tipoDeEstudiante;
@@ -55,7 +55,7 @@ public class Estudiante extends Persona {
         this.baseInicio = baseInicio;
         this.autoseguroActivo = autoseguroActivo;
         this.matriculadoSemestreActual = matriculadoSemestreActual;
-        this.presentaLesionActual = presentaLesionActual;
+        this.presentaLesion = presentaLesion;
         this.deporte = null;
         this.tipoDeDiscapacidad = null;
         this.nivelDeDiscapacidad = null;
@@ -366,8 +366,8 @@ public class Estudiante extends Persona {
     public boolean estaMatriculadoSemestreActual() { return matriculadoSemestreActual; }
     public void establecerEstadoDeMatriculaSemestreActual(boolean matriculadoSemestreActual) { this.matriculadoSemestreActual = matriculadoSemestreActual; }
     
-    public boolean presentaLesionActual() { return presentaLesionActual;  }
-    public void establecerEstadoDeLesionActual(boolean presentaLesionActual) { this.presentaLesionActual = presentaLesionActual; }
+    public boolean presentaLesion() { return presentaLesion;  }
+    public void establecerEstadoDeLesion(boolean presentaLesion) { this.presentaLesion = presentaLesion; }
 
     public String obtenerDeporte() { return deporte; }
     public void establecerDeporte(String deporte) { this.deporte = deporte; }
