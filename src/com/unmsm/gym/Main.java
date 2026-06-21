@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.IntStream;
 
+import src.com.unmsm.gym.config.Conexion;
 import src.com.unmsm.gym.models.Administrador;
 import src.com.unmsm.gym.models.Estudiante;
 import src.com.unmsm.gym.models.Persona;
@@ -22,6 +23,16 @@ public class Main {
     static List<List<Integer>> reservas = new LinkedList<>();                  // lista de listas (ID - horario reservado)
 
     public static void main(String args[]) {
+        // establecer conexion a la base de datos o detener el programa
+        Connection conexion = Conexion.conectar();
+        if (!Conexion.hayConexion(conexion)) {
+            System.out.println("(!) No se pudo establecer la conexion a la base de datos");
+            return;
+        }
+
+        System.out.println("(!) Conexion a la base de datos exitosa");
+        pausar();
+
         usuarios.add(new Estudiante(
                 "Juan",
                 "Tapia",
@@ -96,27 +107,12 @@ public class Main {
                         String nombreDeUsuario = leerNoVacio("Usuario >> ");
                         String contrasenia = leerNoVacio("Contrasena >> ");
 
-                        db_usuarios usuarios_table = new db_usuarios();
-                        // insertar el nuevo usuario en la base de datos1
-
-                        // busca coincidencias entre el nombre de usuario y la contraseña en el
-                        // ArrayList
+                        // busca coincidencias entre el nombre de usuario y la contraseña en el ArrayList
                         for (Persona usuarioEncontrado : usuarios) {
-                            if (usuarioEncontrado.obtenerNombreDeUsuario().equals(nombreDeUsuario)
-                                    && usuarioEncontrado.obtenerContrasenia().equals(contrasenia)) {
+                            if (usuarioEncontrado.obtenerNombreDeUsuario().equals(nombreDeUsuario) && 
+                                usuarioEncontrado.obtenerContrasenia().equals(contrasenia)) {
                                 usuario = usuarioEncontrado;
-                                
-                                usuarios_table.create(
-                                        usuario.obtenerNombre(),
-                                        usuario.obtenerApellido(),
-                                        usuario.obtenerNombreDeUsuario(),
-                                        usuario.obtenerContrasenia(),
-                                        "FISI",
-                                        "Ingenieria de Software",
-                                        "B25",
-                                        true,
-                                        true);
-
+                                break;
                             }
                         }
 
@@ -213,8 +209,7 @@ public class Main {
                                 presentaLesion
                             );
 
-                            usuarios.add(nuevoRegular);
-                            System.out.print("(!) Registro exitoso, bienvenido, " + nombre);
+                            Administrador.registrarEstudianteEnBD(conexion, nuevoRegular);
                             delay(2);
                             break;
 
@@ -237,8 +232,7 @@ public class Main {
                             );
                             nuevoAtleta.establecerDeporte(deporte);
 
-                            usuarios.add(nuevoAtleta);
-                            System.out.print("(!) Registro de atleta exitoso, bienvenido, " + nombre);
+                            Administrador.registrarEstudianteEnBD(conexion, nuevoAtleta);
                             delay(2);
                             break;
 
@@ -266,8 +260,7 @@ public class Main {
                             nuevoDiscapacitado.establecerTipoDeDiscapacidad(tipoDeDiscapacidad);
                             nuevoDiscapacitado.establecerNivelDeDiscapacidad(nivelDeDiscapacidad);
 
-                            usuarios.add(nuevoDiscapacitado);
-                            System.out.println("(!) Registro exitoso, bienvenido, " + nombre);
+                            Administrador.registrarEstudianteEnBD(conexion, nuevoDiscapacitado);
                             delay(2);
                             break;
                     }
@@ -275,6 +268,7 @@ public class Main {
                 case 3:
                     limpiarPantalla();
                     System.out.print("Saliendo del sistema...");
+                    Conexion.cerrarConexion(conexion);
                     delay(3);
                     break;
                 default:
