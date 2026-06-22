@@ -1,4 +1,4 @@
-package src.com.unmsm.gym.models;
+package com.unmsm.gym.models;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -32,7 +32,7 @@ public class Administrador extends Persona {
 
 
             // si tiene una reserva activa, el ID que se acaba de guardar va a coincidir con su ID
-            if (reservaActiva.get(0) == estudiante.obtenerId()) {
+            if (reservaActiva.get(0).intValue() == estudiante.obtenerId()) {
                 return indiceReserva;
             }
         }

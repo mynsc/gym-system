@@ -1,4 +1,4 @@
-package src.com.unmsm.gym.config;
+package com.unmsm.gym.config;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

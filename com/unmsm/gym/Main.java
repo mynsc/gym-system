@@ -1,4 +1,4 @@
-package src.com.unmsm.gym;
+package com.unmsm.gym;
 
 import java.sql.Connection;
 import java.time.LocalTime;
@@ -8,16 +8,16 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.IntStream;
 
-import src.com.unmsm.gym.config.Conexion;
-import src.com.unmsm.gym.models.Administrador;
-import src.com.unmsm.gym.models.Estudiante;
-import src.com.unmsm.gym.models.Persona;
+import com.unmsm.gym.config.Conexion;
+import com.unmsm.gym.models.Administrador;
+import com.unmsm.gym.models.Estudiante;
+import com.unmsm.gym.models.Persona;
 
 public class Main {
     public record HorarioCuposVisitas(LocalTime hora, Integer cupos, Integer cantidadDeVisitas) {
     }
 
-    static Scanner scanner = new Scanner(System.in);
+    public static Scanner scanner = new Scanner(System.in);
     static List<Persona> usuarios = new ArrayList<>();                         // lista de usuarios
     static List<HorarioCuposVisitas> horariosInformacion = new ArrayList<>();  // lista de horario, aforo y veces que se ha visitado cada horario
     static List<List<Integer>> reservas = new LinkedList<>();                  // lista de listas (ID - horario reservado)
@@ -92,9 +92,7 @@ public class Main {
             System.out.println("1. Iniciar sesion");
             System.out.println("2. Registrarse");
             System.out.println("3. Salir del sistema");
-            System.out.print("Ingresar opcion >> ");
-            opcion = scanner.nextInt();
-            scanner.nextLine();
+            opcion = leerEntero("Ingresar opcion >> ");
 
             switch (opcion) {
                 case 1: {
@@ -138,13 +136,8 @@ public class Main {
                         break;
                     }
 
-                    if (usuario instanceof Estudiante atleta && atleta.obtenerTipoDeEstudiante() == "Atleta") {
-                        menuDeAtleta(atleta);
-                        break;
-                    }
-
                     if (usuario instanceof Estudiante estudiante) {
-                        menuDeEstudianteRegular(estudiante);
+                        menuDeEstudiante(estudiante);
                         break;
                     }
                 }
@@ -156,9 +149,7 @@ public class Main {
                     System.out.println("1. Estudiante regular");
                     System.out.println("2. Atleta universitario");
                     System.out.println("3. Estudiante con discapacidad");
-                    System.out.print("Ingresar opcion >> ");
-                    int tipoPerfil = scanner.nextInt();
-                    scanner.nextLine();
+                    int tipoPerfil = leerEntero("Ingresar opcion >> ");
 
                     if (tipoPerfil < 1 || tipoPerfil > 3) {
                         System.out.print("(!) Opcion invalida, regresando al menu de inicio");
@@ -181,15 +172,9 @@ public class Main {
                     String baseInicio = leerNoVacio("Base de ingreso >> ");
 
                     // atributos booleanas
-                    System.out.print("Tienes autoseguro activo (1 = Si, 0 = No) >> ");
-                    boolean autoseguroActivo = scanner.nextInt() == 1;
-
-                    System.out.print("Estas matriculado en el semestre actual (1 = Si, 0 = No) >> ");
-                    boolean matriculadoSemestreActual = scanner.nextInt() == 1;
-
-                    System.out.print("Presentas alguna lesion fisica (1 = Si, 0 = No) >> ");
-                    boolean presentaLesion = scanner.nextInt() == 1;
-                    scanner.nextLine();
+                    boolean autoseguroActivo = leerEntero("Tienes autoseguro activo (1 = Si, 0 = No) >> ") == 1;
+                    boolean matriculadoSemestreActual = leerEntero("Estas matriculado en el semestre actual (1 = Si, 0 = No) >> ") == 1;
+                    boolean presentaLesion = leerEntero("Presentas alguna lesion fisica (1 = Si, 0 = No) >> ") == 1;
 
                     // crear el objeto segun el tipo de Estudiante y pedir atributos especificos
                     switch (tipoPerfil) {
@@ -290,9 +275,7 @@ public class Main {
             System.out.println("4. Ver lista de alumnos penalizados");
             System.out.println("5. Revocar penalidad a un alumno");
             System.out.println("6. Cerrar sesion");
-            System.out.print("Ingresar opcion >> ");
-            opcion = scanner.nextInt();
-            scanner.nextLine();
+            opcion = leerEntero("Ingresar opcion >> ");
 
             switch (opcion) {
                 case 1:
@@ -343,10 +326,8 @@ public class Main {
                     do {
                         limpiarPantalla();
                         mostrarHorarios();
-                        System.out.print("Ingresar opcion >> ");
-                        opcionHorario = scanner.nextInt();
-                        scanner.nextLine();
-                        
+                        opcionHorario = leerEntero("Ingresar opcion >> ");
+
                         if (opcionHorario < 1 || opcionHorario > horariosInformacion.size()) {
                             System.out.print("(!) Opcion invalida, intente de nuevo");
                             delay(2);
@@ -356,9 +337,7 @@ public class Main {
                     int indiceHorario = opcionHorario - 1;
                     Integer nuevoAforo = 0;
                     do {
-                        System.out.print("Ingresar nuevo aforo >> ");
-                        nuevoAforo = scanner.nextInt();
-                        scanner.nextLine();
+                        nuevoAforo = leerEntero("Ingresar nuevo aforo >> ");
 
                         if (nuevoAforo < 1) {
                             System.out.println("(!) Cantidad invalida, intente de nuevo");
@@ -420,9 +399,7 @@ public class Main {
                     int idIngresado = 0;
                     Estudiante estudianteEncontrado = null;
                     do {
-                        System.out.print("Ingresar el ID de un usuario >> ");
-                        idIngresado = scanner.nextInt();
-                        scanner.nextLine();
+                        idIngresado = leerEntero("Ingresar el ID de un usuario >> ");
 
                         // verificar que sea un ID valido
                         try {
@@ -442,9 +419,7 @@ public class Main {
                     // deben estar entre 0 y 3
                     short descuentoPenalidades = 0;
                     do {
-                        System.out.print("Cantidad de penalidades a descontar (0 - 3) >> ");
-                        descuentoPenalidades = scanner.nextShort();
-                        scanner.nextLine();
+                        descuentoPenalidades = (short) leerEntero("Cantidad de penalidades a descontar (0 - 3) >> ");
 
                         if (descuentoPenalidades < 0 || descuentoPenalidades > 3) {
                             System.out.println("(!) Cantidad invalida, intente de nuevo");
@@ -486,90 +461,27 @@ public class Main {
         } while (opcion != 6);
     }
 
-    private static void menuDeAtleta(Estudiante atleta) {
-        int opcion = 0;
-        do {
-            limpiarPantalla();
-            System.out.println("=== MENU ESTUDIANTE ===");
-            // Ejemplo de salida
-            // Bienvenido, Lucas. Tienes 5 punto(s) - Nivel 1
-            System.out.println("Bienvenido, " + atleta.obtenerNombre() + ". Tienes " + atleta.obtenerNumeroDePuntos() + " punto(s) - Nivel " + atleta.obtenerNivel());
-            System.out.println("1. Reservar turno");
-            System.out.println("2. Cancelar reserva");
-            System.out.println("3. Ver y editar mi rutina");
-            System.out.println("4. Registrar ingreso");
-            System.out.println("5. Ver mis logros desbloqueados");
-            System.out.println("6. Cerrar sesion");
-            System.out.println("7. Registrar horas de entrenamiento");
-            System.out.print("Ingresar opcion >> ");
-            opcion = scanner.nextInt();
-
-            switch (opcion) {
-                case 1:
-                    limpiarPantalla();
-                    int opcionHorario = 0;
-
-                    // visualizar horarios y seleccionar uno para reservar turno
-                    mostrarHorarios();
-                    do {
-                        System.out.print("Ingresar opcion >> ");
-                        opcionHorario = scanner.nextInt();
-                        scanner.nextLine();
-                        
-                        if (opcionHorario < 1 || opcionHorario > horariosInformacion.size()) {
-                            System.out.println("(!) Opcion invalida, intente de nuevo");
-                        }
-                    } while (opcionHorario < 1 || opcionHorario > horariosInformacion.size());
-
-                    atleta.reservarTurno(opcionHorario, horariosInformacion, reservas);
-                    delay(2);
-                    break;
-                case 2:
-                    atleta.cancelarReserva(horariosInformacion, reservas);
-                    delay(2);
-                    break;
-                case 3:
-                    limpiarPantalla();
-                    atleta.menuRutinas();
-                    break;
-                case 4:
-                    atleta.registrarIngreso(horariosInformacion, reservas);
-                    delay(2);
-                    break;
-                case 5:
-                    System.out.println("Mostrando logros desbloqueados...");
-                    break;
-                case 6:
-                    System.out.print("Cerrando sesion...");
-                    delay(2);
-                    break;
-                case 7:
-                    System.out.println("Horas de entrenamiento registradas.");
-                    break;
-                default:
-                    System.out.print("(!) Opcion invalida, intente de nuevo");
-                    delay(2);
-                    break;
-            }
-        } while (opcion != 6);
-    }
-
-    private static void menuDeEstudianteRegular(Estudiante estudianteRegular) {
+    // menu unificado para estudiantes regulares y atletas
+    // la opcion 7 (registrar horas) solo se muestra a los atletas
+    private static void menuDeEstudiante(Estudiante estudiante) {
+        boolean esAtleta = estudiante.obtenerTipoDeEstudiante().equals("Atleta");
         int opcion = 0;
         do {
             limpiarPantalla();
             System.out.println("=== MENU ESTUDIANTE ===");
             // Ejemplo de salida
             // Bienvenido, Juan. Tienes 5 punto(s) - Nivel 1
-            System.out.println("Bienvenido, " + estudianteRegular.obtenerNombre() + ". Tienes " + estudianteRegular.obtenerNumeroDePuntos() + " punto(s) - Nivel " + estudianteRegular.obtenerNivel());
+            System.out.println("Bienvenido, " + estudiante.obtenerNombre() + ". Tienes " + estudiante.obtenerNumeroDePuntos() + " punto(s) - Nivel " + estudiante.obtenerNivel());
             System.out.println("1. Reservar turno");
             System.out.println("2. Cancelar reserva");
             System.out.println("3. Ver y editar mi rutina");
             System.out.println("4. Registrar ingreso");
             System.out.println("5. Ver mis logros desbloqueados");
             System.out.println("6. Cerrar sesion");
-            System.out.print("Ingresar opcion >> ");
-            opcion = scanner.nextInt();
+            if (esAtleta) {
+                System.out.println("7. Registrar horas de entrenamiento");
+            }
+            opcion = leerEntero("Ingresar opcion >> ");
 
             switch (opcion) {
                 case 1:
@@ -579,28 +491,26 @@ public class Main {
 
                     mostrarHorarios();
                     do {
-                        System.out.print("Ingresar opcion >> ");
-                        opcionHorario = scanner.nextInt();
-                        scanner.nextLine();
-                        
+                        opcionHorario = leerEntero("Ingresar opcion >> ");
+
                         if (opcionHorario < 1 || opcionHorario > horariosInformacion.size()) {
                             System.out.println("(!) Opcion invalida, intente de nuevo");
                         }
                     } while (opcionHorario < 1 || opcionHorario > horariosInformacion.size());
 
-                    estudianteRegular.reservarTurno(opcionHorario, horariosInformacion, reservas);
+                    estudiante.reservarTurno(opcionHorario, horariosInformacion, reservas);
                     delay(2);
                     break;
                 case 2:
-                    estudianteRegular.cancelarReserva(horariosInformacion, reservas);
+                    estudiante.cancelarReserva(horariosInformacion, reservas);
                     delay(2);
                     break;
                 case 3:
                     limpiarPantalla();
-                    estudianteRegular.menuRutinas();
+                    estudiante.menuRutinas();
                     break;
                 case 4:
-                    estudianteRegular.registrarIngreso(horariosInformacion, reservas);
+                    estudiante.registrarIngreso(horariosInformacion, reservas);
                     delay(2);
                     break;
                 case 5:
@@ -609,6 +519,14 @@ public class Main {
                 case 6:
                     System.out.print("Cerrando sesion...");
                     delay(3);
+                    break;
+                case 7:
+                    if (esAtleta) {
+                        System.out.println("Horas de entrenamiento registradas.");
+                    } else {
+                        System.out.print("(!) Opcion invalida, intente de nuevo");
+                        delay(2);
+                    }
                     break;
                 default:
                     System.out.print("(!) Opcion invalida, intente de nuevo");
@@ -628,7 +546,7 @@ public class Main {
         }
     }
 
-    private static String leerNoVacio(String textoIngresado) {
+    public static String leerNoVacio(String textoIngresado) {
         while (true) {
             System.out.print(textoIngresado);
             String linea = scanner.nextLine().trim();
@@ -637,6 +555,19 @@ public class Main {
             }
 
             System.out.println("(!) El valor no puede estar vacio");
+        }
+    }
+
+    // lee una linea completa y la valida como entero, reintentando si el texto no es numerico
+    public static int leerEntero(String textoIngresado) {
+        while (true) {
+            System.out.print(textoIngresado);
+            String linea = scanner.nextLine().trim();
+            try {
+                return Integer.parseInt(linea);
+            } catch (NumberFormatException e) {
+                System.out.println("(!) Ingresa un numero valido");
+            }
         }
     }
 

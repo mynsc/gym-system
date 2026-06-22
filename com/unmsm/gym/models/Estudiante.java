@@ -1,13 +1,12 @@
-package src.com.unmsm.gym.models;
+package com.unmsm.gym.models;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Scanner;
 
-import src.com.unmsm.gym.Main;
-import src.com.unmsm.gym.Main.HorarioCuposVisitas;
+import com.unmsm.gym.Main;
+import com.unmsm.gym.Main.HorarioCuposVisitas;
 
 public class Estudiante extends Persona {
     /*               Atributos               */
@@ -148,9 +147,8 @@ public class Estudiante extends Persona {
     }
 
     public void menuRutinas() {
-        Scanner scanner = new Scanner(System.in);
-        if (this.rutinas == null) {
-            Rutina nuevaRutina = crearRutina(scanner);
+        if (this.rutinas.isEmpty()) {
+            Rutina nuevaRutina = crearRutina();
             rutinas.add(nuevaRutina);
         }
 
@@ -163,14 +161,12 @@ public class Estudiante extends Persona {
             System.out.println("3. Editar rutina");
             System.out.println("4. Eliminar rutina");
             System.out.println("5. Salir");
-            System.out.print("Ingresar opcion >> ");
-            opcion = scanner.nextInt();
-            scanner.nextLine();
+            opcion = Main.leerEntero("Ingresar opcion >> ");
 
             switch (opcion) {
                 case 1:
                     Main.limpiarPantalla();
-                    Rutina nuevaRutina = crearRutina(scanner);
+                    Rutina nuevaRutina = crearRutina();
                     rutinas.add(nuevaRutina);
                     break;
                 case 2:
@@ -197,10 +193,10 @@ public class Estudiante extends Persona {
                     }
 
                     Main.limpiarPantalla();
-                    editarRutina(scanner);
+                    editarRutina();
                     break;
                 case 4:
-                    eliminarRutina(scanner);
+                    eliminarRutina();
                     break;
                 case 5:
                     break;
@@ -212,7 +208,7 @@ public class Estudiante extends Persona {
         } while (opcion != 5);
     }
     
-    public Rutina crearRutina(Scanner scanner) {
+    public Rutina crearRutina() {
         String nombre = "";
         String objetivo = "";
         List<List<String>> ejercicios = new LinkedList<>();
@@ -220,12 +216,10 @@ public class Estudiante extends Persona {
 
         System.out.println("=== CREAR RUTINA ===");
         System.out.print("Nombre de la rutina >> ");
-        nombre = scanner.nextLine();
+        nombre = Main.scanner.nextLine();
         System.out.print("Define el objetivo de la rutina >> ");
-        objetivo = scanner.nextLine();
-        System.out.print("Cantidad de ejercicios de la rutina >> ");
-        cantidadDeEjercicios = scanner.nextInt();
-        scanner.nextLine();
+        objetivo = Main.scanner.nextLine();
+        cantidadDeEjercicios = Main.leerEntero("Cantidad de ejercicios de la rutina >> ");
 
         // crear ejercicio(s) para una rutina
         for (int i = 0; i < cantidadDeEjercicios; i++) {
@@ -234,11 +228,11 @@ public class Estudiante extends Persona {
             String repeticiones = "";
 
             System.out.print("Nombre del ejercicio >> ");
-            nombreEjercicio = scanner.nextLine();
+            nombreEjercicio = Main.scanner.nextLine();
             System.out.print("Sets del ejercicio >> ");
-            sets = scanner.nextLine();
+            sets = Main.scanner.nextLine();
             System.out.print("Repeticiones del ejercicio >> ");
-            repeticiones = scanner.nextLine();
+            repeticiones = Main.scanner.nextLine();
 
             ejercicios.add(new LinkedList<>(List.of(nombreEjercicio, sets, repeticiones)));
         }
@@ -249,11 +243,9 @@ public class Estudiante extends Persona {
         return new Rutina(nuevoId, nombre, objetivo, this, ejercicios);
     }
 
-    public void editarRutina(Scanner scanner) {
+    public void editarRutina() {
         Main.limpiarPantalla();
-        System.out.print("Ingresa el ID de la rutina que deseas editar >> ");
-        int idBuscado = scanner.nextInt();
-        scanner.nextLine();
+        int idBuscado = Main.leerEntero("Ingresa el ID de la rutina que deseas editar >> ");
 
         Rutina rutinaAEditar = null;
         
@@ -268,13 +260,13 @@ public class Estudiante extends Persona {
         // si se encuentra la rutina, pedir los nuevos datos
         if (rutinaAEditar != null) {
             System.out.print("Nuevo nombre (deja en blanco para no cambiar) >> ");
-            String nuevoNombre = scanner.nextLine();
+            String nuevoNombre = Main.scanner.nextLine();
             if (!nuevoNombre.trim().isEmpty()) {
                 rutinaAEditar.establecerNombre(nuevoNombre);
             }
 
             System.out.print("Nuevo objetivo (deja en blanco para no cambiar) >> ");
-            String nuevoObjetivo = scanner.nextLine();
+            String nuevoObjetivo = Main.scanner.nextLine();
             if (!nuevoObjetivo.trim().isEmpty()) {
                 rutinaAEditar.establecerObjetivo(nuevoObjetivo);
             }
@@ -285,7 +277,7 @@ public class Estudiante extends Persona {
         }
     }
 
-    public void eliminarRutina(Scanner scanner) {
+    public void eliminarRutina() {
         if (this.rutinas.isEmpty()) {
             System.out.print("(!) No tienes rutinas para eliminar");
             Main.delay(2);
@@ -293,9 +285,7 @@ public class Estudiante extends Persona {
         }
 
         Main.limpiarPantalla();
-        System.out.print("Ingresa el ID de la rutina que deseas eliminar >> ");
-        int idBuscado = scanner.nextInt();
-        scanner.nextLine();
+        int idBuscado = Main.leerEntero("Ingresa el ID de la rutina que deseas eliminar >> ");
 
         Rutina rutinaAEliminar = null;
 

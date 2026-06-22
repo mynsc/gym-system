@@ -1,4 +1,4 @@
-package src.com.unmsm.gym.models;
+package com.unmsm.gym.models;
 
 import java.util.List;
 
