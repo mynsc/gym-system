@@ -31,47 +31,6 @@ public class Main {
         System.out.println("(!) Conexion a la base de datos exitosa");
         pausar();
 
-        usuarios.add(new Estudiante(
-                "Juan",
-                "Tapia",
-                "estudiante",
-                "123456",
-                "Regular",
-                "FISI",
-                "Ingenieria de Software",
-                "B25",
-                true,
-                true,
-                false
-            ));
-        usuarios.add(new Estudiante(
-                "Lucas",
-                "Valdez",
-                "atleta",
-                "123456",
-                "Atleta",
-                "FII",
-                "Ingenieria Industrial",
-                "B23",
-                true,
-                true,
-                false
-            ));
-        usuarios.add(new Estudiante(
-                "Luna",
-                "Velez",
-                "discapacitado",
-                "123456",
-                "Discapacitado",
-                "FIEE",
-                "Ingenieria Electronica",
-                "B19",
-                true,
-                true,
-                false
-            ));
-        usuarios.add(new Administrador("Luciana", "Vega", "administrador", "123456"));
-
         // fijar horarios desde las 8 hasta las 20 horas
         for (int i = 8; i < 20; i++) {
             // hora de almuerzo desde las 12 hasta las 14 horas
