@@ -14,9 +14,7 @@ import com.unmsm.gym.models.Estudiante;
 import com.unmsm.gym.models.Persona;
 
 public class Main {
-    public record HorarioCuposVisitas(LocalTime hora, Integer cupos, Integer cantidadDeVisitas) {
-    }
-
+    public record HorarioCuposVisitas(LocalTime hora, Integer cupos, Integer cantidadDeVisitas) {}
     public static Scanner scanner = new Scanner(System.in);
     static List<Persona> usuarios = new ArrayList<>();                         // lista de usuarios
     static List<HorarioCuposVisitas> horariosInformacion = new ArrayList<>();  // lista de horario, aforo y veces que se ha visitado cada horario
@@ -160,9 +158,6 @@ public class Main {
                     limpiarPantalla();
 
                     // pedir atributos comunes de clase Estudiante
-                    // el ID se genera automaticamente basado en el tamaño de la lista
-                    int nuevoId = usuarios.size(); 
-                    
                     String nombre = leerNoVacio("Nombre >> ");
                     String apellido = leerNoVacio("Apellido >> ");
                     String nombreDeUsuario = leerNoVacio("Nombre de usuario >> ");
@@ -461,8 +456,6 @@ public class Main {
         } while (opcion != 6);
     }
 
-    // menu unificado para estudiantes regulares y atletas
-    // la opcion 7 (registrar horas) solo se muestra a los atletas
     private static void menuDeEstudiante(Estudiante estudiante) {
         boolean esAtleta = estudiante.obtenerTipoDeEstudiante().equals("Atleta");
         int opcion = 0;
@@ -523,11 +516,8 @@ public class Main {
                 case 7:
                     if (esAtleta) {
                         System.out.println("Horas de entrenamiento registradas.");
-                    } else {
-                        System.out.print("(!) Opcion invalida, intente de nuevo");
-                        delay(2);
+                        break;
                     }
-                    break;
                 default:
                     System.out.print("(!) Opcion invalida, intente de nuevo");
                     delay(2);
