@@ -15,6 +15,7 @@ import com.unmsm.gym.config.Conexion;
 import com.unmsm.gym.models.Administrador;
 import com.unmsm.gym.models.Estudiante;
 import com.unmsm.gym.models.Persona;
+import com.unmsm.gym.models.Rutina;
 
 public class Main {
     public record HorarioCuposVisitas(LocalTime hora, Integer cupos, Integer cantidadDeVisitas) {}
@@ -523,7 +524,66 @@ public class Main {
                     break;
                 case 3:
                     limpiarPantalla();
-                    estudiante.menuRutinas();
+                    if (estudiante.obtenerRutinas().isEmpty()) {
+                        Rutina nuevaRutina = estudiante.crearRutina();
+                        estudiante.obtenerRutinas().add(nuevaRutina);
+                    }
+
+                    int opcionCRUD = 0;
+                    do {
+                        limpiarPantalla();
+                        System.out.println("=== MENU RUTINAS ===");
+                        System.out.println("1. Agregar rutina");
+                        System.out.println("2. Mostrar rutinas");
+                        System.out.println("3. Editar rutina");
+                        System.out.println("4. Eliminar rutina");
+                        System.out.println("5. Salir");
+                        opcionCRUD = leerEntero("Ingresar opcion >> ");
+
+                        switch (opcionCRUD) {
+                            case 1:
+                                limpiarPantalla();
+                                Rutina nuevaRutina = estudiante.crearRutina();
+                                estudiante.obtenerRutinas().add(nuevaRutina);
+                                break;
+                            case 2:
+                                limpiarPantalla();
+                                System.out.println("=== TUS RUTINAS ===");
+                                
+                                if (estudiante.obtenerRutinas().isEmpty()) {
+                                    System.out.print("(!) No tienes rutinas registradas actualmente");
+                                    delay(2);
+                                    break;
+                                }
+
+                                // listar rutinas si no es una lista vacia
+                                for (Rutina rutina : estudiante.obtenerRutinas()) {
+                                    System.out.println(rutina.mostrarDetallesDeRutina());
+                                }
+                                pausar();
+                                break;
+                            case 3:
+                                if (estudiante.obtenerRutinas().isEmpty()) {
+                                    System.out.print("(!) No tienes rutinas registradas actualmente");
+                                    delay(2);
+                                    break;
+                                }
+
+                                limpiarPantalla();
+                                estudiante.editarRutina();
+                                break;
+                            case 4:
+                                estudiante.eliminarRutina();
+                                break;
+                            case 5:
+                                break;
+                            default:
+                                System.out.println("(!) Opcion invalida, intente de nuevo");
+                                delay(2);
+                                break;
+                        }
+                    } while (opcion != 5);
+
                     break;
                 case 4:
                     estudiante.registrarIngreso(horariosInformacion, reservas);

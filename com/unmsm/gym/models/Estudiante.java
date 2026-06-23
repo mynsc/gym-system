@@ -146,68 +146,6 @@ public class Estudiante extends Persona {
         System.out.print("Reserva cancelada para " + horariosInformacion.get(indiceHorario).hora());
     }
 
-    public void menuRutinas() {
-        if (this.rutinas.isEmpty()) {
-            Rutina nuevaRutina = crearRutina();
-            rutinas.add(nuevaRutina);
-        }
-
-        int opcion = 0;
-        do {
-            Main.limpiarPantalla();
-            System.out.println("=== MENU RUTINAS ===");
-            System.out.println("1. Agregar rutina");
-            System.out.println("2. Mostrar rutinas");
-            System.out.println("3. Editar rutina");
-            System.out.println("4. Eliminar rutina");
-            System.out.println("5. Salir");
-            opcion = Main.leerEntero("Ingresar opcion >> ");
-
-            switch (opcion) {
-                case 1:
-                    Main.limpiarPantalla();
-                    Rutina nuevaRutina = crearRutina();
-                    rutinas.add(nuevaRutina);
-                    break;
-                case 2:
-                    Main.limpiarPantalla();
-                    System.out.println("=== TUS RUTINAS ===");
-                    
-                    if (this.rutinas.isEmpty()) {
-                        System.out.print("(!) No tienes rutinas registradas actualmente");
-                        Main.delay(2);
-                        break;
-                    }
-
-                    // listar rutinas si no es una lista vacia
-                    for (Rutina rutina : rutinas) {
-                        System.out.println(rutina.mostrarDetallesDeRutina());
-                    }
-                    Main.pausar();
-                    break;
-                case 3:
-                    if (this.rutinas.isEmpty()) {
-                        System.out.print("(!) No tienes rutinas registradas actualmente");
-                        Main.delay(2);
-                        break;
-                    }
-
-                    Main.limpiarPantalla();
-                    editarRutina();
-                    break;
-                case 4:
-                    eliminarRutina();
-                    break;
-                case 5:
-                    break;
-                default:
-                    System.out.println("(!) Opcion invalida, intente de nuevo");
-                    Main.delay(2);
-                    break;
-            }
-        } while (opcion != 5);
-    }
-    
     public Rutina crearRutina() {
         String nombre = "";
         String objetivo = "";
