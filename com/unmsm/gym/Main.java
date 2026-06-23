@@ -20,13 +20,14 @@ import com.unmsm.gym.models.Rutina;
 public class Main {
     public record HorarioCuposVisitas(LocalTime hora, Integer cupos, Integer cantidadDeVisitas) {}
     public static Scanner scanner = new Scanner(System.in);
+    public static Connection conexion = null;
     static List<Persona> usuarios = new ArrayList<>();                         // lista de usuarios
     static List<HorarioCuposVisitas> horariosInformacion = new ArrayList<>();  // lista de horario, aforo y veces que se ha visitado cada horario
     static List<List<Integer>> reservas = new LinkedList<>();                  // lista de listas (ID - horario reservado)
 
     public static void main(String args[]) {
         // establecer conexion a la base de datos o detener el programa
-        Connection conexion = Conexion.conectar();
+        conexion = Conexion.conectar();
         if (!Conexion.hayConexion(conexion)) {
             System.out.println("(!) No se pudo establecer la conexion a la base de datos");
             return;
