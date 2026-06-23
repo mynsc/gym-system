@@ -1,6 +1,9 @@
 package com.unmsm.gym;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -61,13 +64,74 @@ public class Main {
                     do {
                         String nombreDeUsuario = leerNoVacio("Usuario >> ");
                         String contrasenia = leerNoVacio("Contrasena >> ");
+                        
+                        PreparedStatement sentenciaPersona = null;
+                        ResultSet resultadoPersona = null;
 
-                        // busca coincidencias entre el nombre de usuario y la contraseña en el ArrayList
-                        for (Persona usuarioEncontrado : usuarios) {
-                            if (usuarioEncontrado.obtenerNombreDeUsuario().equals(nombreDeUsuario) && 
-                                usuarioEncontrado.obtenerContrasenia().equals(contrasenia)) {
-                                usuario = usuarioEncontrado;
-                                break;
+                        try {
+                            // buscar en la tabla Persona el nombre de usuario y contraseña
+                            String sqlLogin = "SELECT * FROM persona WHERE nombre_de_usuario = ? AND contrasenia = ?";
+                            sentenciaPersona = conexion.prepareStatement(sqlLogin);
+                            sentenciaPersona.setString(1, nombreDeUsuario);
+                            sentenciaPersona.setString(2, contrasenia);
+                            
+                            resultadoPersona = sentenciaPersona.executeQuery();
+
+                            // verificar si hay coincidencias
+                            if (resultadoPersona.next()) {
+                                // si los datos son correctos, extraer los valores de las columnas
+                                int idUsuario = resultadoPersona.getInt("id");
+                                String nombre = resultadoPersona.getString("nombre");
+                                String apellido = resultadoPersona.getString("apellido");
+                                String rol = resultadoPersona.getString("rol");
+
+                                // instanciar si es Administrador
+                                if (rol.equalsIgnoreCase("ADMINISTRADOR")) {
+                                    usuario = new Administrador(nombre, apellido, nombreDeUsuario, contrasenia);
+                                    
+                                } else if (rol.equalsIgnoreCase("ESTUDIANTE")) {
+                                    PreparedStatement sentenciaEstudiante = null;
+                                    ResultSet resultadoEstudiante = null;
+                                    
+                                    try {
+                                        String sqlEstudiante = "SELECT * FROM estudiante WHERE id_persona = ?";
+                                        sentenciaEstudiante = conexion.prepareStatement(sqlEstudiante);
+                                        sentenciaEstudiante.setInt(1, idUsuario);
+                                        resultadoEstudiante = sentenciaEstudiante.executeQuery();
+                                        
+                                        // verificar si la persona es estudiante
+                                        if (resultadoEstudiante.next()) {
+                                            // si lo es, extraer los valores de las columnas
+                                            String tipoDeEstudiante = resultadoEstudiante.getString("tipo_de_estudiante");
+                                            String facultad = resultadoEstudiante.getString("facultad");
+                                            String carrera = resultadoEstudiante.getString("carrera");
+                                            String baseInicio = resultadoEstudiante.getString("base_inicio");
+                                            boolean autoseguroActivo = resultadoEstudiante.getBoolean("autoseguro_activo");
+                                            boolean matriculadoSemestreActual = resultadoEstudiante.getBoolean("matriculado_semestre_actual");
+                                            boolean presentaLesion = resultadoEstudiante.getBoolean("presenta_lesion");
+                                            
+                                            // instanciar al Estudiante con todos sus datos
+                                            usuario = new Estudiante(nombre, apellido, nombreDeUsuario, 
+                                                                     contrasenia, tipoDeEstudiante, facultad, 
+                                                                     carrera, baseInicio, autoseguroActivo, 
+                                                                     matriculadoSemestreActual, presentaLesion);
+                                        }
+                                    } finally {
+                                        // cerrar el PreparedStatement y ResultSet solo si se llegaron a declarar
+                                        if (resultadoEstudiante != null) resultadoEstudiante.close();
+                                        if (sentenciaEstudiante != null) sentenciaEstudiante.close();
+                                    }
+                                }
+                            }
+                        } catch (SQLException e) {
+                            System.out.println("(!) Error de base de datos: " + e.getMessage());
+                        } finally {
+                            try {
+                                // cerrar el PreparedStatement y ResultSet solo si se llegaron a declarar
+                                if (resultadoPersona != null) resultadoPersona.close();
+                                if (sentenciaPersona != null) sentenciaPersona.close();
+                            } catch (SQLException e) {
+                                e.printStackTrace();
                             }
                         }
 
