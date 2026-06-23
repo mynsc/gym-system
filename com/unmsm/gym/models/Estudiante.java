@@ -1,5 +1,8 @@
 package com.unmsm.gym.models;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -215,34 +218,21 @@ public class Estudiante extends Persona {
         }
     }
 
-    public void eliminarRutina() {
-        if (this.rutinas.isEmpty()) {
-            System.out.print("(!) No tienes rutinas para eliminar");
-            Main.delay(2);
-            return;
+    public boolean eliminarRutinaDeBD(Connection conexion, int id) {
+        String sql = "DELETE FROM rutina WHERE id = ?";
+        
+        try {
+            PreparedStatement sentenciaEliminar = conexion.prepareStatement(sql);
+            sentenciaEliminar.setInt(1, id);
+
+            int filaAfectada = sentenciaEliminar.executeUpdate();
+            
+            // si la fila fue afectada, hubo eliminacion y retorna true
+            return filaAfectada != 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
-
-        Main.limpiarPantalla();
-        int idBuscado = Main.leerEntero("Ingresa el ID de la rutina que deseas eliminar >> ");
-
-        Rutina rutinaAEliminar = null;
-
-        // buscar la rutina
-        for (Rutina rutina : this.rutinas) {
-            if (rutina.obtenerId() == idBuscado) {
-                rutinaAEliminar = rutina;
-                break;
-            }
-        }
-
-        // si se encuentra la rutina,borrar de rutinas
-        if (rutinaAEliminar != null) {
-            this.rutinas.remove(rutinaAEliminar);
-            System.out.print("(!) La rutina '" + rutinaAEliminar.obtenerNombre() + "' ha sido eliminada");
-        } else {
-            System.out.print("(!) No se encontro ninguna rutina con el ID " + idBuscado);
-        }
-        Main.delay(2);
     }
 
     public void registrarIngreso(List<HorarioCuposVisitas> horariosInformacion, List<List<Integer>> reservas) {

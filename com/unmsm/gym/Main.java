@@ -574,12 +574,20 @@ public class Main {
                                 estudiante.editarRutina();
                                 break;
                             case 4:
-                                estudiante.eliminarRutina();
+                                int idRutinaPorEliminar = leerEntero("Ingresar el ID de la rutina que desea eliminar >> ");
+
+                                // verificar si se elimina la rutina escogida
+                                if (estudiante.eliminarRutinaDeBD(conexion, idRutinaPorEliminar)) {
+                                    System.out.print("(!) Rutina " + idRutinaPorEliminar + " eliminada");
+                                } else {
+                                    System.out.print("(!) Error, no se pudo eliminar la rutina");
+                                }
+                                delay(2);
                                 break;
                             case 5:
                                 break;
                             default:
-                                System.out.println("(!) Opcion invalida, intente de nuevo");
+                                System.out.print("(!) Opcion invalida, intente de nuevo");
                                 delay(2);
                                 break;
                         }
