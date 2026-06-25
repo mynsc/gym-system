@@ -11,8 +11,7 @@ public class Rutina {
     private List<List<String>> ejercicios;
 
     /*              Constructor              */
-    public Rutina(int id, String nombre, String objetivo, Estudiante estudiante, List<List<String>> ejercicios) {
-        this.id = id;
+    public Rutina(String nombre, String objetivo, Estudiante estudiante, List<List<String>> ejercicios) {
         this.nombre = nombre;
         this.objetivo = objetivo;
         this.estudiante = estudiante;
