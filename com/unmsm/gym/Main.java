@@ -117,6 +117,7 @@ public class Main {
                                                                      contrasenia, tipoDeEstudiante, facultad, 
                                                                      carrera, baseInicio, autoseguroActivo, 
                                                                      matriculadoSemestreActual, presentaLesion);
+                                            usuario.establecerId(idUsuario);
                                         }
                                     } finally {
                                         // cerrar el PreparedStatement y ResultSet solo si se llegaron a declarar
@@ -526,8 +527,13 @@ public class Main {
                 case 3:
                     limpiarPantalla();
                     if (estudiante.obtenerRutinas().isEmpty()) {
-                        Rutina nuevaRutina = estudiante.crearRutina();
-                        estudiante.obtenerRutinas().add(nuevaRutina);
+                        // registrar rutina en la base de datos
+                        if (estudiante.registrarRutinaEnBD(conexion)) {
+                            System.out.print("(!) Rutina" + "" + " registrada");
+                        } else {
+                            System.out.print("(!) Error, no se pudo registrar la rutina");
+                        }
+                        pausar();
                     }
 
                     int opcionCRUD = 0;
@@ -544,8 +550,14 @@ public class Main {
                         switch (opcionCRUD) {
                             case 1:
                                 limpiarPantalla();
-                                Rutina nuevaRutina = estudiante.crearRutina();
-                                estudiante.obtenerRutinas().add(nuevaRutina);
+
+                                // registrar rutina en la base de datos
+                                if (!estudiante.registrarRutinaEnBD(conexion)) {
+                                    System.out.print("(!) Rutina" + "" + " registrada");
+                                } else {
+                                    System.out.print("(!) Error, no se pudo registrar la rutina");
+                                }
+                                delay(2);
                                 break;
                             case 2:
                                 limpiarPantalla();
@@ -678,11 +690,6 @@ public class Main {
     }
 
     public static void pausar() {
-        try {
-            while (System.in.available() > 0) {
-                System.in.read();
-            }
-            System.in.read();
-        } catch (Exception e) {}
+        scanner.nextLine();
     }
 }

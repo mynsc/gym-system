@@ -2,6 +2,7 @@ package com.unmsm.gym.models;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -149,17 +150,15 @@ public class Estudiante extends Persona {
         System.out.print("Reserva cancelada para " + horariosInformacion.get(indiceHorario).hora());
     }
 
-    public Rutina crearRutina() {
+    public boolean registrarRutinaEnBD(Connection conexion) {
         String nombre = "";
         String objetivo = "";
         List<List<String>> ejercicios = new LinkedList<>();
         int cantidadDeEjercicios = 0;
 
         System.out.println("=== CREAR RUTINA ===");
-        System.out.print("Nombre de la rutina >> ");
-        nombre = Main.scanner.nextLine();
-        System.out.print("Define el objetivo de la rutina >> ");
-        objetivo = Main.scanner.nextLine();
+        nombre = Main.leerNoVacio("Nombre de la rutina >> ");
+        objetivo = Main.leerNoVacio("Define el objetivo de la rutina >> ");
         cantidadDeEjercicios = Main.leerEntero("Cantidad de ejercicios de la rutina >> ");
 
         // crear ejercicio(s) para una rutina
@@ -168,20 +167,73 @@ public class Estudiante extends Persona {
             String sets = "";
             String repeticiones = "";
 
-            System.out.print("Nombre del ejercicio >> ");
-            nombreEjercicio = Main.scanner.nextLine();
-            System.out.print("Sets del ejercicio >> ");
-            sets = Main.scanner.nextLine();
-            System.out.print("Repeticiones del ejercicio >> ");
-            repeticiones = Main.scanner.nextLine();
+            nombreEjercicio = Main.leerNoVacio("Nombre del ejercicio >> ");
+            sets = Main.leerNoVacio("Sets del ejercicio >> ");
+            repeticiones = Main.leerNoVacio("Repeticiones del ejercicio >> ");
 
             ejercicios.add(new LinkedList<>(List.of(nombreEjercicio, sets, repeticiones)));
         }
+        Rutina rutina = new Rutina(nombre, objetivo, this, ejercicios);
 
-        // generar ID distinto en un estudiante, pero no en todos
-        // todo: generar IDs distintos para cada rutina de cada estudiante
-        int nuevoId = rutinas.size();
-        return new Rutina(nuevoId, nombre, objetivo, this, ejercicios);
+        String sqlRutina = "INSERT INTO rutina (id_estudiante, nombre, objetivo) VALUES (?, ?, ?)";
+        String sqlEjercicio = "INSERT INTO ejercicio (id_rutina, nombre, series, repeticiones) VALUES (?, ?, ?, ?)";
+
+        PreparedStatement sentenciaRutina = null;
+        PreparedStatement sentenciaEjercicio = null;
+        ResultSet idRutinaGenerado = null;
+
+        try {
+            // desactivar autocommit para que se realicen ambas inserciones o ninguna
+            conexion.setAutoCommit(false); 
+
+            /*                    INSERTAR EN RUTINA                           */
+            // RETURN_GENERATED_KEYS permite recuperar la el ID de la rutina
+            sentenciaRutina = conexion.prepareStatement(sqlRutina, PreparedStatement.RETURN_GENERATED_KEYS);
+            sentenciaRutina.setInt(1, rutina.obtenerEstudiante().obtenerId()); // el id está en la base de datos, mas no en memoria por lo que no s puede recuperar
+            sentenciaRutina.setString(2, rutina.obtenerNombre());
+            sentenciaRutina.setString(3, rutina.obtenerObjetivo());
+            sentenciaRutina.executeUpdate();
+
+            // recuperar el id y asignarlo a la rutina
+            idRutinaGenerado = sentenciaRutina.getGeneratedKeys();
+            if (idRutinaGenerado.next()) rutina.establecerId(idRutinaGenerado.getInt(1)); 
+
+            /*                    INSERTAR EN EJERCICIOS                        */
+            if (ejercicios != null && !ejercicios.isEmpty()) {
+                sentenciaEjercicio = conexion.prepareStatement(sqlEjercicio);
+                    for (List<String> ejercicio : ejercicios) {
+                        sentenciaEjercicio.setInt(1, rutina.obtenerId());
+                        sentenciaEjercicio.setString(2, ejercicio.get(0));                // nombre
+                        sentenciaEjercicio.setInt(3, Integer.parseInt(ejercicio.get(1))); // series
+                        sentenciaEjercicio.setInt(4, Integer.parseInt(ejercicio.get(2))); // repeticiones
+                        sentenciaEjercicio.executeUpdate();
+                    }
+            }
+
+            conexion.commit();
+            return true;
+        } catch (SQLException | NumberFormatException e) {
+            // cancelar todo si algun INSERT falla
+            try {
+                // deshacer la insercion de uno u otro INSERT para no dejar huerfanos
+                conexion.rollback();
+            } catch (SQLException re) {}
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                // restaurar el comportamiento por defecto del autocommit
+                conexion.setAutoCommit(true);
+
+                // cerrar los PreparedStatement y el ResultSet solo si se llegaron a declarar
+                if (sentenciaRutina != null) sentenciaRutina.close();
+                if (sentenciaEjercicio != null)sentenciaEjercicio.close();
+                if (idRutinaGenerado != null) idRutinaGenerado.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
     }
 
     public void editarRutina() {
