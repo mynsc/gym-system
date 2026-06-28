@@ -236,6 +236,71 @@ public class Estudiante extends Persona {
         }
     }
 
+    public void leerRutinasDesdeBD(Connection conexion) {
+        // vaciar rutinas para evitar duplicados
+        if (this.rutinas != null) {
+            this.rutinas.clear();
+        }
+
+        String sqlRutina = "SELECT * FROM rutina WHERE id_estudiante = ?";
+        String sqlEjercicio = "SELECT * FROM ejercicio WHERE id_rutina = ?";
+
+        PreparedStatement sentenciaRutina = null;
+        PreparedStatement sentenciaEjercicios = null;
+        ResultSet idRutinaEncontrados = null;
+        ResultSet idEjercicioEncontrados = null;
+        try {
+            sentenciaRutina = conexion.prepareStatement(sqlRutina);
+            sentenciaRutina.setInt(1, this.obtenerId());
+
+            // recuperar los ID de las rutinas registradas en la base de datos
+            idRutinaEncontrados = sentenciaRutina.executeQuery();
+                
+            while (idRutinaEncontrados.next()) {
+                // obtener el id, nombre y objetivo de la rutina desde la base de datos
+                int idRutina = idRutinaEncontrados.getInt("id");
+                String nombre = idRutinaEncontrados.getString("nombre");
+                String objetivo = idRutinaEncontrados.getString("objetivo");
+
+                List<List<String>> ejercicios = new ArrayList<>();
+                sentenciaEjercicios = conexion.prepareStatement(sqlEjercicio);
+                sentenciaEjercicios.setInt(1, idRutina);
+
+                // recuperar los ID de los ejercicios registrados en la base de datos
+                idEjercicioEncontrados = sentenciaEjercicios.executeQuery();
+                while (idEjercicioEncontrados.next()) {
+                    List<String> detalles = new ArrayList<>();
+                    detalles.add(idEjercicioEncontrados.getString("nombre"));
+                    detalles.add(String.valueOf(idEjercicioEncontrados.getInt("series")));
+                    detalles.add(String.valueOf(idEjercicioEncontrados.getInt("repeticiones")));
+                    ejercicios.add(detalles);
+                }
+
+                // instanciar cada rutina encontrada y guardarla(s) en rutinas
+                Rutina nuevaRutina = new Rutina(nombre, objetivo, this, ejercicios);
+                nuevaRutina.establecerId(idRutina);
+                this.rutinas.add(nuevaRutina);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return;
+        } finally {
+            try {
+                // restaurar el comportamiento por defecto del autocommit
+                conexion.setAutoCommit(true);
+
+                // cerrar los PreparedStatement y los ResultSet solo si se llegaron a declarar
+                if (sentenciaRutina != null) sentenciaRutina.close();
+                if (sentenciaEjercicios != null)sentenciaEjercicios.close();
+                if (idRutinaEncontrados != null) idRutinaEncontrados.close();
+                if (idEjercicioEncontrados != null) idEjercicioEncontrados.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return;
+            }
+        }
+    }
+
     public void editarRutina() {
         Main.limpiarPantalla();
         int idBuscado = Main.leerEntero("Ingresa el ID de la rutina que deseas editar >> ");

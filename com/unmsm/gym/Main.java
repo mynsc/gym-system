@@ -526,6 +526,9 @@ public class Main {
                     break;
                 case 3:
                     limpiarPantalla();
+
+                    // traer rutinas desde la base de datos y verificar si existen registros o no
+                    estudiante.leerRutinasDesdeBD(conexion);
                     if (estudiante.obtenerRutinas().isEmpty()) {
                         // registrar rutina en la base de datos
                         if (estudiante.registrarRutinaEnBD(conexion)) {
@@ -561,7 +564,9 @@ public class Main {
                                 break;
                             case 2:
                                 limpiarPantalla();
-                                
+
+                                // verificar si existen rutinas registradas
+                                estudiante.leerRutinasDesdeBD(conexion);
                                 if (estudiante.obtenerRutinas().isEmpty()) {
                                     System.out.print("(!) No tienes rutinas registradas actualmente");
                                     delay(2);
