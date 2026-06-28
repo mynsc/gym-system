@@ -572,6 +572,7 @@ public class Main {
                                 for (Rutina rutina : estudiante.obtenerRutinas()) {
                                     System.out.println(rutina.mostrarDetallesDeRutina());
                                 }
+                                System.out.println("==================================================================================");
                                 pausar();
                                 break;
                             case 3:
