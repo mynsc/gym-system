@@ -532,7 +532,7 @@ public class Main {
                     if (estudiante.obtenerRutinas().isEmpty()) {
                         // registrar rutina en la base de datos
                         if (estudiante.registrarRutinaEnBD(conexion)) {
-                            System.out.print("(!) Rutina" + "" + " registrada");
+                            System.out.print("(!) Rutina registrada correctamente");
                         } else {
                             System.out.print("(!) Error, no se pudo registrar la rutina");
                         }
@@ -556,7 +556,7 @@ public class Main {
 
                                 // registrar rutina en la base de datos
                                 if (estudiante.registrarRutinaEnBD(conexion)) {
-                                    System.out.print("(!) Rutina" + "" + " registrada");
+                                    System.out.print("(!) Rutina registrada correctamente");
                                 } else {
                                     System.out.print("(!) Error, no se pudo registrar la rutina");
                                 }
