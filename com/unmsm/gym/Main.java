@@ -563,8 +563,6 @@ public class Main {
                                 delay(2);
                                 break;
                             case 2:
-                                limpiarPantalla();
-
                                 // verificar si existen rutinas registradas
                                 estudiante.leerRutinasDesdeBD(conexion);
                                 if (estudiante.obtenerRutinas().isEmpty()) {
@@ -573,6 +571,7 @@ public class Main {
                                     break;
                                 }
 
+                                limpiarPantalla();
                                 // listar rutinas si no es una lista vacia
                                 for (Rutina rutina : estudiante.obtenerRutinas()) {
                                     System.out.println(rutina.mostrarDetallesDeRutina());
@@ -581,6 +580,8 @@ public class Main {
                                 pausar();
                                 break;
                             case 3:
+                                // verificar si existen rutinas registradas
+                                estudiante.leerRutinasDesdeBD(conexion);
                                 if (estudiante.obtenerRutinas().isEmpty()) {
                                     System.out.print("(!) No tienes rutinas registradas actualmente");
                                     delay(2);
@@ -591,6 +592,16 @@ public class Main {
                                 estudiante.editarRutina();
                                 break;
                             case 4:
+                                // verificar si existen rutinas registradas
+                                estudiante.leerRutinasDesdeBD(conexion);
+                                if (estudiante.obtenerRutinas().isEmpty()) {
+                                    System.out.print("(!) No tienes rutinas registradas actualmente");
+                                    delay(2);
+                                    break;
+                                }
+
+                                limpiarPantalla();
+                                
                                 int idRutinaPorEliminar = leerEntero("Ingresar el ID de la rutina que desea eliminar >> ");
 
                                 // verificar si se elimina la rutina escogida
