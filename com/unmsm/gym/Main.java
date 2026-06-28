@@ -533,7 +533,7 @@ public class Main {
                         } else {
                             System.out.print("(!) Error, no se pudo registrar la rutina");
                         }
-                        pausar();
+                        delay(2);
                     }
 
                     int opcionCRUD = 0;
@@ -552,7 +552,7 @@ public class Main {
                                 limpiarPantalla();
 
                                 // registrar rutina en la base de datos
-                                if (!estudiante.registrarRutinaEnBD(conexion)) {
+                                if (estudiante.registrarRutinaEnBD(conexion)) {
                                     System.out.print("(!) Rutina" + "" + " registrada");
                                 } else {
                                     System.out.print("(!) Error, no se pudo registrar la rutina");
@@ -561,7 +561,6 @@ public class Main {
                                 break;
                             case 2:
                                 limpiarPantalla();
-                                System.out.println("=== TUS RUTINAS ===");
                                 
                                 if (estudiante.obtenerRutinas().isEmpty()) {
                                     System.out.print("(!) No tienes rutinas registradas actualmente");
@@ -603,7 +602,7 @@ public class Main {
                                 delay(2);
                                 break;
                         }
-                    } while (opcion != 5);
+                    } while (opcionCRUD != 5);
 
                     break;
                 case 4:
