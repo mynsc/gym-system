@@ -245,34 +245,34 @@ public class Estudiante extends Persona {
         String sqlRutina = "SELECT * FROM rutina WHERE id_estudiante = ?";
         String sqlEjercicio = "SELECT * FROM ejercicio WHERE id_rutina = ?";
 
-        PreparedStatement sentenciaRutina = null;
+        PreparedStatement sentenciaRutinas = null;
         PreparedStatement sentenciaEjercicios = null;
-        ResultSet idRutinaEncontrados = null;
-        ResultSet idEjercicioEncontrados = null;
+        ResultSet rutinasEncontradas = null;
+        ResultSet ejerciciosEncontrados = null;
         try {
-            sentenciaRutina = conexion.prepareStatement(sqlRutina);
-            sentenciaRutina.setInt(1, this.obtenerId());
+            sentenciaRutinas = conexion.prepareStatement(sqlRutina);
+            sentenciaRutinas.setInt(1, this.obtenerId());
 
-            // recuperar los ID de las rutinas registradas en la base de datos
-            idRutinaEncontrados = sentenciaRutina.executeQuery();
+            // recuperar las rutinas registradas en la base de datos
+            rutinasEncontradas = sentenciaRutinas.executeQuery();
                 
-            while (idRutinaEncontrados.next()) {
+            while (rutinasEncontradas.next()) {
                 // obtener el id, nombre y objetivo de la rutina desde la base de datos
-                int idRutina = idRutinaEncontrados.getInt("id");
-                String nombre = idRutinaEncontrados.getString("nombre");
-                String objetivo = idRutinaEncontrados.getString("objetivo");
+                int idRutina = rutinasEncontradas.getInt("id");
+                String nombre = rutinasEncontradas.getString("nombre");
+                String objetivo = rutinasEncontradas.getString("objetivo");
 
                 List<List<String>> ejercicios = new ArrayList<>();
                 sentenciaEjercicios = conexion.prepareStatement(sqlEjercicio);
                 sentenciaEjercicios.setInt(1, idRutina);
 
-                // recuperar los ID de los ejercicios registrados en la base de datos
-                idEjercicioEncontrados = sentenciaEjercicios.executeQuery();
-                while (idEjercicioEncontrados.next()) {
+                // recuperar los ejercicios registrados en la base de datos
+                ejerciciosEncontrados = sentenciaEjercicios.executeQuery();
+                while (ejerciciosEncontrados.next()) {
                     List<String> detalles = new ArrayList<>();
-                    detalles.add(idEjercicioEncontrados.getString("nombre"));
-                    detalles.add(String.valueOf(idEjercicioEncontrados.getInt("series")));
-                    detalles.add(String.valueOf(idEjercicioEncontrados.getInt("repeticiones")));
+                    detalles.add(ejerciciosEncontrados.getString("nombre"));
+                    detalles.add(String.valueOf(ejerciciosEncontrados.getInt("series")));
+                    detalles.add(String.valueOf(ejerciciosEncontrados.getInt("repeticiones")));
                     ejercicios.add(detalles);
                 }
 
@@ -286,14 +286,11 @@ public class Estudiante extends Persona {
             return;
         } finally {
             try {
-                // restaurar el comportamiento por defecto del autocommit
-                conexion.setAutoCommit(true);
-
                 // cerrar los PreparedStatement y los ResultSet solo si se llegaron a declarar
-                if (sentenciaRutina != null) sentenciaRutina.close();
+                if (sentenciaRutinas != null) sentenciaRutinas.close();
                 if (sentenciaEjercicios != null)sentenciaEjercicios.close();
-                if (idRutinaEncontrados != null) idRutinaEncontrados.close();
-                if (idEjercicioEncontrados != null) idEjercicioEncontrados.close();
+                if (rutinasEncontradas != null) rutinasEncontradas.close();
+                if (ejerciciosEncontrados != null) ejerciciosEncontrados.close();
             } catch (SQLException e) {
                 e.printStackTrace();
                 return;
