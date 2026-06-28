@@ -178,7 +178,7 @@ public class Estudiante extends Persona {
         String sqlRutina = "INSERT INTO rutina (id_estudiante, nombre, objetivo) VALUES (?, ?, ?)";
         String sqlEjercicio = "INSERT INTO ejercicio (id_rutina, nombre, series, repeticiones) VALUES (?, ?, ?, ?)";
 
-        PreparedStatement sentenciaRutina = null;
+        PreparedStatement sentenciaRutinas = null;
         PreparedStatement sentenciaEjercicio = null;
         ResultSet idRutinaGenerado = null;
 
@@ -188,14 +188,14 @@ public class Estudiante extends Persona {
 
             /*                    INSERTAR EN RUTINA                           */
             // RETURN_GENERATED_KEYS permite recuperar la el ID de la rutina
-            sentenciaRutina = conexion.prepareStatement(sqlRutina, PreparedStatement.RETURN_GENERATED_KEYS);
-            sentenciaRutina.setInt(1, rutina.obtenerEstudiante().obtenerId()); // el id está en la base de datos, mas no en memoria por lo que no s puede recuperar
-            sentenciaRutina.setString(2, rutina.obtenerNombre());
-            sentenciaRutina.setString(3, rutina.obtenerObjetivo());
-            sentenciaRutina.executeUpdate();
+            sentenciaRutinas = conexion.prepareStatement(sqlRutina, PreparedStatement.RETURN_GENERATED_KEYS);
+            sentenciaRutinas.setInt(1, rutina.obtenerEstudiante().obtenerId()); // el id está en la base de datos, mas no en memoria por lo que no s puede recuperar
+            sentenciaRutinas.setString(2, rutina.obtenerNombre());
+            sentenciaRutinas.setString(3, rutina.obtenerObjetivo());
+            sentenciaRutinas.executeUpdate();
 
             // recuperar el id y asignarlo a la rutina
-            idRutinaGenerado = sentenciaRutina.getGeneratedKeys();
+            idRutinaGenerado = sentenciaRutinas.getGeneratedKeys();
             if (idRutinaGenerado.next()) rutina.establecerId(idRutinaGenerado.getInt(1)); 
 
             /*                    INSERTAR EN EJERCICIOS                        */
@@ -226,7 +226,7 @@ public class Estudiante extends Persona {
                 conexion.setAutoCommit(true);
 
                 // cerrar los PreparedStatement y el ResultSet solo si se llegaron a declarar
-                if (sentenciaRutina != null) sentenciaRutina.close();
+                if (sentenciaRutinas != null) sentenciaRutinas.close();
                 if (sentenciaEjercicio != null)sentenciaEjercicio.close();
                 if (idRutinaGenerado != null) idRutinaGenerado.close();
             } catch (SQLException e) {
