@@ -189,7 +189,7 @@ public class Estudiante extends Persona {
             /*                    INSERTAR EN RUTINA                           */
             // RETURN_GENERATED_KEYS permite recuperar la el ID de la rutina
             sentenciaRutinas = conexion.prepareStatement(sqlRutina, PreparedStatement.RETURN_GENERATED_KEYS);
-            sentenciaRutinas.setInt(1, rutina.obtenerEstudiante().obtenerId()); // el id está en la base de datos, mas no en memoria por lo que no s puede recuperar
+            sentenciaRutinas.setInt(1, rutina.obtenerEstudiante().obtenerId());
             sentenciaRutinas.setString(2, rutina.obtenerNombre());
             sentenciaRutinas.setString(3, rutina.obtenerObjetivo());
             sentenciaRutinas.executeUpdate();
