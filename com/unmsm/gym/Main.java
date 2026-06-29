@@ -671,7 +671,7 @@ public class Main {
                                 int idRutinaPorEliminar = leerEntero("Ingresar el ID de la rutina que desea eliminar >> ");
 
                                 // verificar si se elimina la rutina escogida
-                                if (estudiante.eliminarRutinaDeBD(conexion, idRutinaPorEliminar)) {
+                                if (estudiante.eliminarRutinaDeBD(conexion, idRutinaPorEliminar, estudiante.obtenerId())) {
                                     System.out.print("(!) Rutina " + idRutinaPorEliminar + " eliminada");
                                 } else {
                                     System.out.print("(!) Error, no se pudo eliminar la rutina");

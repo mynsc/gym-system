@@ -329,7 +329,7 @@ public class Estudiante extends Persona {
         }
         rutina.establecerEjercicios(nuevosEjercicios);
 
-        String sqlUpdateRutina = "UPDATE rutina SET nombre = ?, objetivo = ? WHERE id = ?";
+        String sqlUpdateRutina = "UPDATE rutina SET nombre = ?, objetivo = ? WHERE id = ? AND id_estudiante = ?";
         String sqlDeleteEjercicios = "DELETE FROM ejercicio WHERE id_rutina = ?";
         String sqlInsertEjercicios = "INSERT INTO ejercicio (id_rutina, nombre, series, repeticiones) VALUES (?, ?, ?, ?)";
 
@@ -345,7 +345,15 @@ public class Estudiante extends Persona {
             sentenciaRutina.setString(1, rutina.obtenerNombre());
             sentenciaRutina.setString(2, rutina.obtenerObjetivo());
             sentenciaRutina.setInt(3, rutina.obtenerId());
-            sentenciaRutina.executeUpdate();
+            sentenciaRutina.setInt(4, rutina.obtenerEstudiante().obtenerId());
+
+            int filaAfectada = sentenciaRutina.executeUpdate();
+
+            // verificar que la rutina fue actualizada, es decir, existe y le pertenece al estudiante que hizo la peticion
+            if (filaAfectada == 0) {
+                conexion.rollback();
+                return false;
+            }
 
             /*                    ELIMINAR EJERCICIOS                           */
             sentenciaEliminarEjercicio = conexion.prepareStatement(sqlDeleteEjercicios);
@@ -392,16 +400,17 @@ public class Estudiante extends Persona {
         }
     }
     
-    public boolean eliminarRutinaDeBD(Connection conexion, int id) {
-        String sql = "DELETE FROM rutina WHERE id = ?";
+    public boolean eliminarRutinaDeBD(Connection conexion, int idRutina, int idEstudiante) {
+        String sql = "DELETE FROM rutina WHERE id = ? AND id_estudiante = ?";
         
         try {
             PreparedStatement sentenciaEliminar = conexion.prepareStatement(sql);
-            sentenciaEliminar.setInt(1, id);
+            sentenciaEliminar.setInt(1, idRutina);
+            sentenciaEliminar.setInt(2, idEstudiante);
 
             int filaAfectada = sentenciaEliminar.executeUpdate();
             
-            // si la fila fue afectada, hubo eliminacion y retorna true
+            // verificar que la rutina fue eliminada, es decir, existia y le pertenecia al estudiante que hizo la peticion
             return filaAfectada != 0;
         } catch (SQLException e) {
             e.printStackTrace();
