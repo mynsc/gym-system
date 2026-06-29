@@ -589,7 +589,73 @@ public class Main {
                                 }
 
                                 limpiarPantalla();
-                                estudiante.editarRutina();
+                                
+                                int idRutinaPorActualizar = leerEntero("Ingresar el ID de la rutina que desea editar >> ");
+                                
+                                Rutina rutinaPorActualizar = null;
+                                PreparedStatement sentenciaRutina = null;
+                                PreparedStatement sentenciaEjercicios = null;
+                                ResultSet rutinaEncontrada = null;
+                                ResultSet ejerciciosEncontrados = null;
+
+                                // buscar rutina en la base de datos
+                                try {
+                                    sentenciaRutina = conexion.prepareStatement("SELECT * FROM rutina WHERE id = ?");
+                                    sentenciaRutina.setInt(1, idRutinaPorActualizar);
+
+                                    // recuperar las rutinas registradas en la base de datos
+                                    rutinaEncontrada = sentenciaRutina.executeQuery();
+
+                                    if (rutinaEncontrada.next()) {
+                                        // obtener el id, nombre y objetivo de la rutina desde la base de datos
+                                        int idRutina = rutinaEncontrada.getInt("id");
+                                        String nombre = rutinaEncontrada.getString("nombre");
+                                        String objetivo = rutinaEncontrada.getString("objetivo");
+                                    
+
+                                        List<List<String>> ejercicios = new ArrayList<>();
+                                        sentenciaEjercicios = conexion.prepareStatement("SELECT * FROM ejercicio WHERE id_rutina = ?");
+                                        sentenciaEjercicios.setInt(1, idRutina);
+
+                                        // recuperar los ejercicios registrados en la base de datos
+                                        ejerciciosEncontrados = sentenciaEjercicios.executeQuery();
+                                        while (ejerciciosEncontrados.next()) {
+                                            List<String> detalles = new ArrayList<>();
+                                            detalles.add(ejerciciosEncontrados.getString("nombre"));
+                                            detalles.add(String.valueOf(ejerciciosEncontrados.getInt("series")));
+                                            detalles.add(String.valueOf(ejerciciosEncontrados.getInt("repeticiones")));
+                                            ejercicios.add(detalles);
+                                        }
+
+                                        // instanciar cada rutina encontrada y guardarla(s) en rutinas
+                                        rutinaPorActualizar = new Rutina(nombre, objetivo, estudiante, ejercicios);
+                                        rutinaPorActualizar.establecerId(idRutina);
+                                    }
+                                } catch (SQLException e) {
+                                    e.printStackTrace();
+                                    break;
+                                } finally {
+                                    try {
+                                        // cerrar los PreparedStatement y los ResultSet solo si se llegaron a declarar
+                                        if (sentenciaRutina != null) sentenciaRutina.close();
+                                        if (sentenciaEjercicios != null)sentenciaEjercicios.close();
+                                        if (rutinaEncontrada != null) rutinaEncontrada.close();
+                                        if (ejerciciosEncontrados != null) ejerciciosEncontrados.close();
+                                    } catch (SQLException e) {
+                                        e.printStackTrace();
+                                        break;
+                                    }
+                                }
+
+                                limpiarPantalla();
+
+                                // verificar si se actualiza la rutina escogida
+                                if (estudiante.actualizarRutinaEnBD(conexion, rutinaPorActualizar)) {
+                                    System.out.print("(!) Rutina " + idRutinaPorActualizar + " actualizada");
+                                } else {
+                                    System.out.print("(!) Error, no se pudo eliminar la rutina");
+                                }
+                                delay(2);
                                 break;
                             case 4:
                                 // verificar si existen rutinas registradas
@@ -601,7 +667,7 @@ public class Main {
                                 }
 
                                 limpiarPantalla();
-                                
+
                                 int idRutinaPorEliminar = leerEntero("Ingresar el ID de la rutina que desea eliminar >> ");
 
                                 // verificar si se elimina la rutina escogida

@@ -298,40 +298,100 @@ public class Estudiante extends Persona {
         }
     }
 
-    public void editarRutina() {
-        Main.limpiarPantalla();
-        int idBuscado = Main.leerEntero("Ingresa el ID de la rutina que deseas editar >> ");
+    public boolean actualizarRutinaEnBD(Connection conexion, Rutina rutina) {
+        System.out.println("=== EDITAR RUTINA ===");
+        System.out.println(rutina.mostrarDetallesDeRutina());
+        System.out.println("==================================================================================");
 
-        Rutina rutinaAEditar = null;
-        
-        // buscar la rutina en la lista
-        for (Rutina rutina : this.rutinas) {
-            if (rutina.obtenerId() == idBuscado) {
-                rutinaAEditar = rutina;
-                break;
-            }
+        // actualizar campos de rutina si no se dejaron vacios
+        System.out.print("Nuevo nombre de la rutina >> ");
+        String nuevoNombreRutina = Main.scanner.nextLine();
+        if (!nuevoNombreRutina.trim().isEmpty()) {
+            rutina.establecerNombre(nuevoNombreRutina);
         }
 
-        // si se encuentra la rutina, pedir los nuevos datos
-        if (rutinaAEditar != null) {
-            System.out.print("Nuevo nombre (deja en blanco para no cambiar) >> ");
-            String nuevoNombre = Main.scanner.nextLine();
-            if (!nuevoNombre.trim().isEmpty()) {
-                rutinaAEditar.establecerNombre(nuevoNombre);
+        System.out.print("Nuevo objetivo de la rutina >> ");
+        String nuevoObjetivo = Main.scanner.nextLine();
+        if (!nuevoObjetivo.trim().isEmpty()) {
+            rutina.establecerObjetivo(nuevoObjetivo);
+        }
+
+        int nuevaCantidadDeEjercicios = Main.leerEntero("Cantidad de ejercicios de la rutina >> ");
+        
+        List<List<String>> nuevosEjercicios = new LinkedList<>();
+        for (int i = 0; i < nuevaCantidadDeEjercicios; i++) {
+            // actualizar campos de un ejercicio si no se dejaron vacios
+            String nombreEjercicio = Main.leerNoVacio("Nombre del ejercicio >> ");
+            String sets = Main.leerNoVacio("Nombre del ejercicio >> ");
+            String repeticiones = Main.leerNoVacio("Nombre del ejercicio >> ");
+
+            nuevosEjercicios.add(new LinkedList<>(List.of(nombreEjercicio, sets, repeticiones)));
+        }
+        rutina.establecerEjercicios(nuevosEjercicios);
+
+        String sqlUpdateRutina = "UPDATE rutina SET nombre = ?, objetivo = ? WHERE id = ?";
+        String sqlDeleteEjercicios = "DELETE FROM ejercicio WHERE id_rutina = ?";
+        String sqlInsertEjercicios = "INSERT INTO ejercicio (id_rutina, nombre, series, repeticiones) VALUES (?, ?, ?, ?)";
+
+        PreparedStatement sentenciaRutina = null;
+        PreparedStatement sentenciaEliminarEjercicio = null;
+        PreparedStatement sentenciaInsertarEjercicio = null;
+        try {
+            // desactivar autocommit para que se realicen actualizacion, eliminacion e insercion o ninguna
+            conexion.setAutoCommit(false);
+
+            /*                    INSERTAR EN RUTINA                           */
+            sentenciaRutina = conexion.prepareStatement(sqlUpdateRutina);
+            sentenciaRutina.setString(1, rutina.obtenerNombre());
+            sentenciaRutina.setString(2, rutina.obtenerObjetivo());
+            sentenciaRutina.setInt(3, rutina.obtenerId());
+            sentenciaRutina.executeUpdate();
+
+            /*                    ELIMINAR EJERCICIOS                           */
+            sentenciaEliminarEjercicio = conexion.prepareStatement(sqlDeleteEjercicios);
+            sentenciaEliminarEjercicio.setInt(1, rutina.obtenerId());
+            sentenciaEliminarEjercicio.executeUpdate();
+
+            /*                    INSERTAR EN EJERCICIO                           */
+            // registrar ejercicios nuevos/actualizados
+            if (nuevosEjercicios != null && !nuevosEjercicios.isEmpty()) {
+                sentenciaInsertarEjercicio = conexion.prepareStatement(sqlInsertEjercicios);
+                for (List<String> ejercicio : nuevosEjercicios) {
+                    sentenciaInsertarEjercicio.setInt(1, rutina.obtenerId());
+                    sentenciaInsertarEjercicio.setString(2, ejercicio.get(0));
+                    sentenciaInsertarEjercicio.setInt(3, Integer.parseInt(ejercicio.get(1)));
+                    sentenciaInsertarEjercicio.setInt(4, Integer.parseInt(ejercicio.get(2)));
+                    sentenciaInsertarEjercicio.executeUpdate();
+                }
             }
 
-            System.out.print("Nuevo objetivo (deja en blanco para no cambiar) >> ");
-            String nuevoObjetivo = Main.scanner.nextLine();
-            if (!nuevoObjetivo.trim().isEmpty()) {
-                rutinaAEditar.establecerObjetivo(nuevoObjetivo);
-            }
+            conexion.commit();
+            return true;
 
-            System.out.println("(!) Rutina actualizada correctamente");
-        } else {
-            System.out.println("(!) No se encontro ninguna rutina con el ID " + idBuscado);
+        } catch (SQLException | NumberFormatException e) {
+            // cancelar todo si algun INSERT falla
+            try {
+                // deshacer la insercion de uno u otro INSERT para no dejar huerfanos
+                conexion.rollback();
+                System.out.println("(!) Error, cancelando la edicion de rutina");
+            } catch (SQLException re) {}
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                // restaurar el comportamiento por defecto del autocommit
+                conexion.setAutoCommit(true);
+
+                // cerrar los PreparedStatement solo si se llegaron a declarar
+                if (sentenciaRutina != null) sentenciaRutina.close();
+                if (sentenciaEliminarEjercicio != null) sentenciaEliminarEjercicio.close();
+                if (sentenciaInsertarEjercicio != null) sentenciaInsertarEjercicio.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
-
+    
     public boolean eliminarRutinaDeBD(Connection conexion, int id) {
         String sql = "DELETE FROM rutina WHERE id = ?";
         
