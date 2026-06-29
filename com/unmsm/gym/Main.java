@@ -650,7 +650,7 @@ public class Main {
                                 limpiarPantalla();
 
                                 // verificar si se actualiza la rutina escogida
-                                if (estudiante.actualizarRutinaEnBD(conexion, rutinaPorActualizar)) {
+                                if (rutinaPorActualizar != null && estudiante.actualizarRutinaEnBD(conexion, rutinaPorActualizar)) {
                                     System.out.print("(!) Rutina " + idRutinaPorActualizar + " actualizada");
                                 } else {
                                     System.out.print("(!) Error, no se pudo eliminar la rutina");
