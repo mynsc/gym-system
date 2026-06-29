@@ -1,5 +1,12 @@
 package com.unmsm.gym.models;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Reserva {
     /*               Atributos               */
     private int idReserva;
@@ -13,6 +20,35 @@ public class Reserva {
     }
 
     public Reserva() {}
+
+    /*               Metodos               */
+    public List<Reserva> leerReservasDesdeBD(Connection conexion) {
+        List<Reserva> reservas = new ArrayList<>();
+
+        String sqlReservas = "SELECT * FROM reserva WHERE id = ?";
+
+        PreparedStatement sentenciaReservas = null;
+        ResultSet resultadoReservas = null;
+
+        try {
+            sentenciaReservas = conexion.prepareStatement(sqlReservas);
+            sentenciaReservas.setInt(1, this.idUsuario);
+
+            resultadoReservas = sentenciaReservas.executeQuery();
+
+            while (resultadoReservas.next()) {
+                this.idReserva = resultadoReservas.getInt("id_reserva");
+                resultadoReservas.getInt("id_usuario");
+                resultadoReservas.getInt("id_horario");
+            }
+        } catch (SQLException e) {
+
+        } finally {
+
+        }
+
+        return reservas;
+    }
 
     /*           Getters y setters           */
     public int obtenerId() { return idReserva; }

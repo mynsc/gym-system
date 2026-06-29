@@ -47,6 +47,21 @@ CREATE TABLE ejercicio (
     FOREIGN KEY (id_rutina) REFERENCES rutina(id) ON DELETE CASCADE
 );
 
+CREATE TABLE horario (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    hora TIME, 
+    cupos INT DEFAULT 25,
+    cantidad_visitas INT DEFAULT 0 NOT NULL,
+)
+
+CREATE TABLE reserva (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_estudiante INT NOT NULL,
+    id_horario INT NOT NULL,
+    FOREIGN KEY (id_estudiante) REFERENCES estudiante(id_persona) ON DELETE CASCADE,
+    FOREIGN KEY (id_horario) REFERENCES horario(id) ON DELETE CASCADE
+)
+
 -- Ejemplo de lo que harás después, no lo corras todavía
 ALTER TABLE estudiante 
 ADD COLUMN id_reserva INT,
