@@ -151,25 +151,18 @@ public class Estudiante extends Persona {
     }
 
     public boolean registrarRutinaEnBD(Connection conexion) {
-        String nombre = "";
-        String objetivo = "";
         List<List<String>> ejercicios = new LinkedList<>();
-        int cantidadDeEjercicios = 0;
 
         System.out.println("=== CREAR RUTINA ===");
-        nombre = Main.leerNoVacio("Nombre de la rutina >> ");
-        objetivo = Main.leerNoVacio("Define el objetivo de la rutina >> ");
-        cantidadDeEjercicios = Main.leerEntero("Cantidad de ejercicios de la rutina >> ");
+        String nombre = Main.leerNoVacio("Nombre de la rutina >> ");
+        String objetivo = Main.leerNoVacio("Define el objetivo de la rutina >> ");
+        int cantidadDeEjercicios = Main.leerEntero("Cantidad de ejercicios de la rutina >> ");
 
         // crear ejercicio(s) para una rutina
         for (int i = 0; i < cantidadDeEjercicios; i++) {
-            String nombreEjercicio = "";
-            String sets = "";
-            String repeticiones = "";
-
-            nombreEjercicio = Main.leerNoVacio("Nombre del ejercicio >> ");
-            sets = Main.leerNoVacio("Sets del ejercicio >> ");
-            repeticiones = Main.leerNoVacio("Repeticiones del ejercicio >> ");
+            String nombreEjercicio = Main.leerNoVacio("Nombre del ejercicio >> ");
+            String sets = Main.leerNoVacio("Sets del ejercicio >> ");
+            String repeticiones = Main.leerNoVacio("Repeticiones del ejercicio >> ");
 
             ejercicios.add(new LinkedList<>(List.of(nombreEjercicio, sets, repeticiones)));
         }
