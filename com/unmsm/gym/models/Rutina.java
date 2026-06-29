@@ -22,7 +22,7 @@ public class Rutina {
     public String mostrarDetallesDeRutina() {
         StringBuilder detalles = new StringBuilder();
         detalles.append("==================================================================================\n")
-                .append("Rutina ").append(this.id).append("\n")
+                .append("Rutina (ID: ").append(this.id).append(")\n")
                 .append("Nombre: ").append(this.nombre).append("\n")
                 .append("Objetivo: ").append(this.objetivo).append("\n");
         
@@ -71,4 +71,5 @@ public class Rutina {
     public void establecerEstudiante(Estudiante estudiante) { this.estudiante = estudiante; }
     
     public List<List<String>> obtenerEjercicios() {  return ejercicios;  }
+    public void establecerEjercicios(List<List<String>> ejercicios) { this.ejercicios = ejercicios ;  }
 }
