@@ -14,16 +14,16 @@ import java.util.stream.IntStream;
 import com.unmsm.gym.config.Conexion;
 import com.unmsm.gym.models.Administrador;
 import com.unmsm.gym.models.Estudiante;
+import com.unmsm.gym.models.Horario;
 import com.unmsm.gym.models.Persona;
 import com.unmsm.gym.models.Reserva;
 import com.unmsm.gym.models.Rutina;
 
 public class Main {
-    public record HorarioCuposVisitas(LocalTime hora, Integer cupos, Integer cantidadDeVisitas) {}
     public static Scanner scanner = new Scanner(System.in);
     public static Connection conexion = null;
     static List<Persona> usuarios = new ArrayList<>();                         // lista de usuarios
-    static List<HorarioCuposVisitas> horariosInformacion = new ArrayList<>();  // lista de horario, aforo y veces que se ha visitado cada horario
+    static List<Horario> horarios = new ArrayList<>();  // lista de horario, aforo y veces que se ha visitado cada horario
     static List<Reserva> reservas = new LinkedList<>();                        // lista de reservas
 
     public static void main(String args[]) {
@@ -42,9 +42,10 @@ public class Main {
             // hora de almuerzo desde las 12 hasta las 14 horas
             if (i != 12 && i != 13) {
                 // tambien se inicializa el aforo y las veces que se ha visitado un turno
-                HorarioCuposVisitas nuevoHorarioInformacion = new HorarioCuposVisitas(LocalTime.of(i, 0), 25, 0);
+                Horario nuevoHorario = new Horario(LocalTime.of(i, 0), 25, 0);
+                nuevoHorario.establecerIdHorario(i);
 
-                horariosInformacion.add(nuevoHorarioInformacion);
+                horarios.add(nuevoHorario);
             }
         }
 
@@ -332,11 +333,11 @@ public class Main {
                     System.out.println("=== HORARIOS MAS CONCURRIDOS ===");
 
                     // ordenar horarios establecidos del mas concurrido al menos concurrido
-                    IntStream.range(0, horariosInformacion.size())
+                    IntStream.range(0, horarios.size())
                         .boxed()
-                        .sorted((a, b) -> Integer.compare(horariosInformacion.get(b).cantidadDeVisitas(), horariosInformacion.get(a).cantidadDeVisitas()))
+                        .sorted((a, b) -> Integer.compare(horarios.get(b).obtenerCantidadDeVisitas(), horarios.get(a).obtenerCantidadDeVisitas()))
                         .forEach(i -> 
-                            System.out.println(horariosInformacion.get(i).hora() + "-" + horariosInformacion.get(i).hora().plusHours(1) + " | " + horariosInformacion.get(i).cantidadDeVisitas() + " visitas")
+                            System.out.println(horarios.get(i).obtenerHora() + "-" + horarios.get(i).obtenerHora().plusHours(1) + " | " + horarios.get(i).obtenerCantidadDeVisitas() + " visitas")
                         );
 
                     pausar();
@@ -350,11 +351,11 @@ public class Main {
                         mostrarHorarios();
                         opcionHorario = leerEntero("Ingresar opcion >> ");
 
-                        if (opcionHorario < 1 || opcionHorario > horariosInformacion.size()) {
+                        if (opcionHorario < 1 || opcionHorario > horarios.size()) {
                             System.out.print("(!) Opcion invalida, intente de nuevo");
                             delay(2);
                         }
-                    } while (opcionHorario < 1 || opcionHorario > horariosInformacion.size());
+                    } while (opcionHorario < 1 || opcionHorario > horarios.size());
 
                     int indiceHorario = opcionHorario - 1;
                     Integer nuevoAforo = 0;
@@ -366,12 +367,11 @@ public class Main {
                         }
                     } while (nuevoAforo < 1);
 
+                    // obtener el horario que sera modificado
+                    Horario horarioConNuevoAforo = horarios.get(indiceHorario);
+
                     // cambiar aforo en el horario seleccionado
-                    HorarioCuposVisitas horarioConNuevoAforo = new HorarioCuposVisitas(
-                            horariosInformacion.get(indiceHorario).hora(),
-                            nuevoAforo,
-                            horariosInformacion.get(indiceHorario).cantidadDeVisitas());
-                    horariosInformacion.set(indiceHorario, horarioConNuevoAforo);
+                    horarioConNuevoAforo.establecerCupos(nuevoAforo);
 
                     System.out.print("(!) Aforo actualizado correctamente");
 
@@ -513,16 +513,16 @@ public class Main {
                     do {
                         opcionHorario = leerEntero("Ingresar opcion >> ");
 
-                        if (opcionHorario < 1 || opcionHorario > horariosInformacion.size()) {
+                        if (opcionHorario < 1 || opcionHorario > horarios.size()) {
                             System.out.println("(!) Opcion invalida, intente de nuevo");
                         }
-                    } while (opcionHorario < 1 || opcionHorario > horariosInformacion.size());
+                    } while (opcionHorario < 1 || opcionHorario > horarios.size());
 
-                    estudiante.reservarTurno(opcionHorario, horariosInformacion, reservas);
+                    estudiante.reservarTurno(opcionHorario, horarios, reservas);
                     delay(2);
                     break;
                 case 2:
-                    estudiante.cancelarReserva(horariosInformacion, reservas);
+                    estudiante.cancelarReserva(horarios, reservas);
                     delay(2);
                     break;
                 case 3:
@@ -690,7 +690,7 @@ public class Main {
 
                     break;
                 case 4:
-                    estudiante.registrarIngreso(horariosInformacion, reservas);
+                    estudiante.registrarIngreso(horarios, reservas);
                     delay(2);
                     break;
                 case 5:
@@ -715,11 +715,12 @@ public class Main {
 
     private static void mostrarHorarios() {
         System.out.println("=== HORARIOS DISPONIBLES ===");
-        for (int i = 0; i < horariosInformacion.size(); i++) {
+        for (int i = 0; i < horarios.size(); i++) {
+            Horario horario = horarios.get(i);
+
             // Ejemplo de salida
             // 1. 8:00 - 9:00 | Aforo: 25
-            System.out.println((i + 1) + ". " + horariosInformacion.get(i).hora() + "-" + horariosInformacion.get(i).hora().plusHours(1) + " | Aforo: " + horariosInformacion.get(i).cupos()
-            );
+            System.out.println((i + 1) + ". " + horario.obtenerHora() + "-" + horario.obtenerHora().plusHours(1) + " | Aforo: " + horario.obtenerCupos());
         }
     }
 

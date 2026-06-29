@@ -10,7 +10,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.unmsm.gym.Main;
-import com.unmsm.gym.Main.HorarioCuposVisitas;
 
 public class Estudiante extends Persona {
     /*               Atributos               */
@@ -73,10 +72,10 @@ public class Estudiante extends Persona {
     }
 
     /*               Metodos               */
-    public void reservarTurno(int opcionHorario, List<HorarioCuposVisitas> horariosInformacion, List<Reserva> reservas) {
-                // verificar que haya disponibilidad en el turno
-        int codigoNuevoHorario = opcionHorario - 1;
-        if (horariosInformacion.get(codigoNuevoHorario).cupos() == 0) {
+    public void reservarTurno(int opcionHorario, List<Horario> horarios, List<Reserva> reservas) {
+        // verificar que haya disponibilidad en el turno
+        int idHorarioNuevo = opcionHorario - 1;
+        if (horarios.get(idHorarioNuevo).obtenerCupos() == 0) {
             System.out.println("(!) Ese horario ya no tiene cupos");
             return;
         }
@@ -84,20 +83,15 @@ public class Estudiante extends Persona {
         // buscar reserva activa
         Reserva reservaActiva = new Administrador().buscarReservaActiva(this, reservas);
 
-        // si se encuentra una reserva, liberar un cupo en ese horario y se elimina la reserva
+        // si se encuentra una reserva, liberar un cupo en ese horario y eliminar la reserva
         if (reservaActiva != null) {
             System.out.println("(!) Se reemplazo su reserva anterior por este nuevo horario");
 
-            // obtener el codigo del horario de la reserva activa
-            int codigoHorarioActivo = reservaActiva.obtenerIdHorario();
+            // obtener el horario de la reserva activa
+            Horario horarioActivo = horarios.get(reservaActiva.obtenerIdHorario());
 
-            // liberar un cupo de ArrayList horariosInformacion para que alguien mas pueda acceder
-            HorarioCuposVisitas horarioConNuevoAforo = new HorarioCuposVisitas(
-                        horariosInformacion.get(codigoHorarioActivo).hora(), 
-                        (horariosInformacion.get(codigoHorarioActivo).cupos() + 1), 
-                        horariosInformacion.get(codigoHorarioActivo).cantidadDeVisitas()
-                    );
-            horariosInformacion.set(codigoHorarioActivo, horarioConNuevoAforo);
+            // liberar un cupo de la lista de horarios para que alguien mas pueda acceder
+            horarioActivo.establecerCupos(horarioActivo.obtenerCupos() + 1);
 
             // eliminar reserva activa de la lista de reservas
             reservas.remove(reservaActiva);
@@ -107,19 +101,18 @@ public class Estudiante extends Persona {
         Reserva nuevaReserva = new Reserva(this.obtenerId(), idHorarioNuevo);
         reservas.add(nuevaReserva);
 
-        // ocupar un cupo de ArrayList horariosInformacion para que acceda el estudiante que lo reservo
-        HorarioCuposVisitas horarioConNuevoAforo = new HorarioCuposVisitas(
-                        horariosInformacion.get(codigoNuevoHorario).hora(), 
-                        (horariosInformacion.get(codigoNuevoHorario).cupos() - 1), 
-                        horariosInformacion.get(codigoNuevoHorario).cantidadDeVisitas()
-                    );
-        horariosInformacion.set(codigoNuevoHorario, horarioConNuevoAforo);
+        // obtener el horario de la nueva reserva
+        Horario horarioNuevo = horarios.get(idHorarioNuevo);
+
+        // ocupar un cupo de ArrayList horarios para que acceda el estudiante que lo reservo
+        horarioNuevo.establecerCupos(horarioNuevo.obtenerCupos() - 1);
+
         this.establecerEstadoDeReservacion(true);
 
-        System.out.print("(!) Reserva realizada para " + horariosInformacion.get(codigoNuevoHorario).hora());
+        System.out.print("(!) Reserva realizada a las " + horarioNuevo.obtenerHora());
     }
 
-    public void cancelarReserva(List<HorarioCuposVisitas> horariosInformacion, List<Reserva> reservas) {
+    public void cancelarReserva(List<Horario> horarios, List<Reserva> reservas) {
         // buscar reserva activa
         Reserva reservaActiva = new Administrador().buscarReservaActiva(this, reservas);
 
@@ -129,22 +122,18 @@ public class Estudiante extends Persona {
             return;
         }
 
-        // obtener el codigo del horario de la reserva activa
-        int indiceHorario = reservaActiva.obtenerIdHorario();
+        // obtener el horario de la reserva activa
+        Horario horarioActivo = horarios.get(reservaActiva.obtenerIdHorario());
 
-        // liberar un cupo de ArrayList horariosInformacion para que alguien mas pueda acceder
-        HorarioCuposVisitas horarioConNuevoAforo = new HorarioCuposVisitas(
-                    horariosInformacion.get(indiceHorario).hora(), 
-                    (horariosInformacion.get(indiceHorario).cupos() + 1), 
-                    horariosInformacion.get(indiceHorario).cantidadDeVisitas()
-                );
-        horariosInformacion.set(indiceHorario, horarioConNuevoAforo);
+        // liberar un cupo de la lista de horarios para que alguien mas pueda acceder
+        horarioActivo.establecerCupos(horarioActivo.obtenerCupos() + 1);
+
         this.establecerEstadoDeReservacion(false);
 
         // eliminar la reserva de la lista de reservas
         reservas.remove(reservaActiva);
 
-        System.out.print("Reserva cancelada para " + horariosInformacion.get(indiceHorario).hora());
+        System.out.print("Reserva de las " + horarioActivo.obtenerHora() + " cancelada");
     }
 
     public boolean registrarRutinaEnBD(Connection conexion) {
@@ -408,7 +397,7 @@ public class Estudiante extends Persona {
         }
     }
 
-    public void registrarIngreso(List<HorarioCuposVisitas> horariosInformacion, List<Reserva> reservas) {
+    public void registrarIngreso(List<Horario> horarios, List<Reserva> reservas) {
         // buscar reserva activa
         Reserva reservaActiva = new Administrador().buscarReservaActiva(this, reservas);
 
@@ -418,23 +407,22 @@ public class Estudiante extends Persona {
             return;
         }
 
-        // obtener el codigo del horario de la reserva activa
-        int indiceHorario = reservaActiva.obtenerIdHorario();
+        // obtener el horario de la reserva activa
+        Horario horarioActivo = horarios.get(reservaActiva.obtenerIdHorario());
 
-        // establecer ultima visita en hoy y aumentar el contador de visitas en 1
-        this.establecerUltimaVisita(LocalDate.now());
-        HorarioCuposVisitas horarioActualizado = new HorarioCuposVisitas(
-            horariosInformacion.get(indiceHorario).hora(), 
-            horariosInformacion.get(indiceHorario).cupos(), 
-            horariosInformacion.get(indiceHorario).cantidadDeVisitas() + 1
-        );
-        horariosInformacion.set(indiceHorario, horarioActualizado);
+        // liberar un cupo de la lista de horarios para que alguien mas pueda acceder
+        horarioActivo.establecerCupos(horarioActivo.obtenerCupos() + 1);
 
-        // eliminar la reserva de la lista de reservas y cambiar su estado de reservacion a false
-        reservas.remove(reservaActiva);
         this.establecerEstadoDeReservacion(false);
 
-        System.out.print("Visita registrada en el horario " + horariosInformacion.get(indiceHorario).hora());
+        // eliminar la reserva de la lista de reservas
+        reservas.remove(reservaActiva);
+        
+        // establecer ultima visita en hoy y aumentar el contador de visitas en 1
+        this.establecerUltimaVisita(LocalDate.now());
+        horarioActivo.establecerCantidadDeVisitas(horarioActivo.obtenerCantidadDeVisitas() + 1);
+
+        System.out.print("Visita registrada en el horario " + horarioActivo.obtenerHora());
     }
 
     /*           Getters y setters           */
