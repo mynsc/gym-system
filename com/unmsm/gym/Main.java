@@ -15,6 +15,7 @@ import com.unmsm.gym.config.Conexion;
 import com.unmsm.gym.models.Administrador;
 import com.unmsm.gym.models.Estudiante;
 import com.unmsm.gym.models.Persona;
+import com.unmsm.gym.models.Reserva;
 import com.unmsm.gym.models.Rutina;
 
 public class Main {
@@ -23,7 +24,7 @@ public class Main {
     public static Connection conexion = null;
     static List<Persona> usuarios = new ArrayList<>();                         // lista de usuarios
     static List<HorarioCuposVisitas> horariosInformacion = new ArrayList<>();  // lista de horario, aforo y veces que se ha visitado cada horario
-    static List<List<Integer>> reservas = new LinkedList<>();                  // lista de listas (ID - horario reservado)
+    static List<Reserva> reservas = new LinkedList<>();                        // lista de reservas
 
     public static void main(String args[]) {
         // establecer conexion a la base de datos o detener el programa
